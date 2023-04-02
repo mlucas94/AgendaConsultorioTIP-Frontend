@@ -12,7 +12,7 @@ const Turno = (props) => {
 
     });
 
-    let id = 1;
+    let { id } = useParams();
 
     useEffect(() => {
         getTurnoData();
@@ -41,13 +41,17 @@ const Turno = (props) => {
     }
 
     const formatFecha = (fechaArray) => {
-        let fechaFormateada = fechaArray[0] + "-" + fechaArray[1] + "-" + fechaArray[2]
+        let fechaFormateada = fechaArray[0] + "-" + formatNumero(fechaArray[1]) + "-" + formatNumero(fechaArray[2])
         return fechaFormateada
     }
 
     const formatHora = (horaArray) => {
-        let horaFormateada = horaArray[3] + ":" + horaArray[4]
+        let horaFormateada = formatNumero(horaArray[3]) + ":" + formatNumero(horaArray[4])
         return horaFormateada
+    }
+
+    const formatNumero = (n) => {
+        return (n < 10 ? '0' : '') + n;
     }
 
     return (
@@ -70,7 +74,6 @@ const Turno = (props) => {
                     <h5 id="horaFin"> {turnoData.horaFin} </h5>
                 </div>
             </div>
-            
     	</div>
     )
 

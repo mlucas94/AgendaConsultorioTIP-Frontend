@@ -9,14 +9,16 @@ import {
     Redirect
 } from "react-router-dom";
 import Turno from './components/Turno';
+import ListaTurnos from './components/ListaTurnos'
 
 const App = () => {
   return (
     <Router>
       <div>
       <Routes>
-        <Route path="/turno" element={ <Turno/> }/>
-        <Route path="/*" element={ <Turno/> }/>
+        <Route path="/turno/:id" element={ <Turno/> }/>
+        <Route path="/turnos" element={ <ListaTurnos/> } />
+        <Route path="/*" element={ <ListaTurnos/> }/>
       </Routes>
       </div>
     </Router>
