@@ -11,12 +11,8 @@ import AsyncSelect from 'react-select/async'
             horaInicio: null,
             horaFin: null,
             tipo: "Sin asignar",
-            pacienteId: null,  
+            paciente: null 
         });
-        const [pacientesData, setPacientesData] = useState({
-            pacientes: {},
-            seleccionado: null,
-        })
 
         useEffect(() => {
         }, [])
@@ -35,17 +31,11 @@ import AsyncSelect from 'react-select/async'
                 )
         };
 
-        const handleInputPaciente = (e) => {
-             //console.log(e)
-            return buscarPacienteLike({dni: e})
+        const handleInputPaciente = (input) => {
+            return buscarPacienteLike({dni: input})
             .then(
                 data => {
-                    // data.map((t) => ({value: t.id, label: t.nombre}))
-                    // console.log(data.map((t) => ({value: t.id, label: t.nombre})))
-                    console.log(data)
-                    setPacientesData({...pacientesData,
-                        pacientes: data.map(i=> ({label: i.nombre, value: i.id}))})
-                        console.log(data.map(i=> ({label: i.nombre, value: i.id})))
+                    return data.map((t) => ({value: t.id, label: t.nombre}))
                         
                 }
             )
@@ -57,13 +47,12 @@ import AsyncSelect from 'react-select/async'
         }
 
         const seleccionarPaciente = (selected) => {
-            setPacientesData({
-                seleccionado: selected || null
+            setTurnoData({...turnoData,
+                paciente: selected || null
             })
         }
 
         return (
-
                 <Form>
                     <Form.Group controlId="fechaTurno">
                         <Form.Label>Fecha</Form.Label>
@@ -78,17 +67,16 @@ import AsyncSelect from 'react-select/async'
                         <Form.Control type="time"></Form.Control>
                     </Form.Group>
                     <AsyncSelect
-                    value={pacientesData.seleccionado}
+                    value={turnoData.paciente}
                     onChange={seleccionarPaciente}
                     loadOptions={handleInputPaciente}
-                    options={pacientesData.pacientes}
                     />
                     
                     
                         <button variant="primary" type="submit">
-                            Enviar
+                            Enviar  
                         </button>
-                </Form>
+                </Form>                 
         )
 
     }
