@@ -10,6 +10,7 @@ import {
 } from "react-router-dom";
 import Turno from './components/Turno';
 import ListaTurnos from './components/ListaTurnos'
+import NuevoTurno from './components/NuevoTurno'
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
         <Route path="/turno/:id" element={ <Turno/> }/>
         <Route path="/turnos" element={ <ListaTurnos/> } />
         <Route path="/*" element={ <ListaTurnos/> }/>
+        <Route path="/nuevo_turno" element={ <NuevoTurno/> }/>
       </Routes>
       </div>
     </Router>

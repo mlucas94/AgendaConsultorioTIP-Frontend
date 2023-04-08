@@ -14,3 +14,17 @@ export const getTurnos = () => {
 			return response.data
 		})
 }
+
+export const agendarTurno = (turno) => {
+	return axios.post(`${API_URL}/turnos`)
+		.then(response => {
+			return response.data
+		})
+}
+
+export const buscarPacienteLike = (searchParameter) => {
+	return axios.get(`${API_URL}/pacientes/dni`, {params: searchParameter})
+	.then(response => {
+		return response.data
+	})
+}

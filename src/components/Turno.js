@@ -24,13 +24,13 @@ const Turno = (props) => {
             .then(
             data => {
                 setTurnoData({...turnoData,
-                    fecha: formatFecha(data.horarioInicio),
-                    horaInicio: formatHora(data.horarioInicio),
-                    horaFin: formatHora(data.horarioFin),
+                    fecha: data.horarioInicio.substr(0, 10),
+                    horaInicio: data.horarioInicio.substr(11, 5),
+                    horaFin: data.horarioFin.substr(11, 5),
                     tipo: data.tipo,
-                    pacienteId: data.pacienteId,
+                    pacienteId: data.paciente.nombre,
 
-                })       
+                })      
             })
             .catch(error => {
                 setTurnoData({
@@ -38,20 +38,6 @@ const Turno = (props) => {
                     tipo: "ERROR",
                 })
             })
-    }
-
-    const formatFecha = (fechaArray) => {
-        let fechaFormateada = fechaArray[0] + "-" + formatNumero(fechaArray[1]) + "-" + formatNumero(fechaArray[2])
-        return fechaFormateada
-    }
-
-    const formatHora = (horaArray) => {
-        let horaFormateada = formatNumero(horaArray[3]) + ":" + formatNumero(horaArray[4])
-        return horaFormateada
-    }
-
-    const formatNumero = (n) => {
-        return (n < 10 ? '0' : '') + n;
     }
 
     return (

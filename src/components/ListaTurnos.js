@@ -27,7 +27,7 @@ const ListaTurnos = () => {
             {
                 listaTurnosData.map((turno) =>
                     <div className="d-flex justify-content-center pt-2">
-                         <Link to={{pathname: `/turno/${turno.id}`}} type="button" className="btn btn-primary"> {turno.tipo} - {turno.pacienteId} </Link>
+                         <Link to={{pathname: `/turno/${turno.id}`}} type="button" className="btn btn-primary"> {turno.tipo} - {turno.paciente.nombre} </Link>
                     </div>
                 )}
         </div>
