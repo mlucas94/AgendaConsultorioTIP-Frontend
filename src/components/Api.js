@@ -16,7 +16,8 @@ export const getTurnos = () => {
 }
 
 export const agendarTurno = (turno) => {
-	return axios.post(`${API_URL}/turnos`)
+	console.log(turno)
+	return axios.post(`${API_URL}/turnos`, turno)
 		.then(response => {
 			return response.data
 		})

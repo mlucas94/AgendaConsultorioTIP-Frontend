@@ -7,7 +7,7 @@ import AsyncSelect from 'react-select/async'
     const NuevoTurno = () => {
 
         const [turnoData, setTurnoData] = useState({
-            fechaInicio: null,
+            fecha: null,
             horaInicio: null,
             horaFin: null,
             tipo: "Sin asignar",
@@ -21,12 +21,12 @@ import AsyncSelect from 'react-select/async'
             agendarTurno(turnoData)
                 .then(
                     data => {
-
+                        console.log(data)
                     }
                 )
                 .catch( 
                     error => {
-
+                        console.log(error)
                     }
                 )
         };
@@ -46,9 +46,42 @@ import AsyncSelect from 'react-select/async'
             )
         }
 
-        const seleccionarPaciente = (selected) => {
+        const seleccionarPaciente = (e) => {
+            const paciente = e.value
             setTurnoData({...turnoData,
-                paciente: selected || null
+                paciente: paciente || null
+            })
+        }
+
+        const seleccionarFecha = (e) => {
+            const fecha = e.target.value
+            setTurnoData({
+                ...turnoData,
+                fecha: fecha || null
+            })
+        }
+
+        const seleccionarHoraInicio = (e) => {
+            const hora = e.target.value
+            setTurnoData({
+                ...turnoData,
+                horaInicio: hora || null
+            })
+        }
+
+        const seleccionarHoraFin = (e) => {
+            const hora = e.target.value
+            setTurnoData({
+                ...turnoData,
+                horaFin: hora || null
+            })
+        }
+
+        const seleccionarTipo = (e) => {
+            const tipoTurno = e.target.value
+            setTurnoData( {
+                ...turnoData,
+                tipo: tipoTurno || null
             })
         }
 
@@ -56,24 +89,31 @@ import AsyncSelect from 'react-select/async'
                 <Form>
                     <Form.Group controlId="fechaTurno">
                         <Form.Label>Fecha</Form.Label>
-                        <Form.Control type="date" placeholder="Seleccione una fecha" />
+                        <Form.Control type="date" placeholder="Seleccione una fecha" onChange={seleccionarFecha} />
                     </Form.Group>
                     <Form.Group controlId="inicioTurno">
                         <Form.Label>Horario Inicio</Form.Label>
-                        <Form.Control type="time"></Form.Control>
+                        <Form.Control type="time" onChange={seleccionarHoraInicio}/>
                     </Form.Group>
                     <Form.Group controlId="finTurno">
                         <Form.Label>Horario Fin</Form.Label>
-                        <Form.Control type="time"></Form.Control>
+                        <Form.Control type="time" onChange={seleccionarHoraFin}/>
                     </Form.Group>
-                    <AsyncSelect
-                    value={turnoData.paciente}
-                    onChange={seleccionarPaciente}
-                    loadOptions={handleInputPaciente}
-                    />
+                    <Form.Group>
+                        <Form.Label>Tipo</Form.Label>
+                        <Form.Control type="text" onChange={seleccionarTipo}/>
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label>Paciente</Form.Label>
+                        <AsyncSelect
+                        value={turnoData.paciente}
+                        onChange={seleccionarPaciente}
+                        loadOptions={handleInputPaciente}
+                        />
+                    </Form.Group>
                     
                     
-                        <button variant="primary" type="submit">
+                        <button variant="primary" onClick={handleAgendarTurno}>
                             Enviar  
                         </button>
                 </Form>                 
