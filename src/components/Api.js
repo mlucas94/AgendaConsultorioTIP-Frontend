@@ -16,10 +16,12 @@ export const getTurnos = () => {
 }
 
 export const agendarTurno = (turno) => {
-	console.log(turno)
 	return axios.post(`${API_URL}/turnos`, turno)
 		.then(response => {
-			return response.data
+			return true;
+		})
+		.catch(error => {
+			return error.response.data.message
 		})
 }
 
