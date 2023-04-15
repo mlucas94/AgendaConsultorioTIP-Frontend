@@ -37,7 +37,7 @@ import Swal from 'sweetalert2';
             var valido =  alertaFecha === null && alertaHora === null && alertaTipo === null;
             console.log(valido)
             if(!valido) {
-                Swal.fire( 'Datos no validos', 'Hay campos con errores' )
+                Swal.fire( 'Datos no validos', 'Hay campos con errores', 'warning' )
                 return
             }
             const turnoAgendar = {
