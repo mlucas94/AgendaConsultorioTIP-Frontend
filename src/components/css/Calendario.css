@@ -1,0 +1,21 @@
+.nombreDia {
+    background-color: lightblue;
+    text-align: center;
+}
+
+.fechaCalendario {
+    text-align:center;
+    cursor:pointer;
+}
+
+.inactiveDay {
+    background-color: grey !important;
+}
+
+.inactiveDay:hover{
+    background-color: lightgray !important;
+}
+
+.fechaCalendario:hover{
+    background-color: lightblue;
+}

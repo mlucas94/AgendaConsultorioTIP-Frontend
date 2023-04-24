@@ -3,17 +3,17 @@ import { agendarTurno, buscarPacienteLike } from './Api.js';
 import Form from "react-bootstrap/Form";
 import AsyncSelect from 'react-select/async'
 import { useNavigate } from 'react-router-dom'
-import { format, isValid } from 'date-fns'
+import { format } from 'date-fns'
 import Alert from "react-bootstrap/Alert"
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Swal from 'sweetalert2';
 
 
-    const NuevoTurno = () => {
+    const NuevoTurno = (props) => {
 
         const [turnoData, setTurnoData] = useState({
-            fecha: null,
+            fecha: props.fecha,
             horaInicio: null,
             horaFin: null,
             tipo: "Sin asignar",
@@ -35,7 +35,6 @@ import Swal from 'sweetalert2';
         const handleAgendarTurno = (e) => {
             e.preventDefault()
             var valido =  alertaFecha === null && alertaHora === null && alertaTipo === null;
-            console.log(valido)
             if(!valido) {
                 Swal.fire( 'Datos no validos', 'Hay campos con errores', 'warning' )
                 return
@@ -90,7 +89,7 @@ import Swal from 'sweetalert2';
         };
 
         const handleInputPaciente = (input) => {
-            return buscarPacienteLike({dni: input})
+            return buscarPacienteLike({dniONombre: input})
             .then(
                 data => {
                     return data.map((t) => ({value: t.id, label: t.nombre}))        
@@ -98,12 +97,12 @@ import Swal from 'sweetalert2';
             )
             .catch(
                 error=> {
-                    Swal.fire({
-                        title: "Error de conexión",
-                        text: "No se pudieron recuperar los datos de pacientes.",
-                        icon: 'error',
-                        confirmButtonText: 'Aceptar'
-                    })
+                    // Swal.fire({
+                    //     title: "Error de conexión",
+                    //     text: "No se pudieron recuperar los datos de pacientes.",
+                    //     icon: 'error',
+                    //     confirmButtonText: 'Aceptar'
+                    // })
                 }
             )
         }
@@ -122,7 +121,9 @@ import Swal from 'sweetalert2';
                 setAlertaFecha("Fecha incorrecta, asegurese de no haber ingresado digitos de mas.")
             }
             const fechaDate = new Date(fecha)
-            if(fechaDate <= new Date()) {
+            const fechaHoy = new Date()
+            fechaHoy.setUTCHours(0,0,0,0);
+            if(fechaDate < fechaHoy) {
                 setAlertaFecha("La fecha del turno debe ser posterior al dia de la fecha.")
             }
             setTurnoData({
@@ -171,7 +172,7 @@ import Swal from 'sweetalert2';
                 <Form onSubmit={handleAgendarTurno}>
                     <Form.Group controlId="fechaTurno">
                         <Form.Label>Fecha</Form.Label>
-                        <Form.Control required name="fecha-form" min={todayDate} type="date" placeholder="Seleccione una fecha" onChange={seleccionarFecha} />
+                        <Form.Control required name="fecha-form" value={turnoData.fecha} min={todayDate} type="date" placeholder="Seleccione una fecha" onChange={seleccionarFecha} />
                     </Form.Group>
                         { alertaFecha ? 
                             <Alert variant='danger' name="fecha-no-valida-alerta">{alertaFecha}</Alert> : null}

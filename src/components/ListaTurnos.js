@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { getTurnos } from './Api.js';
 import Col from 'react-bootstrap/Col';
+import Table from 'react-bootstrap/Table'
 
 const ListaTurnos = () => {
     const [listaTurnosData, setListaTurnosData] = useState([])
@@ -25,17 +26,38 @@ const ListaTurnos = () => {
     return (
         <div className='container'>
             <h1>Turnos</h1>
-            <Col>
             <Link to={{pathname: `/nuevo_turno`}} type="button" className="btn btn-primary"> Nuevo turno </Link>
-            </Col>
-            <Col>
+            <div>
+            <Table bordered>
+                <thead>
+                    {/* meter en un css el text align a th */}
+                    <th style={{textAlign: 'center'}}>Tipo de turno</th>
+                    <th style={{textAlign: 'center'}}>Paciente</th>
+                    <th style={{textAlign: 'center'}}>Hora de inicio</th>
+                    <th style={{textAlign: 'center'}}>Acciones</th>
+                </thead>
+                <tbody>
             {
                 listaTurnosData.map((turno) =>
-                    <div className="d-flex justify-content-center pt-2">
-                         <Link to={{pathname: `/turno/${turno.id}`}} type="button" className="btn btn-primary"> {turno.tipo} - {turno.paciente.nombre} </Link>
-                    </div>
+                    <tr>
+                        {
+                            //if dependiendo de prioridad de turno, resaltarlo con algun color
+                            turno.tipo === 'Cirujia' ?
+                             <td className='bg-danger text-white' align='center'>{turno.tipo}</td> 
+                             : <td align='center'>{turno.tipo}</td>
+                        }
+                        {/* <td align='center'>{turno.tipo}</td> */}
+                        <td align='center'>{turno.paciente.nombre}</td>
+                        <td align='center'>{turno.horarioInicio.substr(11, 5)}</td>
+                        <td align='center'>
+                        <Link to={{pathname: `/turno/${turno.id}`}} type="button" className="btn btn-primary"> Ver </Link>
+                        </td>
+                    </tr>
                 )}
-                </Col>
+                </tbody>
+            </Table>
+            </div>
+
         </div>
     )
 }
