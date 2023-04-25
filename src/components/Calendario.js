@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import NuevoTurno from './NuevoTurno';
 import { format, startOfWeek, addDays, startOfMonth, endOfMonth, endOfWeek, isSameMonth, isSameDay, subMonths, addMonths} from 'date-fns'
 import Table from 'react-bootstrap/Table'
-import { Modal } from 'react-bootstrap';
+import { Container, Modal, Row, Col } from 'react-bootstrap';
 import { es } from 'date-fns/locale';
 import './css/Calendario.css'
 import { Link } from 'react-router-dom';
+import BarraNavegacion from './BarraNavegacion';
 
 const Calendario = () => {
     const [show, setShow] = useState(false);
@@ -116,6 +117,9 @@ const Calendario = () => {
       }
 
     return (
+      
+      <Container>
+      
         <div className='container'>
             {getHeader()} 
             <Table bordered>
@@ -141,6 +145,7 @@ const Calendario = () => {
                 </Modal>
             </div>
         </div>
+        </Container>
     )
 }
 
