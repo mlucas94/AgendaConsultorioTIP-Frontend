@@ -1,4 +1,19 @@
-.nav-link{
-    display: flex;
-    align-self: center;
+.sidebar-title {
+    background-color: cornflowerblue;
+    padding-right: 20px;
+    padding-left: 20px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    color: white;
+
+}
+
+.sidebar {
+    background-color: cornflowerblue;
+    width: 100%;
+    color: white;
+}
+
+.sidebar-link {
+    color: white;
 }
