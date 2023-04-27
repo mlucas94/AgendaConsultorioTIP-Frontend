@@ -5,7 +5,10 @@
     padding-top: 15px;
     padding-bottom: 15px;
     color: white;
+}
 
+.sidebar-title:hover {
+    cursor:default;
 }
 
 .sidebar {
@@ -14,7 +17,6 @@
     top: 0;
     width: 100vh;
     height: 100vh;
-    color: white;
     border-right-style: solid;
     border-width: 1px;
     border-color:grey;
@@ -28,6 +30,7 @@
     padding-left: 30px;
 }
 
+/* el important es necesario, o el css de Navlink lo reemplaza*/
 .sidebar-link-text {
     color: white !important; 
     text-decoration: none !important;
