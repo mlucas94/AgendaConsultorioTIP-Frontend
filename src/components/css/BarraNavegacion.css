@@ -1,5 +1,5 @@
 .sidebar-title {
-    background-color: cornflowerblue;
+    /* background-color: darkcyan; */
     padding-right: 20px;
     padding-left: 20px;
     padding-top: 15px;
@@ -9,11 +9,45 @@
 }
 
 .sidebar {
-    background-color: cornflowerblue;
-    width: 100%;
+    background-color: darkcyan;
+    position: sticky;
+    top: 0;
+    width: 100vh;
+    height: 100vh;
     color: white;
+    border-right-style: solid;
+    border-width: 1px;
+    border-color:grey;
 }
 
 .sidebar-link {
-    color: white;
+    padding-top: 5px;
+    padding-bottom:5px;
+    /* background-color: darkcyan; */
+    padding-right: 30px;
+    padding-left: 30px;
+}
+
+.sidebar-link-text {
+    color: white !important; 
+    text-decoration: none !important;
+}
+
+.sidebar-link-text-active {
+    color: gold !important;
+    text-decoration: none !important;
+}
+
+
+/* Solucion temporal hasta implementar layouts y barra para pantallas mas chicas */
+@media screen and (max-width: 768px) {
+    .sidebar {
+      width: 100%;
+      height: auto;
+      position: relative;
+    }
+  }
+
+.sidebar-link-text:hover {
+    color:black;
 }

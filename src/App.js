@@ -19,26 +19,23 @@ const App = () => {
   return (
     <Router>
       <div>
-      <Row>
-
-<Col md={2}>
-<BarraNavegacion/>
-</Col>
-<Col md={10}>
-
-      <Routes>
-        <Route path="/turno/:id" element={ <Turno/> }/>
-        <Route path="/turnos" element={ <ListaTurnos/> } />
-        <Route path="/*" element={ <ListaTurnos/> }/>
-        <Route path="/nuevo_turno" element={ <NuevoTurno/> }/>
-        <Route path="/calendario" element={ <Calendario/>}/>
-      </Routes>
-</Col>
-</Row>
+        <Row>
+          <Col md={2}>
+            <BarraNavegacion/>
+          </Col>
+          <Col md={10}>
+                <Routes>
+                  <Route path="/turno/:id" element={ <Turno/> }/>
+                  <Route path="/turnos" element={ <ListaTurnos/> } />
+                  <Route path="/*" element={ <ListaTurnos/> }/>
+                  <Route path="/nuevo_turno" element={ <NuevoTurno/> }/>
+                  <Route path="/calendario" element={ <Calendario/>}/>
+                </Routes>
+          </Col>
+        </Row>
       </div>
 
     </Router>
-
   ) 
 }
 
