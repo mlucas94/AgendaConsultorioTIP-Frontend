@@ -16,10 +16,6 @@ const BarraNavegacion = (props) => {
         return titulo ? titulo : "Inicio"
     }
 
-    useEffect(() => {
-        mostrarTitulo();
-    }, [])
-
     return(
 
         <div container-fluid sidebarColumn>
