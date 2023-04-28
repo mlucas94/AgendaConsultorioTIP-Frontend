@@ -10,6 +10,20 @@ import { Button, Table } from 'react-bootstrap';
 
     const NuevoTurnoFecha = (props) => {
 
+        const [horariosData, setHorariosData] = useState(
+            [
+                {horaInicio: '13:00', horaFin:'13:00'},
+                {horaInicio: '13:00', horaFin:'13:00'},
+                {horaInicio: '13:00', horaFin:'13:00'},
+                {horaInicio: '13:00', horaFin:'13:00'},
+                {horaInicio: '13:00', horaFin:'13:00'},
+                {horaInicio: '13:00', horaFin:'13:00'},
+                {horaInicio: '13:00', horaFin:'13:00'},
+                {horaInicio: '13:00', horaFin:'13:00'},
+                {horaInicio: '13:00', horaFin:'13:00'},
+            ]
+        )
+
         const [turnoData, setTurnoData] = useState({
             fecha: props.fecha,
             tipo: "Sin asignar",
@@ -20,6 +34,18 @@ import { Button, Table } from 'react-bootstrap';
             <div className="container">
                 <h4>Horarios Disponibles</h4>
                 <h5>{props.fecha}</h5>
+                <div>
+                    {horariosData.map((horario) =>
+                    <Row style={{ textAlign:'center'}}>
+                        <Col>
+                            <Button style={{backgroundColor:'teal', borderColor:'teal'}}>{horario.horaInicio}</Button>
+                        </Col>
+                    </Row>
+                    )}
+                </div>
+
+                
+
                 <div>
                     <Row style={{ textAlign:'center'}}>
                         <Col><Button style={{backgroundColor:'teal'}}>07:30</Button></Col>
