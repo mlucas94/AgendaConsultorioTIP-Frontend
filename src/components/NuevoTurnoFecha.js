@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
 import { Button, Table } from 'react-bootstrap';
 import './css/NuevoTurnoFecha.css'
 import { useNavigate } from 'react-router-dom';
+import AsyncSelect from 'react-select/async';
 
     const NuevoTurnoFecha = (props) => {
 
@@ -102,12 +103,14 @@ import { useNavigate } from 'react-router-dom';
         }
 
         const handleAgendarTurno = (horarioElegido, horarioElegidoFin) => {
+            let tipoTurno = turnoData.tipo == 1 ? 'PRIORITARIO' : 'SOBRETURNO'
+            tipoTurno = turnoData.tipo == 0 ? 'REGULAR' : tipoTurno
             const turnoAgendar = {
                 fecha: turnoData.fecha,
                 horaInicio: horarioElegido,
                 horaFin: horarioElegidoFin,
-                tipo: 'PRIORITARIO',
-                paciente: 1,
+                tipo: tipoTurno,
+                paciente: turnoData.paciente.value,
             }
             agendarTurno(turnoAgendar)
                 .then(
@@ -202,13 +205,26 @@ import { useNavigate } from 'react-router-dom';
                     </Col>
                 </Row>
                 <Row>
-                    <Col className="m-3">
+                    <Col className="m-2">
                         <Form.Label>Tipo de turno</Form.Label>
                         <Form.Select onChange={seleccionarTipo}>
                             <option value='0' label='REGULAR'></option>
                             <option value='1' label='PRIORITARIO'></option>
                             <option value='2' label='SOBRETURNO'></option>
                         </Form.Select>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col className="m-3">
+                    <Form.Label>Paciente</Form.Label>
+                        <AsyncSelect
+                        name="paciente-select"
+                        required="Por favor elija un paciente"
+                        error="NOT VALID"
+                        onChange={seleccionarPaciente}
+                        loadOptions={handleInputPaciente}
+                        value={{label: turnoData.paciente.label}}
+                        />
                     </Col>
                 </Row>
                 <div>
