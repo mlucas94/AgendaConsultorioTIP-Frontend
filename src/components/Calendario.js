@@ -6,6 +6,7 @@ import { Container, Modal, Row, Col } from 'react-bootstrap';
 import { es } from 'date-fns/locale';
 import './css/Calendario.css'
 import { Link } from 'react-router-dom';
+import NuevoTurno from './NuevoTurno'
 import NuevoTurnoFecha from './NuevoTurnoFecha'
 
 const Calendario = () => {
@@ -132,7 +133,7 @@ const Calendario = () => {
             </Table>
             <div>
                 <Modal show={show} onHide={handleClose} centered>
-                    <NuevoTurnoFecha fecha={fechaSeleccionada}/>
+                    <NuevoTurnoFecha closeFunction={handleClose} fecha={fechaSeleccionada}/>
                 </Modal>
                 <Modal show={showMenu} onHide={handleCloseMenu} centered>
                   <Modal.Header> 5 turnos en el dia de la fecha</Modal.Header>

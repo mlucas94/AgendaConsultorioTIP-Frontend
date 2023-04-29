@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { agendarTurno, buscarPacienteLike } from './Api.js';
+import { agendarTurno, buscarPacienteLike, buscarHorariosDeDia } from './Api.js';
 import Form from "react-bootstrap/Form";
 import { format } from 'date-fns'
 import Alert from "react-bootstrap/Alert"
@@ -8,12 +8,14 @@ import Col from 'react-bootstrap/Col';
 import Swal from 'sweetalert2';
 import { Button, Table } from 'react-bootstrap';
 import './css/NuevoTurnoFecha.css'
+import { useNavigate } from 'react-router-dom';
 
     const NuevoTurnoFecha = (props) => {
 
-        useEffect(() => {
-        }, [])
-
+        const navigate = useNavigate;
+        
+        const [horariosOpcionesData, setHorariosOpcionesData] = useState(buscarHorariosDeDia(props.fecha, 0))
+        
         const [horariosData, setHorariosData] = useState(
             [
                 {horaInicio: '09:00', horaFin:'10:00'},
@@ -26,7 +28,7 @@ import './css/NuevoTurnoFecha.css'
                 {horaInicio: '16:00', horaFin:'17:00'},
                 {horaInicio: '17:00', horaFin:'18:00'},
             ]
-        )
+            )
 
         const [horariosData2, setHorariosData2] = useState(
             [
@@ -49,26 +51,31 @@ import './css/NuevoTurnoFecha.css'
                 {horaInicio: '17:00', horaFin:'17:30'},
                 {horaInicio: '17:30', horaFin:'18:00'},
             ]
-        )
-
-        const [turnoData, setTurnoData] = useState({
-            fecha: props.fecha,
-            tipo: {value:0, label: 'REGULAR'},
-            paciente: {value: null, label: "Ingrese dni del paciente"},
-        });
-
-        const elementListaHorarios = () => {
+            )
+            
+            const [turnoData, setTurnoData] = useState({
+                fecha: props.fecha,
+                tipo: props.tipo ? props.tipo : '0',
+                paciente: {value: null, label: "Ingrese dni del paciente"},
+            });
+            
+            const [alertaTipo, setAlertaTipo] = useState(null)
+            
+            useEffect(() => {
+            }, [])
+            
+        const elementListaHorarios = (horariosSeleccionados) => {
+            const horarios = horariosOpcionesData
             const largoFila = 3
-            const listaFilas = Math.ceil(horariosData2.length/largoFila)   
+            const listaFilas = Math.ceil(horarios.length/largoFila)   
             let result = []
             for (let index = 0; index < listaFilas; index++) {
-                console.log("HOLA" + listaFilas)
-                const horariosParaFila = horariosData2.slice(index*largoFila, (index*largoFila)+largoFila)
+                const horariosParaFila = horarios.slice(index*largoFila, (index*largoFila)+largoFila)
                 let resultRow = []
                 horariosParaFila.forEach(horario => {
                     resultRow.push(
                     <Col className='centerText' >
-                    <Button onClick={handleElegirHorario(horario.horaInicio)}>
+                    <Button onClick={() => { handleElegirHorario(horario.horaInicio, horario.horaFin)} }>
                         { horario.horaInicio }
                     </Button>
                     </Col>)
@@ -78,8 +85,69 @@ import './css/NuevoTurnoFecha.css'
             return <div>{result}</div>
         }
 
-        const handleElegirHorario = (horarioElegido) => {
-            return
+        const handleElegirHorario = (horarioElegido, horarioElegidoFin) => {
+            //Validaciones
+            Swal.fire({
+                title: '¿Quiere guardar el nuevo turno?',
+                            showCancelButton: true,
+                            confirmButtonText: 'Confirmar',
+                            cancelButtonText: 'Cancelar',
+                            allowOutsideClick: false,
+                            icon: 'warning'
+            }).then ((result) => {
+                if(result.isConfirmed) {
+                    handleAgendarTurno(horarioElegido, horarioElegidoFin)
+                }
+            })
+        }
+
+        const handleAgendarTurno = (horarioElegido, horarioElegidoFin) => {
+            const turnoAgendar = {
+                fecha: turnoData.fecha,
+                horaInicio: horarioElegido,
+                horaFin: horarioElegidoFin,
+                tipo: 'PRIORITARIO',
+                paciente: 1,
+            }
+            agendarTurno(turnoAgendar)
+                .then(
+                    data => {
+                        if (typeof data === "string") {
+                            Swal.fire ({
+                                title: 'Datos no validos para turno',
+                                text: data,
+                                icon: 'error'
+                            })
+                            return
+                        }
+                        Swal.fire ({
+                            title: 'Agendado con exito!',
+                            text: '¿Desea agendar un nuevo turno?',
+                            showCancelButton: true,
+                            confirmButtonText: 'Nuevo turno',
+                            cancelButtonText: 'Volver a inicio',
+                            allowOutsideClick: false,
+                            icon: 'success'
+                        }).then ((result) => {
+                            if(result.isConfirmed) {
+                                let confirmedFunction = props.closeFunction;
+                                confirmedFunction()
+                            } else {
+                                navigate('/')
+                            }
+                        })
+                    }
+                )
+                .catch( 
+                    error => {
+                        Swal.fire({
+                            title: "Error de conexión",
+                            text: "No se pudo guardar el turno.",
+                            icon: 'error',
+                            confirmButtonText: 'Aceptar'
+                        })
+                    }
+                )
         }
 
         const handleInputPaciente = (input) => {
@@ -101,6 +169,27 @@ import './css/NuevoTurnoFecha.css'
             )
         }
 
+        const seleccionarPaciente = (e) => {
+            const paciente = e
+            setTurnoData({...turnoData,
+                paciente: paciente || null
+            })
+        }
+
+        const seleccionarTipo = (e) => {
+            const tipoTurno = e.target.value
+            console.log(tipoTurno)
+            setAlertaTipo(null)
+            if(tipoTurno === "") {
+                setAlertaTipo("Debe ingresar un tipo de turno.")
+            }
+            setTurnoData( {
+                ...turnoData,
+                tipo: tipoTurno || null
+            })
+            setHorariosOpcionesData(buscarHorariosDeDia(props.fecha, tipoTurno))
+        }
+
         return (
             <div className="container">
                 <h2 className='centerText'>Nuevo Turno</h2>
@@ -112,8 +201,18 @@ import './css/NuevoTurnoFecha.css'
                         <h5>{props.fecha}</h5>
                     </Col>
                 </Row>
+                <Row>
+                    <Col className="m-3">
+                        <Form.Label>Tipo de turno</Form.Label>
+                        <Form.Select onChange={seleccionarTipo}>
+                            <option value='0' label='REGULAR'></option>
+                            <option value='1' label='PRIORITARIO'></option>
+                            <option value='2' label='SOBRETURNO'></option>
+                        </Form.Select>
+                    </Col>
+                </Row>
                 <div>
-                    {elementListaHorarios()}
+                    {elementListaHorarios(horariosData)}
                 </div>
                 
 

@@ -67,6 +67,8 @@ import Swal from 'sweetalert2';
                             icon: 'success'
                         }).then ((result) => {
                             if(result.isConfirmed) {
+                                let confirmedFunction = props.closeFunction;
+                                confirmedFunction()
                                 e.target.reset()
                                 setTurnoData({...turnoData,
                                 paciente: {value: null, label: "Ingrese dni del paciente"}})

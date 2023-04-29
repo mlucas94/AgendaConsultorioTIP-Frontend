@@ -33,3 +33,40 @@ export const buscarPacienteLike = (searchParameter) => {
 		return response.data
 	})
 }
+
+
+export const buscarHorariosDeDia = (fecha, tipoDeTurno) => {
+	const horarios1 = [
+		{horaInicio: '09:00', horaFin:'10:00'},
+		{horaInicio: '10:00', horaFin:'11:00'},
+		{horaInicio: '11:00', horaFin:'12:00'},
+		{horaInicio: '12:00', horaFin:'13:00'},
+		{horaInicio: '13:00', horaFin:'14:00'},
+		{horaInicio: '14:00', horaFin:'15:00'},
+		{horaInicio: '15:00', horaFin:'16:00'},
+		{horaInicio: '16:00', horaFin:'17:00'},
+		{horaInicio: '17:00', horaFin:'18:00'},
+	]
+	const horarios2 = [
+		{horaInicio: '09:00', horaFin:'09:30'},
+		{horaInicio: '09:30', horaFin:'10:00'},
+		{horaInicio: '10:00', horaFin:'10:30'},
+		{horaInicio: '10:30', horaFin:'11:00'},
+		{horaInicio: '11:00', horaFin:'11:30'},
+		{horaInicio: '11:30', horaFin:'12:00'},
+		{horaInicio: '12:00', horaFin:'12:30'},
+		{horaInicio: '12:30', horaFin:'13:00'},
+		{horaInicio: '13:00', horaFin:'13:30'},
+		{horaInicio: '13:30', horaFin:'14:00'},
+		{horaInicio: '14:00', horaFin:'14:30'},
+		{horaInicio: '14:30', horaFin:'15:00'},
+		{horaInicio: '15:00', horaFin:'15:30'},
+		{horaInicio: '15:30', horaFin:'16:00'},
+		{horaInicio: '16:00', horaFin:'16:30'},
+		{horaInicio: '16:30', horaFin:'17:00'},
+		{horaInicio: '17:00', horaFin:'17:30'},
+		{horaInicio: '17:30', horaFin:'18:00'},
+	]
+
+	return tipoDeTurno == '1' ? horarios1 : horarios2;
+}
