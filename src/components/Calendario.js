@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import NuevoTurno from './NuevoTurno';
+import React, { useState } from 'react';
+
 import { format, startOfWeek, addDays, startOfMonth, endOfMonth, endOfWeek, isSameMonth, isSameDay, subMonths, addMonths} from 'date-fns'
 import Table from 'react-bootstrap/Table'
 import { Container, Modal, Row, Col } from 'react-bootstrap';
@@ -39,7 +39,7 @@ const Calendario = () => {
             >
                 Sig.
             </button>
-            <h2 className="currentMonth">{format(activeDate, "MMMM yyyy")}</h2>
+            <h2 className="currentMonth">{format(activeDate, "MMMM yyyy", {locale:es})}</h2>
           </div>
         );
       };
@@ -65,7 +65,7 @@ const Calendario = () => {
           week.push(
             <td
               className={`fechaCalendario ${
-                isSameMonth(currentDate, activeDate) ? "" : "inactiveDay"
+                isSameMonth(currentDate, activeDate) ? "" : "fechaInactiva"
               } 
               `
             }
@@ -118,7 +118,7 @@ const Calendario = () => {
 
     return (
       
-      <Container>
+      <Container fluid>
       
         <div className='container'>
             {getHeader()} 
@@ -132,7 +132,7 @@ const Calendario = () => {
             </Table>
             <div>
                 <Modal show={show} onHide={handleClose} centered>
-                    <NuevoTurnoFecha fecha={fechaSeleccionada} />
+                    <NuevoTurnoFecha fecha={fechaSeleccionada}/>
                 </Modal>
                 <Modal show={showMenu} onHide={handleCloseMenu} centered>
                   <Modal.Header> 5 turnos en el dia de la fecha</Modal.Header>

@@ -1,24 +1,33 @@
-import Container from 'react-bootstrap/Container';
 import {Nav, Row, Col, NavLink} from 'react-bootstrap';
 import "./css/BarraNavegacion.css"
-import { Link } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 
 
 
 const BarraNavegacion = (props) => {
+
     
+    const [tituloData, setTituloData] = useState('Inicio')
+
+    const location = useLocation();
+    
+    useEffect(() => {
+        mostrarTitulo();
+    }, [location])
+
     const mostrarTitulo = () => {
         var titulo = window.location.pathname;
-        titulo = titulo.replace("_", " ").replace("/", "")
+        titulo = titulo.replaceAll("_", " ").replace("/", "")
         titulo = titulo.charAt(0).toUpperCase() + titulo.slice(1)
-        console.log(titulo)
-        return titulo ? titulo : "Inicio"
+        var finTitulo = titulo.indexOf('/')
+        titulo = finTitulo != -1 ? titulo.slice(0, finTitulo) : titulo
+        setTituloData(titulo ? titulo : 'Inicio')
     }
 
     return(
 
-        <div container-fluid sidebarColumn>
+        <div>
 
             <Nav
                 activeKey="/home"
@@ -26,7 +35,7 @@ const BarraNavegacion = (props) => {
                 <div className='d-flex flex-column sidebar'>
                     <div>
                         <div className='sidebar-title'>
-                            <h4>{mostrarTitulo()}</h4>
+                            <h4>{tituloData}</h4>
                         </div>
                         <div className='sidebar-link'>
                             <NavLink className='sidebar-link-text' href="/">Inicio</NavLink>

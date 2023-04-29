@@ -42,7 +42,7 @@ const ListaTurnos = () => {
                     <tr>
                         {
                             //if dependiendo de prioridad de turno, resaltarlo con algun color
-                            turno.tipo === 'Cirujia' ?
+                            turno.tipo === 'PRIORITARIO' ?
                              <td className='bg-danger text-white' align='center'>{turno.tipo}</td> 
                              : <td align='center'>{turno.tipo}</td>
                         }

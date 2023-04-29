@@ -8,11 +8,11 @@
     cursor:pointer;
 }
 
-.inactiveDay {
+.fechaInactiva {
     background-color: grey !important;
 }
 
-.inactiveDay:hover{
+.fechaInactiva:hover{
     background-color: lightgray !important;
 }
 
