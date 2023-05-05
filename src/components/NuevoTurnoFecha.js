@@ -15,57 +15,30 @@ import AsyncSelect from 'react-select/async';
 
         const navigate = useNavigate;
         
-        const [horariosOpcionesData, setHorariosOpcionesData] = useState(buscarHorariosDeDia(props.fecha, 0))
-        
-        const [horariosData, setHorariosData] = useState(
-            [
-                {horaInicio: '09:00', horaFin:'10:00'},
-                {horaInicio: '10:00', horaFin:'11:00'},
-                {horaInicio: '11:00', horaFin:'12:00'},
-                {horaInicio: '12:00', horaFin:'13:00'},
-                {horaInicio: '13:00', horaFin:'14:00'},
-                {horaInicio: '14:00', horaFin:'15:00'},
-                {horaInicio: '15:00', horaFin:'16:00'},
-                {horaInicio: '16:00', horaFin:'17:00'},
-                {horaInicio: '17:00', horaFin:'18:00'},
-            ]
-            )
-
-        const [horariosData2, setHorariosData2] = useState(
-            [
-                {horaInicio: '09:00', horaFin:'09:30'},
-                {horaInicio: '09:30', horaFin:'10:00'},
-                {horaInicio: '10:00', horaFin:'10:30'},
-                {horaInicio: '10:30', horaFin:'11:00'},
-                {horaInicio: '11:00', horaFin:'11:30'},
-                {horaInicio: '11:30', horaFin:'12:00'},
-                {horaInicio: '12:00', horaFin:'12:30'},
-                {horaInicio: '12:30', horaFin:'13:00'},
-                {horaInicio: '13:00', horaFin:'13:30'},
-                {horaInicio: '13:30', horaFin:'14:00'},
-                {horaInicio: '14:00', horaFin:'14:30'},
-                {horaInicio: '14:30', horaFin:'15:00'},
-                {horaInicio: '15:00', horaFin:'15:30'},
-                {horaInicio: '15:30', horaFin:'16:00'},
-                {horaInicio: '16:00', horaFin:'16:30'},
-                {horaInicio: '16:30', horaFin:'17:00'},
-                {horaInicio: '17:00', horaFin:'17:30'},
-                {horaInicio: '17:30', horaFin:'18:00'},
-            ]
-            )
+        const [horariosOpcionesData, setHorariosOpcionesData] = useState([])
             
             const [turnoData, setTurnoData] = useState({
                 fecha: props.fecha,
-                tipo: props.tipo ? props.tipo : '0',
+                tipo: props.tipo ? props.tipo : 'REGULAR',
                 paciente: {value: null, label: "Ingrese dni del paciente"},
             });
             
             const [alertaTipo, setAlertaTipo] = useState(null)
             
             useEffect(() => {
+                getHorarios()
             }, [])
+
+        const getHorarios = () => {
+            buscarHorariosDeDia(props.fecha, turnoData.tipo || props.tipo)
+                .then(
+                    data=> {
+                        setHorariosOpcionesData(data)
+                    }
+                )
+        }
             
-        const elementListaHorarios = (horariosSeleccionados) => {
+        const elementListaHorarios = () => {
             const horarios = horariosOpcionesData
             const largoFila = 3
             const listaFilas = Math.ceil(horarios.length/largoFila)   
@@ -103,8 +76,9 @@ import AsyncSelect from 'react-select/async';
         }
 
         const handleAgendarTurno = (horarioElegido, horarioElegidoFin) => {
-            let tipoTurno = turnoData.tipo == 1 ? 'PRIORITARIO' : 'SOBRETURNO'
-            tipoTurno = turnoData.tipo == 0 ? 'REGULAR' : tipoTurno
+            //let tipoTurno = turnoData.tipo == 1 ? 'PRIORITARIO' : 'SOBRETURNO'
+            //tipoTurno = turnoData.tipo == 0 ? 'REGULAR' : tipoTurno
+            let tipoTurno = turnoData.tipo;
             const turnoAgendar = {
                 fecha: turnoData.fecha,
                 horaInicio: horarioElegido,
@@ -181,7 +155,6 @@ import AsyncSelect from 'react-select/async';
 
         const seleccionarTipo = (e) => {
             const tipoTurno = e.target.value
-            console.log(tipoTurno)
             setAlertaTipo(null)
             if(tipoTurno === "") {
                 setAlertaTipo("Debe ingresar un tipo de turno.")
@@ -190,7 +163,12 @@ import AsyncSelect from 'react-select/async';
                 ...turnoData,
                 tipo: tipoTurno || null
             })
-            setHorariosOpcionesData(buscarHorariosDeDia(props.fecha, tipoTurno))
+            buscarHorariosDeDia(props.fecha, tipoTurno)
+                .then(
+                    data=> {
+                        setHorariosOpcionesData(data)
+                    }
+                )
         }
 
         return (
@@ -208,9 +186,9 @@ import AsyncSelect from 'react-select/async';
                     <Col className="m-2">
                         <Form.Label>Tipo de turno</Form.Label>
                         <Form.Select onChange={seleccionarTipo}>
-                            <option value='0' label='REGULAR'></option>
-                            <option value='1' label='PRIORITARIO'></option>
-                            <option value='2' label='SOBRETURNO'></option>
+                            <option value='REGULAR' label='REGULAR'></option>
+                            <option value='PRIORITARIO' label='PRIORITARIO'></option>
+                            <option value='SOBRETURNO' label='SOBRETURNO'></option>
                         </Form.Select>
                     </Col>
                 </Row>
@@ -228,7 +206,7 @@ import AsyncSelect from 'react-select/async';
                     </Col>
                 </Row>
                 <div>
-                    {elementListaHorarios(horariosData)}
+                    {elementListaHorarios()}
                 </div>
                 
 

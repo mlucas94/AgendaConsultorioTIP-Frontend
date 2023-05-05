@@ -133,7 +133,7 @@ const Calendario = () => {
             </Table>
             <div>
                 <Modal show={show} onHide={handleClose} centered>
-                    <NuevoTurnoFecha closeFunction={handleClose} fecha={fechaSeleccionada}/>
+                    <NuevoTurnoFecha closeFunction={handleClose} fecha={fechaSeleccionada} tipo={'REGULAR'}/>
                 </Modal>
                 <Modal show={showMenu} onHide={handleCloseMenu} centered>
                   <Modal.Header> 5 turnos en el dia de la fecha</Modal.Header>
