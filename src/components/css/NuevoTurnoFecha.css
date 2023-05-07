@@ -7,3 +7,18 @@
 .centerText {
     text-align: center;
 }
+
+.disponible {
+    background-color: teal !important;
+    border-color: teal !important;
+}
+
+.ocupado {
+    background-color: grey !important;
+    border-color: grey !important;
+}
+
+.disponible:hover {
+    background-color: seagreen !important;
+    border-color: seagreen !important;
+}

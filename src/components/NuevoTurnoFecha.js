@@ -49,9 +49,16 @@ import AsyncSelect from 'react-select/async';
                 horariosParaFila.forEach(horario => {
                     resultRow.push(
                     <Col className='centerText' >
-                    <Button onClick={() => { handleElegirHorario(horario.horaInicio, horario.horaFin)} }>
+                        {
+                            horario.disponible ? 
+                        <Button className='disponible' onClick={() => { handleElegirHorario(horario.horaInicio, horario.horaFin)} }>
+                            { horario.horaInicio }
+                        </Button> :
+                        <Button className='ocupado'>
                         { horario.horaInicio }
                     </Button>
+
+                        }
                     </Col>)
                 })
                 result.push(<Row className='horariosRow'>{resultRow}</Row>)
@@ -60,7 +67,6 @@ import AsyncSelect from 'react-select/async';
         }
 
         const handleElegirHorario = (horarioElegido, horarioElegidoFin) => {
-            //Validaciones
             Swal.fire({
                 title: '¿Quiere guardar el nuevo turno?',
                             showCancelButton: true,
@@ -76,8 +82,6 @@ import AsyncSelect from 'react-select/async';
         }
 
         const handleAgendarTurno = (horarioElegido, horarioElegidoFin) => {
-            //let tipoTurno = turnoData.tipo == 1 ? 'PRIORITARIO' : 'SOBRETURNO'
-            //tipoTurno = turnoData.tipo == 0 ? 'REGULAR' : tipoTurno
             let tipoTurno = turnoData.tipo;
             const turnoAgendar = {
                 fecha: turnoData.fecha,
@@ -110,7 +114,7 @@ import AsyncSelect from 'react-select/async';
                                 let confirmedFunction = props.closeFunction;
                                 confirmedFunction()
                             } else {
-                                navigate('/')
+                                window.location='/'
                             }
                         })
                     }
@@ -155,10 +159,6 @@ import AsyncSelect from 'react-select/async';
 
         const seleccionarTipo = (e) => {
             const tipoTurno = e.target.value
-            setAlertaTipo(null)
-            if(tipoTurno === "") {
-                setAlertaTipo("Debe ingresar un tipo de turno.")
-            }
             setTurnoData( {
                 ...turnoData,
                 tipo: tipoTurno || null

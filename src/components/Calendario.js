@@ -136,12 +136,12 @@ const Calendario = () => {
                     <NuevoTurnoFecha closeFunction={handleClose} fecha={fechaSeleccionada} tipo={'REGULAR'}/>
                 </Modal>
                 <Modal show={showMenu} onHide={handleCloseMenu} centered>
-                  <Modal.Header> 5 turnos en el dia de la fecha</Modal.Header>
+                  <Modal.Header> {fechaSeleccionada}</Modal.Header>
                   <Modal.Header> 2 Son prioritarios</Modal.Header>
                   <Modal.Body className='container' centered>
                     <button className='btn btn-primary' onClick={handleShowMenu}>Nuevo Turno</button>
                     <br/>
-                    <Link to={{pathname: `/turno/`}} type="button" className="btn btn-primary"> {'[WIP] Turnos del dia'} </Link>
+                    <Link to={{pathname: `/turno/`}} state={{fecha:fechaSeleccionada}} type="button" className="btn btn-primary"> {'[WIP] Turnos del dia'} </Link>
                   </Modal.Body>
                 </Modal>
             </div>
