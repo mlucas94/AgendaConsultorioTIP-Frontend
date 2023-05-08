@@ -4,9 +4,7 @@ import {
   Route,
   BrowserRouter as Router,
   Routes,
-  useHistory,
-  NavLink,
-    Redirect
+  Outlet
 } from "react-router-dom";
 import Turno from './components/Turno';
 import ListaTurnos from './components/ListaTurnos'
@@ -15,10 +13,17 @@ import Calendario from './components/Calendario'
 import BarraNavegacion from './components/BarraNavegacion';
 import { Col, Row } from 'react-bootstrap';
 
+const sidebarLayout = () => {
+  
+}
+
 const App = () => {
   return (
     <Router>
       <div>
+        {window.location.pathname === '/login' ? <Routes>
+          <Route path="/login" element={ <Calendario/>} />
+        </Routes> : 
         <Row>
           <Col md={2}>
             <BarraNavegacion/>
@@ -33,6 +38,7 @@ const App = () => {
                 </Routes>
           </Col>
         </Row>
+}
       </div>
 
     </Router>
