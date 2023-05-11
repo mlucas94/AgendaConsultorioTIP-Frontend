@@ -71,7 +71,6 @@ const Calendario = () => {
               `
             }
               onClick={() => {
-
                 if(isSameMonth(cloneDate, activeDate)) {
                   setFechaSeleccionada(format(cloneDate, 'yyyy-MM-dd'));
                   setShowMenu(true)
@@ -108,11 +107,11 @@ const Calendario = () => {
         return allWeeks;
       }
 
-      const handleClose = () => setShow(false);
+      const handleCloseMenuDia = () => setShow(false);
 
-      const handleCloseMenu = () => setShowMenu(false);
+      const handleCloseMenuTurno = () => setShowMenu(false);
 
-      const handleShowMenu = () => {
+      const handleShowMenuDia = () => {
         setShowMenu(false)
         setShow(true)
       }
@@ -132,16 +131,16 @@ const Calendario = () => {
                 </tbody>
             </Table>
             <div>
-                <Modal show={show} onHide={handleClose} centered>
-                    <NuevoTurnoFecha closeFunction={handleClose} fecha={fechaSeleccionada} tipo={'REGULAR'}/>
+                <Modal show={show} onHide={handleCloseMenuDia} centered>
+                    <NuevoTurnoFecha closeFunction={handleCloseMenuDia} fecha={fechaSeleccionada} tipo={'REGULAR'}/>
                 </Modal>
-                <Modal show={showMenu} onHide={handleCloseMenu} centered>
+                <Modal show={showMenu} onHide={handleCloseMenuTurno} centered>
                   <Modal.Header> {fechaSeleccionada}</Modal.Header>
                   <Modal.Header> 2 Son prioritarios</Modal.Header>
                   <Modal.Body className='container' centered>
-                    <button className='btn btn-primary' onClick={handleShowMenu}>Nuevo Turno</button>
+                    <button className='btn btn-primary' onClick={handleShowMenuDia}>Nuevo Turno</button>
                     <br/>
-                    <Link to={{pathname: `/turno/`}} state={{fecha:fechaSeleccionada}} type="button" className="btn btn-primary"> {'[WIP] Turnos del dia'} </Link>
+                    <Link to={{pathname: `/turno/`}} state={{fecha:fechaSeleccionada}} type="button" className="btn btn-primary"> {'Ver turnos'} </Link>
                   </Modal.Body>
                 </Modal>
             </div>
