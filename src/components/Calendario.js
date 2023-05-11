@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { format, startOfWeek, addDays, startOfMonth, endOfMonth, endOfWeek, isSameMonth, isSameDay, subMonths, addMonths} from 'date-fns'
 import Table from 'react-bootstrap/Table'
@@ -8,13 +8,21 @@ import './css/Calendario.css'
 import { Link } from 'react-router-dom';
 import NuevoTurno from './NuevoTurno'
 import NuevoTurnoFecha from './NuevoTurnoFecha'
+import { cantidadTurnosPrioritarios, cantidadTurnosTotal } from './Api';
 
 const Calendario = () => {
     const [show, setShow] = useState(false);
     const [showMenu, setShowMenu] = useState(false);
     const [activeDate, setActiveDate] = useState(new Date());
     const [fechaSeleccionada, setFechaSeleccionada] = useState(null);
+    const [turnosEnDia, setTurnosEnDia] = useState(null);
+    const [prioritariosEnDia, setPrioritariosEnDia] = useState(null);
 
+    useEffect(() => {
+      turnosEnFecha();
+      //prioritariosEnDia();
+  }, [showMenu])
+    
     const getHeader = () => {
         return (
           <div className="header">
@@ -106,7 +114,8 @@ const Calendario = () => {
     
         return allWeeks;
       }
-
+      
+      //Manejo de modales y ventanas emergentes
       const handleCloseMenuDia = () => setShow(false);
 
       const handleCloseMenuTurno = () => setShowMenu(false);
@@ -115,6 +124,22 @@ const Calendario = () => {
         setShowMenu(false)
         setShow(true)
       }
+
+      const fechaFormateada = () => {
+        let date = new Date(fechaSeleccionada)
+        return format(date, "dd-MM-yyyy", {locale:es})
+      } 
+
+      const turnosEnFecha = () => {
+        cantidadTurnosTotal(fechaSeleccionada)
+          .then(
+            data => {
+              setTurnosEnDia(data);
+            }
+          )
+      }
+
+      
 
     return (
       
@@ -135,8 +160,9 @@ const Calendario = () => {
                     <NuevoTurnoFecha closeFunction={handleCloseMenuDia} fecha={fechaSeleccionada} tipo={'REGULAR'}/>
                 </Modal>
                 <Modal show={showMenu} onHide={handleCloseMenuTurno} centered>
-                  <Modal.Header> {fechaSeleccionada}</Modal.Header>
-                  <Modal.Header> 2 Son prioritarios</Modal.Header>
+                  <Modal.Header> {fechaFormateada()}</Modal.Header>
+                  <Modal.Header> Hay {turnosEnDia} turnos.</Modal.Header>
+                  <Modal.Header> {2} turnos son prioritarios</Modal.Header>
                   <Modal.Body className='container' centered>
                     <button className='btn btn-primary' onClick={handleShowMenuDia}>Nuevo Turno</button>
                     <br/>

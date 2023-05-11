@@ -39,11 +39,23 @@ export const buscarPacienteLike = (searchParameter) => {
 export const buscarHorariosDeDia = (fecha, tipo) => {
 	return axios.get(`${API_URL}/turnos/horarios-disponibles`, {params: {fechaConsultada: fecha, tipoDeTurno: tipo}})
 	.then(response => {
-		console.log(response.data)
 		return response.data
 	})
 	.catch(error => {
-		console.log(error.response.data)
 		return error.response.data.message
+	})
+}
+
+export const cantidadTurnosTotal = (fecha) => {
+	return axios.get(`${API_URL}/turnos/cantidadTotal`, {params: {fechaConsultada: fecha}})
+	.then(response => {
+		return response.data
+	})
+}
+
+export const cantidadTurnosPrioritarios = (fecha) => {
+	return axios.get(`${API_URL}/turnos/cantidadTotalPrioritarios`, {params: {fechaConsultada: fecha}})
+	.then(response => {
+		return response.data
 	})
 }
