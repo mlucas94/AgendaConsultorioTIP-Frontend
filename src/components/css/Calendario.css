@@ -19,3 +19,11 @@
 .fechaCalendario:hover{
     background-color: lightblue;
 }
+
+.fechaConPrioritario{
+    background-color: lightcoral !important;
+}
+
+.fechaConPrioritario:hover{
+    background-color: lightsalmon !important;
+}

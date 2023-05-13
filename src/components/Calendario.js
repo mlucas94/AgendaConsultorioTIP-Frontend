@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { format, startOfWeek, addDays, startOfMonth, endOfMonth, endOfWeek, isSameMonth, isSameDay, subMonths, addMonths} from 'date-fns'
+import { parse, format, startOfWeek, addDays, startOfMonth, endOfMonth, endOfWeek, isSameMonth, isSameDay, subMonths, addMonths} from 'date-fns'
 import Table from 'react-bootstrap/Table'
 import { Container, Modal, Row, Col } from 'react-bootstrap';
 import { es } from 'date-fns/locale';
@@ -8,7 +8,8 @@ import './css/Calendario.css'
 import { Link } from 'react-router-dom';
 import NuevoTurno from './NuevoTurno'
 import NuevoTurnoFecha from './NuevoTurnoFecha'
-import { cantidadTurnosPrioritarios, cantidadTurnosTotal } from './Api';
+import { formatENtoES } from './FuncionesGenerales';
+import { cantidadTurnosPrioritarios, cantidadTurnosTotal, getPrioritariosDeMes } from './Api';
 
 const Calendario = () => {
     const [show, setShow] = useState(false);
@@ -17,11 +18,13 @@ const Calendario = () => {
     const [fechaSeleccionada, setFechaSeleccionada] = useState(null);
     const [turnosEnDia, setTurnosEnDia] = useState(null);
     const [prioritariosEnDia, setPrioritariosEnDia] = useState(null);
+    const [diasConPrioritarios, setDiasConPrioritarios] = useState([]);
 
     useEffect(() => {
       turnosEnFecha();
-      //prioritariosEnDia();
-  }, [showMenu])
+      prioritariosEnFecha();
+      getDiasConPrioritarios();
+  }, [show, showMenu, activeDate])
     
     const getHeader = () => {
         return (
@@ -66,7 +69,7 @@ const Calendario = () => {
         return weekDays;
       };
 
-      const generateDatesForCurrentWeek = (date, activeDate) => {
+      const generateDatesForCurrentWeek = (date, activeDate, diasPrioritarios) => {
         let currentDate = date;
         const week = [];
         for (let day = 0; day < 7; day++) {
@@ -74,7 +77,8 @@ const Calendario = () => {
           week.push(
             <td
               className={`fechaCalendario ${
-                isSameMonth(currentDate, activeDate) ? "" : "fechaInactiva"
+                !isSameMonth(currentDate, activeDate) ? "fechaInactiva" 
+                  : (diasPrioritarios.some(fecha => isSameDay(fecha, currentDate))  ? "fechaConPrioritario" : "" )
               } 
               `
             }
@@ -93,26 +97,39 @@ const Calendario = () => {
         return <>{week}</>;
       };
 
+      const getDiasConPrioritarios = () => {
+        const fecha = format(startOfMonth(activeDate), "yyyy-MM-01");
+        return getPrioritariosDeMes(fecha)
+          .then(
+            data => {
+              setDiasConPrioritarios(data);
+          }
+         )
+      }
+
       const getDates = () => {
         const startOfTheSelectedMonth = startOfMonth(activeDate);
         const endOfTheSelectedMonth = endOfMonth(activeDate);
         const startDate = startOfWeek(startOfTheSelectedMonth);
         const endDate = endOfWeek(endOfTheSelectedMonth);
-    
+        //getDiasConPrioritarios(primeroDelMes)      
+        const diasConPrioritarioDelMes = diasConPrioritarios.map(fecha => parse(fecha, 'yyyy-MM-dd', new Date()))
         let currentDate = startDate;
-    
+  
         const allWeeks = [];
-    
+  
         while (currentDate <= endDate) {
           allWeeks.push(
             <tr>
-                {generateDatesForCurrentWeek(currentDate, activeDate)}
+              {generateDatesForCurrentWeek(currentDate, activeDate, diasConPrioritarioDelMes)}
             </tr>
           );
           currentDate = addDays(currentDate, 7);
         }
-    
         return allWeeks;
+      
+
+    
       }
       
       //Manejo de modales y ventanas emergentes
@@ -125,11 +142,6 @@ const Calendario = () => {
         setShow(true)
       }
 
-      const fechaFormateada = () => {
-        let date = new Date(fechaSeleccionada)
-        return format(date, "dd-MM-yyyy", {locale:es})
-      } 
-
       const turnosEnFecha = () => {
         cantidadTurnosTotal(fechaSeleccionada)
           .then(
@@ -138,8 +150,15 @@ const Calendario = () => {
             }
           )
       }
-
       
+      const prioritariosEnFecha = () => {
+        cantidadTurnosPrioritarios(fechaSeleccionada)
+          .then(
+            data => {
+              setPrioritariosEnDia(data);
+            }
+          )
+      }
 
     return (
       
@@ -160,13 +179,18 @@ const Calendario = () => {
                     <NuevoTurnoFecha closeFunction={handleCloseMenuDia} fecha={fechaSeleccionada} tipo={'REGULAR'}/>
                 </Modal>
                 <Modal show={showMenu} onHide={handleCloseMenuTurno} centered>
-                  <Modal.Header> {fechaFormateada()}</Modal.Header>
-                  <Modal.Header> Hay {turnosEnDia} turnos.</Modal.Header>
-                  <Modal.Header> {2} turnos son prioritarios</Modal.Header>
+                  <Modal.Header> {fechaSeleccionada ? formatENtoES(fechaSeleccionada) : null}</Modal.Header>
+                  <Modal.Header> Cantidad de turnos: {turnosEnDia}.</Modal.Header>
+                  <Modal.Header> Turnos prioritarios: {prioritariosEnDia}</Modal.Header>
                   <Modal.Body className='container' centered>
-                    <button className='btn btn-primary' onClick={handleShowMenuDia}>Nuevo Turno</button>
-                    <br/>
-                    <Link to={{pathname: `/turno/`}} state={{fecha:fechaSeleccionada}} type="button" className="btn btn-primary"> {'Ver turnos'} </Link>
+                    <Row>
+                      <Col>
+                        <button className='btn btn-primary' onClick={handleShowMenuDia}>Nuevo Turno</button>
+                      </Col>
+                      <Col>
+                        <Link to={{pathname: `/turno/`}} state={{fecha:fechaSeleccionada}} type="button" className="btn btn-primary"> {'Ver turnos'} </Link>
+                      </Col>
+                    </Row>
                   </Modal.Body>
                 </Modal>
             </div>

@@ -59,3 +59,10 @@ export const cantidadTurnosPrioritarios = (fecha) => {
 		return response.data
 	})
 }
+
+export const getPrioritariosDeMes = (fecha) => {
+	return axios.get(`${API_URL}/turnos/prioritariosEnMes`, {params: {fechaConsultada: fecha}})
+	.then(response => {
+		return response.data
+	})
+}
