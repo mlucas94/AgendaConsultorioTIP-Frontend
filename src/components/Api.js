@@ -10,8 +10,9 @@ export const turnoById = (id) => {
 		})
 }
 
-export const getTurnos = () => {
-	return axios.get(`${API_URL}/turnos`)
+export const getTurnos = (fechaSeleccionada) => {
+	console.log(fechaSeleccionada)
+	return axios.get(`${API_URL}/turnos`, {params:{fecha:fechaSeleccionada}})
 		.then(response => {
 			return response.data
 		})
@@ -35,38 +36,33 @@ export const buscarPacienteLike = (searchParameter) => {
 }
 
 
-export const buscarHorariosDeDia = (fecha, tipoDeTurno) => {
-	const horarios1 = [
-		{horaInicio: '09:00', horaFin:'10:00'},
-		{horaInicio: '10:00', horaFin:'11:00'},
-		{horaInicio: '11:00', horaFin:'12:00'},
-		{horaInicio: '12:00', horaFin:'13:00'},
-		{horaInicio: '13:00', horaFin:'14:00'},
-		{horaInicio: '14:00', horaFin:'15:00'},
-		{horaInicio: '15:00', horaFin:'16:00'},
-		{horaInicio: '16:00', horaFin:'17:00'},
-		{horaInicio: '17:00', horaFin:'18:00'},
-	]
-	const horarios2 = [
-		{horaInicio: '09:00', horaFin:'09:30'},
-		{horaInicio: '09:30', horaFin:'10:00'},
-		{horaInicio: '10:00', horaFin:'10:30'},
-		{horaInicio: '10:30', horaFin:'11:00'},
-		{horaInicio: '11:00', horaFin:'11:30'},
-		{horaInicio: '11:30', horaFin:'12:00'},
-		{horaInicio: '12:00', horaFin:'12:30'},
-		{horaInicio: '12:30', horaFin:'13:00'},
-		{horaInicio: '13:00', horaFin:'13:30'},
-		{horaInicio: '13:30', horaFin:'14:00'},
-		{horaInicio: '14:00', horaFin:'14:30'},
-		{horaInicio: '14:30', horaFin:'15:00'},
-		{horaInicio: '15:00', horaFin:'15:30'},
-		{horaInicio: '15:30', horaFin:'16:00'},
-		{horaInicio: '16:00', horaFin:'16:30'},
-		{horaInicio: '16:30', horaFin:'17:00'},
-		{horaInicio: '17:00', horaFin:'17:30'},
-		{horaInicio: '17:30', horaFin:'18:00'},
-	]
+export const buscarHorariosDeDia = (fecha, tipo) => {
+	return axios.get(`${API_URL}/turnos/horarios-disponibles`, {params: {fechaConsultada: fecha, tipoDeTurno: tipo}})
+	.then(response => {
+		return response.data
+	})
+	.catch(error => {
+		return error.response.data.message
+	})
+}
 
-	return tipoDeTurno == '1' ? horarios1 : horarios2;
+export const cantidadTurnosTotal = (fecha) => {
+	return axios.get(`${API_URL}/turnos/cantidadTotal`, {params: {fechaConsultada: fecha}})
+	.then(response => {
+		return response.data
+	})
+}
+
+export const cantidadTurnosPrioritarios = (fecha) => {
+	return axios.get(`${API_URL}/turnos/cantidadTotalPrioritarios`, {params: {fechaConsultada: fecha}})
+	.then(response => {
+		return response.data
+	})
+}
+
+export const getPrioritariosDeMes = (fecha) => {
+	return axios.get(`${API_URL}/turnos/prioritariosEnMes`, {params: {fechaConsultada: fecha}})
+	.then(response => {
+		return response.data
+	})
 }

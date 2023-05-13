@@ -3,8 +3,13 @@ import { Link } from 'react-router-dom';
 import { getTurnos } from './Api.js';
 import Col from 'react-bootstrap/Col';
 import Table from 'react-bootstrap/Table'
+import { useLocation } from 'react-router-dom'
+import { format } from 'date-fns'
 
 const ListaTurnos = () => {
+
+    const location = useLocation()
+
     const [listaTurnosData, setListaTurnosData] = useState([])
 
     useEffect(() => {
@@ -12,7 +17,7 @@ const ListaTurnos = () => {
     }, [])
 
     const getTurnosData = () => {
-        getTurnos()
+        getTurnos(location.state ? location.state.fecha : format(new Date(), 'yyyy-MM-dd'))
             .then(
                 data => {
                     setListaTurnosData(
@@ -26,7 +31,7 @@ const ListaTurnos = () => {
     return (
         <div className='container'>
             <h1>Turnos</h1>
-            <Link to={{pathname: `/nuevo_turno`}} type="button" className="btn btn-primary"> Nuevo turno </Link>
+            <Link to={{pathname: `/calendario`}} type="button" className="btn btn-primary"> Nuevo turno </Link>
             <div>
             <Table bordered>
                 <thead>
