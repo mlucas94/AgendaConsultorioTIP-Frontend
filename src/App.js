@@ -11,18 +11,20 @@ import ListaTurnos from './components/ListaTurnos'
 import NuevoTurno from './components/NuevoTurno'
 import Calendario from './components/Calendario'
 import BarraNavegacion from './components/BarraNavegacion';
+import Login from './components/Login';
 import { Col, Row } from 'react-bootstrap';
 
 const sidebarLayout = () => {
   
 }
 
+
 const App = () => {
   return (
     <Router>
       <div>
-        {window.location.pathname === '/login' ? <Routes>
-          <Route path="/login" element={ <Calendario/>} />
+        {window.location.pathname === '/login' || window.location.pathname ==='/' ? <Routes>
+          <Route path="/*" element={ <Login/>} />
         </Routes> : 
         <Row>
           <Col md={2}>

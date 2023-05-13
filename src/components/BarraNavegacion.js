@@ -38,13 +38,13 @@ const BarraNavegacion = (props) => {
                             <h4>{tituloData}</h4>
                         </div>
                         <div className='sidebar-link'>
-                            <NavLink className='sidebar-link-text' href="/">Inicio</NavLink>
+                            <NavLink className='sidebar-link-text' href="/turnos">Inicio</NavLink>
                         </div>
                         <div className='sidebar-link'>
                         <NavLink className='sidebar-link-text' href="/calendario">Turnos</NavLink>
                         </div>
                         <div className='sidebar-link'>
-                            <NavLink className='sidebar-link-text' href="/">Pacientes</NavLink>
+                            <NavLink className='sidebar-link-text' href="/">Cerrar Sesion</NavLink>
                         </div>
                     </div>
                 </div>
