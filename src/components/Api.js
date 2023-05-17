@@ -66,3 +66,13 @@ export const getPrioritariosDeMes = (fecha) => {
 		return response.data
 	})
 }
+
+export const agendarPaciente = (paciente) => {
+	return axios.post(`${API_URL}/pacientes`, paciente)
+		.then(response => {
+			return true;
+		})
+		.catch(error => {
+			return error.response.data.message
+		})
+}

@@ -14,6 +14,7 @@ import NuevoTurno from './components/NuevoTurno'
 import Calendario from './components/Calendario'
 import BarraNavegacion from './components/BarraNavegacion';
 import { Col, Row } from 'react-bootstrap';
+import AgendarPaciente from './components/AgendarPaciente';
 
 const App = () => {
   return (
@@ -25,6 +26,7 @@ const App = () => {
           </Col>
           <Col md={10}>
                 <Routes>
+                  <Route path="/nuevo_paciente" element={<AgendarPaciente/>}/>
                   <Route path="/turno/:id" element={ <Turno/> }/>
                   <Route path="/turnos" element={ <ListaTurnos/> } />
                   <Route path="/*" element={ <ListaTurnos/> }/>
