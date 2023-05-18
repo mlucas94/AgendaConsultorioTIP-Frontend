@@ -17,16 +17,6 @@ const AgendarPaciente = () => {
         obraSocial: "",
         plan: ""
     })
-    // const [requestData, setRequestData] = useState({
-    //     dni: 20124,
-    //     nombre: "Manuel Marinelli",
-    //     email: "mmarinelli@tumail.com",
-    //     telefono: 424242424,
-    //     edad: 26,
-    //     obraSocial: "OSPO",
-    //     plan: "SE"
-    // })
-
 
     const handleAgendar = () => {
         agendarPaciente(pacienteData)
@@ -64,7 +54,7 @@ const AgendarPaciente = () => {
     const setEdad = (e) => {
         setPacienteData({
             ...pacienteData,
-            dni: e.target.value.trim()
+            edad: e.target.value.trim()
         })
     }
 
@@ -99,7 +89,7 @@ const AgendarPaciente = () => {
                     </div>
                     <div className='col-md-2 p-2' >
                         <FormLabel>Edad</FormLabel>
-                        <FormControl required type='number' placeholder='Edad del paciente' onChange={setEdad}/>
+                        <FormControl required type='number' min="0" placeholder='Edad del paciente' onChange={setEdad}/>
                     </div>
                 </div>
                 <hr/>
@@ -111,7 +101,7 @@ const AgendarPaciente = () => {
                     </div>
                     <div className='col-md-5 p-2'>
                         <FormLabel>Telefono</FormLabel>
-                        <FormControl required type='numeric' placeholder='Solo numeros' onChange={setTelefono}/>
+                        <FormControl required type='number' placeholder='Solo numeros' onChange={setTelefono}/>
                     </div>
                 </div>
                 <hr/>

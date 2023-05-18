@@ -4,14 +4,11 @@ const API_URL = 'http://localhost:8081';
 export const turnoById = (id) => {
 	return axios.get(`${API_URL}/turnos/${id}`)
 		.then(response => {
-			console.log("Hola")
-			console.log(response.data)
 			return response.data
 		})
 }
 
 export const getTurnos = (fechaSeleccionada) => {
-	console.log(fechaSeleccionada)
 	return axios.get(`${API_URL}/turnos`, {params:{fecha:fechaSeleccionada}})
 		.then(response => {
 			return response.data
