@@ -41,24 +41,21 @@ const Turno = (props) => {
     }
 
     return (
-    	<div className="container">
-    		<h1>Turno</h1>
-    		<h3> {turnoData.tipo} </h3>
-            <h4> Paciente: { turnoData.pacienteId } </h4>
-
-            <div class="row">
-                <h5 class="col-md-2 control-label">Fecha turno:</h5>
-                <div class="col-md-2">
-                    <h5 id="fecha"> {turnoData.fecha} </h5>
+    	<div className="container p-4">
+            <h2>Datos del turno</h2>
+            <hr/>
+            <div className='row p-3'>
+                <div className='col-4'>
+    		        <h4> Tipo de turno: {turnoData.tipo} </h4>
                 </div>
-                <h5 for="horaInicio" class="col-md-2 control-label">Hora inicio:</h5>
-                <div class="col-md-2">
-                    <h5 id="horaInicio"> {turnoData.horaInicio} </h5>
+                <div className='col-4'>
+                    <h4> Paciente: { turnoData.pacienteId } </h4>
                 </div>
-                <h5 for="horaFin" class="col-md-2 control-label">Hora fin:</h5>
-                <div class="col-md-2">
-                    <h5 id="horaFin"> {turnoData.horaFin} </h5>
-                </div>
+            </div>
+            <div class="row p-3">
+                <h5 class="col-md-4 control-label">Fecha turno: {turnoData.fecha}</h5>
+                <h5 for="horaInicio" class="col-md-4 control-label">Hora inicio: {turnoData.horaInicio}</h5>
+                <h5 for="horaFin" class="col-md-4 control-label">Hora fin: {turnoData.horaFin}</h5>
             </div>
     	</div>
     )
