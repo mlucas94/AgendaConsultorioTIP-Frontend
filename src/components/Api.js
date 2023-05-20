@@ -32,6 +32,12 @@ export const buscarPacienteLike = (searchParameter) => {
 	})
 }
 
+export const getPaciente = (id) => {
+	return axios.get(`${API_URL}/pacientes/${id}`)
+		.then(response => {
+			return response.data
+		})
+}
 
 export const buscarHorariosDeDia = (fecha, tipo) => {
 	return axios.get(`${API_URL}/turnos/horarios-disponibles`, {params: {fechaConsultada: fecha, tipoDeTurno: tipo}})
