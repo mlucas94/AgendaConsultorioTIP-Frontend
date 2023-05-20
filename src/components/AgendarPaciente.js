@@ -82,7 +82,7 @@ const AgendarPaciente = () => {
     const setNombre = (e) => {
         setPacienteData({
             ...pacienteData,
-            nombre: e.target.value.trim()
+            nombre: e.target.value
         })
     }
 

@@ -208,24 +208,6 @@ import AsyncSelect from 'react-select/async';
                 <div>
                     {elementListaHorarios()}
                 </div>
-                
-
-                <div hidden>
-                    <Row style={{ textAlign:'center'}}>
-                        <Col><Button style={{backgroundColor:'teal'}}>07:30</Button></Col>
-                        <Col><Button style={{backgroundColor:'teal'}}>07:30</Button></Col>
-                        <Col><Button style={{backgroundColor:'teal'}}>07:30</Button></Col>
-                    </Row>
-                    <Row style={{ textAlign:'center'}}>
-                    <Col><Button style={{backgroundColor:'teal'}}>07:30</Button></Col>
-                    <Col><Button style={{backgroundColor:'teal'}}>07:30</Button></Col>
-                    <Col><Button style={{backgroundColor:'teal'}}>07:30</Button></Col>
-                    </Row>
-                    <Row style={{ textAlign:'center'}}>
-                    <Col><Button style={{backgroundColor:'teal'}}>07:30</Button></Col>
-                    <Col><Button style={{backgroundColor:'teal'}}>07:30</Button></Col>
-                    </Row>
-                </div>
             </div>
         )
     }
