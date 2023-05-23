@@ -69,8 +69,8 @@ const BuscadorPacientes = () => {
 
     return (
         <div>
-            <div className="row px-2 py-1 ">
-                <div className="col-md-5">
+            <div className="row px-2 ">
+                <div className="col-md-7">
                 <AsyncSelect
                     name="paciente-select"
                     required="Por favor elija un paciente"
@@ -81,12 +81,12 @@ const BuscadorPacientes = () => {
                     value={{label: dniONombre}}
                     />
                 </div>
-                <div className="col-md-5" >
-                    <button className="btn btn-primary" onClick={handleLimpiarPaciente}>Limpiar busqueda</button>
+                <div className="col-md-4" >
+                    <button className="btn btn-secondary" onClick={handleLimpiarPaciente}>Limpiar busqueda</button>
                 </div>
                 <Collapse in={paciente.nombre.length > 0} >
                     <div className="row">
-                        <div className="px-2 py-2 col-md-10">
+                        <div className="px-2 py-2 col-md-12">
                             <h5>{paciente.nombre}</h5>
                             <h5>{paciente.dni}</h5>
                             <h5>{paciente.telefono}</h5>

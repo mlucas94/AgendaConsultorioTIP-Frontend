@@ -16,6 +16,7 @@ import BarraNavegacion from './components/BarraNavegacion';
 import { Col, Row } from 'react-bootstrap';
 import AgendarPaciente from './components/AgendarPaciente';
 import PacientesMain from './components/PacientesMain'
+import Inicio from './components/Inicio';
 
 const App = () => {
   return (
@@ -34,6 +35,7 @@ const App = () => {
                   <Route path="/nuevo_turno" element={ <NuevoTurno/> }/>
                   <Route path="/calendario" element={ <Calendario/>}/>
                   <Route path="/paciente" element={ <PacientesMain/>}/>
+                  <Route path="/inicio" element={ <Inicio/> }/>
                 </Routes>
           </Col>
         </Row>

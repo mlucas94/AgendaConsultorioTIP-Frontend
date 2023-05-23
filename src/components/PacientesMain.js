@@ -1,6 +1,8 @@
 import { useState } from "react"
 import BuscadorPacientes from "./BuscadorPacientes"
 import { Link } from "react-router-dom"
+import { Col, Row } from "react-bootstrap"
+import './css/Botones.css';
 
 const PacientesMain = () => {
     
@@ -11,16 +13,18 @@ const PacientesMain = () => {
         <div className="p-3">
             <h3>Buscador de pacientes</h3>
             <hr/>
-            <div className="row p-2">
-                <BuscadorPacientes/>
-                <div className="row">
-                    <Link />
-                </div>
-            </div>
+            <Row className="p-2">
+                <Col md={8}>
+                    <BuscadorPacientes/>
+                </Col>
+                <Col md={4}>
+                    <Link className="btn btn-primario" to="/nuevo_paciente">Agendar paciente</Link>
+                </Col>
+            </Row>
+            <Row className="py-2 px-3">
+            </Row>
         </div>
-    )
-    
-
+    )    
 }
 
 export default PacientesMain;

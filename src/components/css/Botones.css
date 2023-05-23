@@ -1,20 +1,17 @@
 .btn-primario {
-    background: teal;
-    color: white;
-    border: 2px solid teal;
+    background: teal !important;
+    color: white !important;
+    border: 2px solid teal !important;
     border-radius: 3px;
-    padding: 5px 10px;
-    text-transform: uppercase;
+    padding: 5px 10px
   }
 
   .btn-primario:hover{
-    background: lightseagreen;
-    color: white;
-    border: 2px solid lightseagreen;
-    border-radius: 3px;
-    padding: 5px 10px;
-    text-transform: uppercase;
+    background: lightseagreen !important;
+    color: white !important;
+    border: 2px solid lightseagreen !important;
   }
+
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
