@@ -66,3 +66,11 @@ export const getPrioritariosDeMes = (fecha) => {
 		return response.data
 	})
 }
+
+export const loginProfesional = (emailLogin, passwordLogin) => {
+	const body = { email: emailLogin, password: passwordLogin };
+	return axios.post(`${API_URL}/profesional/login`, body)
+	.then(response => {
+		return response.data
+	})
+}
