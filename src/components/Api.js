@@ -2,7 +2,8 @@ import axios from 'axios';
 const API_URL = 'http://localhost:8081';
 
 export const turnoById = (id) => {
-	return axios.get(`${API_URL}/turnos/${id}`)
+	const auth = { headers: { Authorization: `Bearer ${sessionStorage.getItem('currentUser')}`}}
+	return axios.get(`${API_URL}/turnos/${id}`, auth)
 		.then(response => {
 			console.log("Hola")
 			console.log(response.data)
@@ -12,14 +13,16 @@ export const turnoById = (id) => {
 
 export const getTurnos = (fechaSeleccionada) => {
 	console.log(fechaSeleccionada)
-	return axios.get(`${API_URL}/turnos`, {params:{fecha:fechaSeleccionada}})
+	const auth = { headers: { Authorization: `Bearer ${sessionStorage.getItem('currentUser')}`}}
+	return axios.get(`${API_URL}/turnos`, {params:{fecha:fechaSeleccionada}}, auth)
 		.then(response => {
 			return response.data
 		})
 }
 
 export const agendarTurno = (turno) => {
-	return axios.post(`${API_URL}/turnos`, turno)
+	const auth = { headers: { Authorization: `Bearer ${sessionStorage.getItem('currentUser')}`}}
+	return axios.post(`${API_URL}/turnos`, turno, auth)
 		.then(response => {
 			return true;
 		})
@@ -29,7 +32,8 @@ export const agendarTurno = (turno) => {
 }
 
 export const buscarPacienteLike = (searchParameter) => {
-	return axios.get(`${API_URL}/pacientes/dni`, {params: searchParameter})
+	const auth = { headers: { Authorization: `Bearer ${sessionStorage.getItem('currentUser')}`}}
+	return axios.get(`${API_URL}/pacientes/dni`, {params: searchParameter}, auth)
 	.then(response => {
 		return response.data
 	})
@@ -37,7 +41,8 @@ export const buscarPacienteLike = (searchParameter) => {
 
 
 export const buscarHorariosDeDia = (fecha, tipo) => {
-	return axios.get(`${API_URL}/turnos/horarios-disponibles`, {params: {fechaConsultada: fecha, tipoDeTurno: tipo}})
+	const auth = { headers: { Authorization: `Bearer ${sessionStorage.getItem('currentUser')}`}}
+	return axios.get(`${API_URL}/turnos/horarios-disponibles`, {params: {fechaConsultada: fecha, tipoDeTurno: tipo}}, auth)
 	.then(response => {
 		return response.data
 	})
@@ -47,21 +52,24 @@ export const buscarHorariosDeDia = (fecha, tipo) => {
 }
 
 export const cantidadTurnosTotal = (fecha) => {
-	return axios.get(`${API_URL}/turnos/cantidadTotal`, {params: {fechaConsultada: fecha}})
+	const auth = { headers: { Authorization: `Bearer ${sessionStorage.getItem('currentUser')}`}}
+	return axios.get(`${API_URL}/turnos/cantidadTotal`, {params: {fechaConsultada: fecha}}, auth)
 	.then(response => {
 		return response.data
 	})
 }
 
 export const cantidadTurnosPrioritarios = (fecha) => {
-	return axios.get(`${API_URL}/turnos/cantidadTotalPrioritarios`, {params: {fechaConsultada: fecha}})
+	const auth = { headers: { Authorization: `Bearer ${sessionStorage.getItem('currentUser')}`}}
+	return axios.get(`${API_URL}/turnos/cantidadTotalPrioritarios`, {params: {fechaConsultada: fecha}}, auth)
 	.then(response => {
 		return response.data
 	})
 }
 
 export const getPrioritariosDeMes = (fecha) => {
-	return axios.get(`${API_URL}/turnos/prioritariosEnMes`, {params: {fechaConsultada: fecha}})
+	const auth = { headers: { Authorization: `Bearer ${sessionStorage.getItem('currentUser')}`}}
+	return axios.get(`${API_URL}/turnos/prioritariosEnMes`, {params: {fechaConsultada: fecha}}, auth)
 	.then(response => {
 		return response.data
 	})
