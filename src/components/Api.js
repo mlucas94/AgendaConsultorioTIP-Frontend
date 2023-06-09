@@ -79,3 +79,37 @@ export const agendarPaciente = (paciente) => {
 			return error.response.data.message
 		})
 }
+
+//ARCHIVOS
+export const getArchivosPaciente = (paginaArchivos) => {
+	return axios.get(`${API_URL}/archivos/paciente`, {params: {
+			pacienteId: paginaArchivos.pacienteId,
+			orderBy: paginaArchivos.orderBy,
+			ascendingOrder: paginaArchivos.ascendingOrder,
+			numeroPagina: paginaArchivos.numeroPagina
+		}})
+		.then(response=> {
+			return response.data;
+		})
+		.catch(error => {
+			console.log(error.response.data.message)
+		})
+}
+
+export const descargarArchivo = (archivo, nombreArchivo) => {
+	return axios.get(`${API_URL}/archivo/descargar`, {params: {idArchivo: archivo}, responseType: 'blob'})
+	.then(response=> {
+		return response.data
+	})
+}
+
+export const cargarArchivo = (archivoNuevo, paciente) => {
+	const formData = new FormData();
+    formData.append("archivo", archivoNuevo);
+    formData.append("idPaciente", paciente);
+	return axios.post(`${API_URL}/archivo/cargar`, formData,{headers: {'Content-Type': 'multipart/form-data'}})
+	.then(response =>{
+		return response
+	})
+	
+}
