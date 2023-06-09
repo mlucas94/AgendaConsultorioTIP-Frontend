@@ -113,3 +113,8 @@ export const cargarArchivo = (archivoNuevo, paciente) => {
 	})
 	
 }
+
+export const eliminarArchivo = (idArchivoEliminar) => {
+	return axios.delete(`${API_URL}/archivo/eliminar`, {params: {idArchivo : idArchivoEliminar}})
+}
+

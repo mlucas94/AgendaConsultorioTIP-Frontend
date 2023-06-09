@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import AsyncSelect from 'react-select/async'
-import { buscarPacienteLike, getPaciente, getArchivosPaciente, descargarArchivo, cargarArchivo } from "./Api"
+import { buscarPacienteLike, getPaciente, getArchivosPaciente, descargarArchivo, cargarArchivo, eliminarArchivo } from "./Api"
 import { Collapse } from "react-bootstrap"
 import Swal from "sweetalert2"
 
@@ -127,6 +127,14 @@ const BuscadorPacientes = () => {
         })
     }
 
+    const handleEliminarArchivo = (id) => {
+        eliminarArchivo(id).then(
+            data => {
+                traerArchivosPaginadosPaciente()
+            }
+        )
+    }
+
     return (
         <div>
             <div className="row px-2 py-1 ">
@@ -188,7 +196,7 @@ const BuscadorPacientes = () => {
                                             <td>{archivo.nombreArchivo}</td>
                                             <td>
                                                 <button className="btn btn-primary" onClick={(e) => handleDescargarArchivo(archivo.id, archivo.nombreArchivo)}>Descargar</button> 
-                                                <button className="btn btn-danger">Eliminar</button>
+                                                <button className="btn btn-danger" onClick={(e)=> handleEliminarArchivo(archivo.id)}>Eliminar</button>
                                             </td>
                                         </tr>  
                                     ))}
