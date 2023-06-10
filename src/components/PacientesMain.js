@@ -10,7 +10,6 @@ const PacientesMain = () => {
     return (
         <div className="p-3">
             <h3>Buscador de pacientes</h3>
-            <hr/>
             <div className="row p-2">
                 <BuscadorPacientes/>
                 <div className="row">

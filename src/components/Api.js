@@ -134,3 +134,9 @@ export const getArchivosTurno = (paginaArchivos) => {
 		})
 }
 
+export const desasociarArchivoTurno = (idArchivoDesasociar, idTurno) => {
+	return axios.delete(`${API_URL}/archivo/turno`, {params: {archivoId : idArchivoDesasociar, turnoId: idTurno}})
+	.then(response => {
+		return response
+	})
+}

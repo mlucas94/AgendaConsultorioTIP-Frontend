@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { turnoById, getArchivosTurno, cargarArchivoTurno, eliminarArchivo } from './Api.js';
+import { turnoById, getArchivosTurno, cargarArchivoTurno, desasociarArchivoTurno } from './Api.js';
 import { useParams } from 'react-router-dom';
 import ArchivosPaginados from './ArchivosPaginados.js';
 
@@ -67,8 +67,8 @@ const Turno = (props) => {
         }
     }
 
-    const handleEliminarArchivo = (id) => {
-        eliminarArchivo(id).then(
+    const handleEliminarArchivo = (archivoId) => {
+        desasociarArchivoTurno(archivoId, id).then(
             data => {
                 traerArchivosPaginadosTurno()
             }

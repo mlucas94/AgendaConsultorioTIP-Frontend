@@ -166,6 +166,8 @@ const BuscadorPacientes = () => {
                 <Collapse in={paciente.nombre.length > 0} >
                     <div className="row">
                         <div className="px-2 py-2 col-md-10">
+                            <hr/>
+                        <h4>Detalle del paciente</h4>
                             <table className="table table-bordered table-striped    ">
                                 <tbody>
                                     <tr>
@@ -191,6 +193,7 @@ const BuscadorPacientes = () => {
                                 </tbody>
                             </table>
                         </div>
+                        <h4>Historia Clinica</h4>
                         <div className="px-2 py-2 col-md-10" id="archivos-paciente">
                             <ArchivosPaginados 
                             handleClickEliminar={handleEliminarArchivo} 
