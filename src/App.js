@@ -33,7 +33,7 @@ const App = () => {
                   <Route path="/*" element={ <ListaTurnos/> }/>
                   <Route path="/nuevo_turno" element={ <NuevoTurno/> }/>
                   <Route path="/calendario" element={ <Calendario/>}/>
-                  <Route path="/paciente" element={ <PacientesMain/>}/>
+                  <Route path="/pacientes" element={ <PacientesMain/>}/>
                 </Routes>
           </Col>
         </Row>

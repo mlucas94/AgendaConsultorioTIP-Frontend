@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react"
 import AsyncSelect from 'react-select/async'
-import { buscarPacienteLike, getPaciente, getArchivosPaciente, descargarArchivo, cargarArchivo, eliminarArchivo } from "./Api"
+import { buscarPacienteLike, getPaciente, getArchivosPaciente, cargarArchivo, eliminarArchivo } from "./Api"
 import { Collapse } from "react-bootstrap"
 import Swal from "sweetalert2"
+import ArchivosPaginados from "./ArchivosPaginados"
 
 const BuscadorPacientes = () => {
     
@@ -22,7 +23,13 @@ const BuscadorPacientes = () => {
         numeroPagina: 0,
         orderBy: "fechaCarga",
         ascendingOrder: false,
-        pacienteId: null
+        pacienteId: null,
+    })
+
+    const [paginacion, setPaginacion] = useState ({
+        first: null,
+        last: null,
+        totalPages: null
     })
 
     useEffect(() => {
@@ -96,7 +103,12 @@ const BuscadorPacientes = () => {
         getArchivosPaciente(paginaArchivos)
         .then(
             data => {
-                setArchivos(data)
+                setArchivos(data.archivos)
+                setPaginacion({
+                    first: data.primera,
+                    last: data.ultima,
+                    totalPages: data.cantidadPaginas
+                })
             }
         )
     }
@@ -113,26 +125,25 @@ const BuscadorPacientes = () => {
         })
     }
 
-    const handleDescargarArchivo = (id, nombreArchivo) => {
-        descargarArchivo(id, nombreArchivo)
-        .then( data => {
-            const filename = nombreArchivo;
-            const blob = new Blob([data], { type: data.type });
-            const url = window.URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.setAttribute('download', filename);
-            document.body.appendChild(link);
-            link.click();
-        })
-    }
-
     const handleEliminarArchivo = (id) => {
         eliminarArchivo(id).then(
             data => {
                 traerArchivosPaginadosPaciente()
             }
         )
+    }
+
+    const handleCambiarPagina = (nroPagina) => {
+        setPaginaArchivos({...paginaArchivos, numeroPagina: nroPagina})
+    }
+
+    const handleIrAPrimero = () => {
+        setPaginaArchivos({...paginaArchivos, numeroPagina: 0})
+    }
+
+    const handleIrAUltimo = () => {
+        console.log(paginacion)
+        setPaginaArchivos({...paginaArchivos, numeroPagina: paginacion.totalPages-1})
     }
 
     return (
@@ -155,7 +166,7 @@ const BuscadorPacientes = () => {
                 <Collapse in={paciente.nombre.length > 0} >
                     <div className="row">
                         <div className="px-2 py-2 col-md-10">
-                            <table class="table table-bordered table-striped    ">
+                            <table className="table table-bordered table-striped    ">
                                 <tbody>
                                     <tr>
                                         <td><h6>Nombre</h6></td>
@@ -181,30 +192,16 @@ const BuscadorPacientes = () => {
                             </table>
                         </div>
                         <div className="px-2 py-2 col-md-10" id="archivos-paciente">
-                        
-                            {archivos.length > 0 ?    
-                            <table className="table table-bordered table-striped">
-                                <thead>
-                                    <th style={{textAlign: 'center'}}>Fecha de carga</th>
-                                    <th style={{textAlign: 'center'}}>Nombre</th>
-                                    <th style={{textAlign: 'center'}}>Acciones</th>
-                                </thead>
-                                <tbody>
-                                    {archivos.map(archivo => (
-                                        <tr align="center">
-                                            <td>{archivo.fechaCarga}</td>
-                                            <td>{archivo.nombreArchivo}</td>
-                                            <td>
-                                                <button className="btn btn-primary" onClick={(e) => handleDescargarArchivo(archivo.id, archivo.nombreArchivo)}>Descargar</button> 
-                                                <button className="btn btn-danger" onClick={(e)=> handleEliminarArchivo(archivo.id)}>Eliminar</button>
-                                            </td>
-                                        </tr>  
-                                    ))}
-                                </tbody>
-                            </table>
-                                    : <table className="table table-stripped table-bordered"><tbody><tr align="center"><td>No se encontraron archivos asociados</td></tr></tbody></table> }
-                            <div>
+                            <ArchivosPaginados 
+                            handleClickEliminar={handleEliminarArchivo} 
+                            handleClickPagina={handleCambiarPagina} 
+                            handleClickPrimero={handleIrAPrimero} 
+                            handleClickUltimo={handleIrAUltimo}
+                            paginacion={paginacion} 
+                            archivos={archivos} 
+                            numeroPagina={paginaArchivos.numeroPagina} />
                             <br/>
+                            <div>
                                         <h6>Carga de archivos</h6>
                                 <input type ="file" onChange={handleFileChange}/>
                                 <button className="btn btn-primary" type="submit" onClick={handleSubirArchivo}>Guardar Archivo</button>

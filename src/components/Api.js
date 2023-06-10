@@ -82,13 +82,9 @@ export const agendarPaciente = (paciente) => {
 
 //ARCHIVOS
 export const getArchivosPaciente = (paginaArchivos) => {
-	return axios.get(`${API_URL}/archivos/paciente`, {params: {
-			pacienteId: paginaArchivos.pacienteId,
-			orderBy: paginaArchivos.orderBy,
-			ascendingOrder: paginaArchivos.ascendingOrder,
-			numeroPagina: paginaArchivos.numeroPagina
-		}})
+	return axios.get(`${API_URL}/archivos/paciente`, {params: paginaArchivos})
 		.then(response=> {
+			console.log(response.data)
 			return response.data;
 		})
 		.catch(error => {
