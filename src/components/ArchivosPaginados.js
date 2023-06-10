@@ -21,7 +21,7 @@ const ArchivosPaginados = (props) => {
     return (
 
         <div>
-            {props.archivos.length > 0 ?    
+            {props.archivos && (props.archivos.length > 0) ?    
                 <div>
                     <table className="table table-bordered table-striped">
                         <thead>

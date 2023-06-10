@@ -114,3 +114,23 @@ export const eliminarArchivo = (idArchivoEliminar) => {
 	return axios.delete(`${API_URL}/archivo/eliminar`, {params: {idArchivo : idArchivoEliminar}})
 }
 
+export const cargarArchivoTurno = (archivoNuevo, turno) => {
+	const formData = new FormData();
+    formData.append("archivo", archivoNuevo);
+    formData.append("idTurno", turno);
+	return axios.post(`${API_URL}/archivo/cargar/turno`, formData,{headers: {'Content-Type': 'multipart/form-data'}})
+	.then(response =>{
+		return response
+	})
+}
+
+export const getArchivosTurno = (paginaArchivos) => {
+	return axios.get(`${API_URL}/archivos/turno`, {params: paginaArchivos})
+		.then(response=> {
+			return response.data;
+		})
+		.catch(error => {
+			console.log(error.response.data.message)
+		})
+}
+
