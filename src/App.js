@@ -29,7 +29,7 @@ const App = () => {
                   <Route path="/profesional/login" element={ <Login/> }/>
                   <Route path="/turno/:id" element={ <Turno/> }/>
                   <Route path="/turnos" element={ <ListaTurnos/> } />
-                  <Route path="/*" element={ <ListaTurnos/> }/>
+                  <Route path="/*" element={ <Login/> }/>
                   <Route path="/nuevo_turno" element={ <NuevoTurno/> }/>
                   <Route path="/calendario" element={ <Calendario/>}/>
                 </Routes>

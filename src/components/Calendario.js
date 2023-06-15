@@ -112,7 +112,8 @@ const Calendario = () => {
         const endOfTheSelectedMonth = endOfMonth(activeDate);
         const startDate = startOfWeek(startOfTheSelectedMonth);
         const endDate = endOfWeek(endOfTheSelectedMonth);
-        //getDiasConPrioritarios(primeroDelMes)      
+        //getDiasConPrioritarios(primeroDelMes)
+        console.log("DiasConPrioritarios: " + diasConPrioritarios)      
         const diasConPrioritarioDelMes = diasConPrioritarios.map(fecha => parse(fecha, 'yyyy-MM-dd', new Date()))
         let currentDate = startDate;
   
