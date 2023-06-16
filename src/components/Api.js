@@ -130,7 +130,7 @@ export async function cantidadTurnosPrioritarios(fecha) {
 		})
 }
 
-export async function getPrioritariosDeMes(fecha) { // TODO: perra inmunda
+export async function getPrioritariosDeMes(fecha) {
 	const config = { 
 		headers: { 
 			Authorization: `Bearer ${sessionStorage.getItem('currentUser')}`
