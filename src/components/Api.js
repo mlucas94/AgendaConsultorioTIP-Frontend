@@ -28,17 +28,6 @@ export async function getTurnos(fechaSeleccionada) {
 		}
 	}
 	console.log("session token " + sessionStorage.getItem('currentUser'))
-	//return axios({	
-	//	method: 'get',
-	//	url: `${API_URL}/turnos`,
-	//	params: {fecha:fechaSeleccionada},
-	//	headers: { 
-	//		Authorization: `Bearer ${sessionStorage.getItem('currentUser')}`,
-	//		'Access-Control-Allow-Origin' : '*',
-	//		'Access-Control-Allow-Headers':'Access-Control-Allow-Headers,Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization',
-	//		'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS'
-	//	}
-	//  })
 	return await axios.get(`${API_URL}/turnos`, {params:{fecha:fechaSeleccionada}, ...config})
 		.then(response => {
 			return response.data
@@ -83,6 +72,12 @@ export async function buscarPacienteLike(searchParameter) {
 		})
 }
 
+export const getPaciente = (id) => {
+	return axios.get(`${API_URL}/pacientes/${id}`)
+		.then(response => {
+			return response.data
+		})
+}
 
 export async function buscarHorariosDeDia(fecha, tipo) {
 	const config = { 
@@ -157,5 +152,15 @@ export async function loginProfesional(emailLogin, passwordLogin) {
 	return await axios.post(`${API_URL}/profesional/login`, body)
 		.then(response => {
 			return response.data
+		})
+}
+
+export const agendarPaciente = (paciente) => {
+	return axios.post(`${API_URL}/pacientes`, paciente)
+		.then(response => {
+			return true;
+		})
+		.catch(error => {
+			return error.response.data.message
 		})
 }
