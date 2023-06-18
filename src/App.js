@@ -16,16 +16,17 @@ import BarraNavegacion from './components/BarraNavegacion';
 import { Col, Row } from 'react-bootstrap';
 import AgendarPaciente from './components/AgendarPaciente';
 import PacientesMain from './components/PacientesMain'
+import './components/css/AppExtra.css';
 
 const App = () => {
   return (
     <Router>
-      <div>
+      <div className=''>
         <Row>
-          <Col md={2}>
+          <Col md={2} className='columna-nav'>
             <BarraNavegacion/>
           </Col>
-          <Col md={10}>
+          <Col md={10} className='columna-main'>
                 <Routes>
                   <Route path="/nuevo_paciente" element={<AgendarPaciente/>}/>
                   <Route path="/turno/:id" element={ <Turno/> }/>
