@@ -4,10 +4,11 @@ import { buscarPacienteLike, getPaciente, getArchivosPaciente, cargarArchivo, el
 import { Collapse } from "react-bootstrap"
 import Swal from "sweetalert2"
 import ArchivosPaginados from "./ArchivosPaginados"
+import { Link } from "react-router-dom"
 
-const BuscadorPacientes = () => {
+const BuscadorPacientes = (props) => {
     
-    const [dniONombre, setDniONombre] = useState("")
+    const [dniONombre, setDniONombre] = useState(props.idPaciente ? props.idPaciente : "" )
     const [paciente, setPaciente] = useState({
         nombre: "",
         dni: null,
@@ -19,6 +20,7 @@ const BuscadorPacientes = () => {
         id: null
     })
 
+    //ToRemove
     const [paginaArchivos, setPaginaArchivos] = useState ({
         numeroPagina: 0,
         orderBy: "fechaCarga",
@@ -56,6 +58,8 @@ const BuscadorPacientes = () => {
         }
     }
 
+    //StopRemove
+
     const handleInputPaciente = (input) => {
         return buscarPacienteLike({dniONombre: input})
         .then(
@@ -84,6 +88,7 @@ const BuscadorPacientes = () => {
                     telefono: data.telefono,
                     id: data.id
                 })
+                //ToRemove
                 setPaginaArchivos({
                     ...paginaArchivos,
                     pacienteId: data.id
@@ -137,6 +142,7 @@ const BuscadorPacientes = () => {
         setPaginaArchivos({...paginaArchivos, numeroPagina: nroPagina})
     }
 
+    //ToDelete
     const handleIrAPrimero = () => {
         setPaginaArchivos({...paginaArchivos, numeroPagina: 0})
     }
@@ -195,6 +201,8 @@ const BuscadorPacientes = () => {
                         </div>
                         <h4>Historia Clinica</h4>
                         <div className="px-2 py-2 col-md-10" id="archivos-paciente">
+                            <Link to={{pathname: `/archivos_paciente/${paciente.id}`}} className="btn btn-primary" >VER ARCHIVOS</Link>
+                            
                             <ArchivosPaginados 
                             handleClickEliminar={handleEliminarArchivo} 
                             handleClickPagina={handleCambiarPagina} 

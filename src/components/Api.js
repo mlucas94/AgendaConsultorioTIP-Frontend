@@ -82,6 +82,7 @@ export const agendarPaciente = (paciente) => {
 
 //ARCHIVOS
 export const getArchivosPaciente = (paginaArchivos) => {
+	console.log(paginaArchivos.paciente)
 	return axios.get(`${API_URL}/archivos/paciente`, {params: paginaArchivos})
 		.then(response=> {
 			console.log(response.data)
@@ -107,6 +108,12 @@ export const cargarArchivo = (archivoNuevo, paciente) => {
 	.then(response =>{
 		return response
 	})
+	.catch(error => {
+		//console.log(error.response.data.message)
+		throw Error(error.response.data.message);
+	}
+
+	)
 	
 }
 
