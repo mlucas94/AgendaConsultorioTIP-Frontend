@@ -17,6 +17,7 @@ import { Col, Row } from 'react-bootstrap';
 import AgendarPaciente from './components/AgendarPaciente';
 import PacientesMain from './components/PacientesMain';
 import ArchivosPaginados from './components/ArchivosPaginados';
+import ArchivosPaginadosTurno from './components/ArchivosPaginadosTurno';
 import './components/css/AppExtra.css';
 
 const App = () => {
@@ -37,6 +38,7 @@ const App = () => {
                   <Route path="/calendario" element={ <Calendario/>}/>
                   <Route path="/pacientes" element={ <PacientesMain/>}/>
                   <Route path="/archivos_paciente/:id" element={<ArchivosPaginados/>}/>
+                  <Route path="/archivos_paciente_turno/:id" element={<ArchivosPaginadosTurno/>}/>
                 </Routes>
           </Col>
         </Row>

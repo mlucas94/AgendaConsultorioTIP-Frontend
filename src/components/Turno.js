@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { turnoById, getArchivosTurno, cargarArchivoTurno, desasociarArchivoTurno } from './Api.js';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import ArchivosPaginados from './ArchivosPaginados.js';
 
 const Turno = (props) => {
@@ -14,78 +14,12 @@ const Turno = (props) => {
 
     });
 
-    const [paginacion, setPaginacion] = useState ({
-        first: null,
-        last: null,
-        totalPages: null
-    })
-
     let { id } = useParams();
 
-    const [paginaArchivos, setPaginaArchivos] = useState ({
-        numeroPagina: 0,
-        orderBy: "fechaCarga",
-        ascendingOrder: false,
-        turnoId: id,
-    })
-
-    
-    const [archivos, setArchivos] = useState ([]);
 
     useEffect(() => {
         getTurnoData();
-        traerArchivosPaginadosTurno(paginaArchivos)
     }, [])
-
-    const [archivoNuevo, setArchivoNuevo] = useState (null)
-
-    const traerArchivosPaginadosTurno = () => {
-        getArchivosTurno(paginaArchivos)
-        .then(
-            data => {
-                setArchivos(data.archivos)
-                setPaginacion({
-                    first: data.primera,
-                    last: data.ultima,
-                    totalPages: data.cantidadPaginas
-                })
-            }
-        )
-    }
-
-    const handleFileChange = (e) => {
-        setArchivoNuevo(e.target.files[0])
-    }
-
-    const handleSubirArchivo = (e) => {
-        e.preventDefault()
-        if(archivoNuevo !== null) {
-            cargarArchivoTurno(archivoNuevo, id)
-            .then(data => {
-                traerArchivosPaginadosTurno(paginaArchivos)
-            })
-        }
-    }
-
-    const handleEliminarArchivo = (archivoId) => {
-        desasociarArchivoTurno(archivoId, id).then(
-            data => {
-                traerArchivosPaginadosTurno()
-            }
-        )
-    }
-
-    const handleCambiarPagina = (nroPagina) => {
-        setPaginaArchivos({...paginaArchivos, numeroPagina: nroPagina})
-    }
-
-    const handleIrAPrimero = () => {
-        setPaginaArchivos({...paginaArchivos, numeroPagina: 0})
-    }
-
-    const handleIrAUltimo = () => {
-        setPaginaArchivos({...paginaArchivos, numeroPagina: paginacion.totalPages-1})
-    }
 
     const getTurnoData = () => {
         turnoById(id)
@@ -135,21 +69,9 @@ const Turno = (props) => {
                     </tbody>
                 </table>
             </div>
-            <ArchivosPaginados
-            handleClickEliminar={handleEliminarArchivo} 
-            handleClickPagina={handleCambiarPagina} 
-            handleClickPrimero={handleIrAPrimero} 
-            handleClickUltimo={handleIrAUltimo}
-            paginacion={paginacion} 
-            archivos={archivos} 
-            numeroPagina={paginaArchivos.numeroPagina}
-            />
-            <hr/>
-            <div>
-                <h6>Cargar nuevo archivo</h6>
-                <input type ="file" onChange={handleFileChange}/>
-                <button className="btn btn-primary" type="submit" onClick={handleSubirArchivo}>Guardar Archivo</button>
-            </div>
+            <Link to={{pathname: `/archivos_paciente_turno/${id}`}} className="btn btn-primary" >Ver archivos</Link>
+
+            
     	</div>
     )
 

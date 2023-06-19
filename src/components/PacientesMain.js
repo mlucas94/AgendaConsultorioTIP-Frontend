@@ -1,9 +1,12 @@
 import { useState } from "react"
 import BuscadorPacientes from "./BuscadorPacientes"
-import { Link } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 
-const PacientesMain = () => {
+const PacientesMain = (props) => {
     
+    const location = useLocation();
+    const propsData = location.state;
+
     const [proximosTurnos, setProximosTurnos] = useState([])
     const [proximoPacientePrioritario, setProximoPacientePrioritario] = useState(null)
 
@@ -11,7 +14,7 @@ const PacientesMain = () => {
         <div className="p-3">
             <h3>Buscador de pacientes</h3>
             <div className="row p-2">
-                <BuscadorPacientes/>
+                <BuscadorPacientes pacienteId={propsData ? propsData : ""}/>
                 <div className="row">
                     <Link />
                 </div>

@@ -6,7 +6,6 @@ import { Container, Modal, Row, Col } from 'react-bootstrap';
 import { es } from 'date-fns/locale';
 import './css/Calendario.css'
 import { Link } from 'react-router-dom';
-import NuevoTurno from './NuevoTurno'
 import NuevoTurnoFecha from './NuevoTurnoFecha'
 import { formatENtoES } from './FuncionesGenerales';
 import { cantidadTurnosPrioritarios, cantidadTurnosTotal, getPrioritariosDeMes } from './Api';
@@ -84,6 +83,7 @@ const Calendario = () => {
             }
               onClick={() => {
                 if(isSameMonth(cloneDate, activeDate)) {
+                  console.log(cloneDate)
                   setFechaSeleccionada(format(cloneDate, 'yyyy-MM-dd'));
                   setShowMenu(true)
                 }

@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import { descargarArchivo } from "./Api";
 import { Col } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
-import { getArchivosPaciente, cargarArchivo, eliminarArchivo } from "./Api";
+import { getArchivosTurno, cargarArchivoTurno, eliminarArchivo } from "./Api";
 import Swal from "sweetalert2"
 
-const ArchivosPaginados = (props) => {
+const ArchivosPaginadosTurno = (props) => {
 
     let { id } = useParams();
 
@@ -13,7 +13,7 @@ const ArchivosPaginados = (props) => {
         numeroPagina: 0,
         orderBy: "fechaCarga",
         ascendingOrder: false,
-        pacienteId: id,
+        turnoId: id,
     })
 
     const [paginacion, setPaginacion] = useState ({
@@ -22,8 +22,8 @@ const ArchivosPaginados = (props) => {
         totalPages: null
     })
 
-    const traerArchivosPaginadosPaciente = () => {
-        getArchivosPaciente(paginaArchivos)
+    const traerArchivosPaginadosTurno = () => {
+        getArchivosTurno(paginaArchivos)
         .then(
             data => {
                 setArchivos(data.archivos)
@@ -37,7 +37,7 @@ const ArchivosPaginados = (props) => {
     }
 
     useEffect(() => {
-        traerArchivosPaginadosPaciente(paginaArchivos)
+        traerArchivosPaginadosTurno(paginaArchivos)
     }, [paginaArchivos])
 
     const [archivos, setArchivos] = useState ([]);
@@ -51,9 +51,9 @@ const ArchivosPaginados = (props) => {
     const handleSubirArchivo = (e) => {
         e.preventDefault()
         if(archivoNuevo !== null) {
-            cargarArchivo(archivoNuevo, id)
+            cargarArchivoTurno(archivoNuevo, id)
             .then(data => {
-                traerArchivosPaginadosPaciente(paginaArchivos)
+                traerArchivosPaginadosTurno(paginaArchivos)
             })
             .catch(error => {
 
@@ -79,7 +79,7 @@ const ArchivosPaginados = (props) => {
     const handleEliminarArchivo = (id) => {
         eliminarArchivo(id).then(
             data => {
-                traerArchivosPaginadosPaciente()
+                traerArchivosPaginadosTurno()
             }
         )
     }
@@ -143,7 +143,7 @@ const ArchivosPaginados = (props) => {
                 <button className="btn btn-primary" type="submit" onClick={handleSubirArchivo}>Guardar Archivo</button>
             </div>
             <div>
-                <Link to={{pathname: `/pacientes`}} state={id}  className="btn btn-primary">Volver a paciente</Link>
+                <Link to={{pathname: `/turno/${id}`}}  className="btn btn-primary">Volver a turno</Link>
             </div>
         </div>
 
@@ -152,4 +152,4 @@ const ArchivosPaginados = (props) => {
 
 }
 
-export default ArchivosPaginados
+export default ArchivosPaginadosTurno
