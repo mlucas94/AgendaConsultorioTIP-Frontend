@@ -56,7 +56,6 @@ const ArchivosPaginados = (props) => {
                 traerArchivosPaginadosPaciente(paginaArchivos)
             })
             .catch(error => {
-
                 Swal.fire({title: error.message});
             })
         }

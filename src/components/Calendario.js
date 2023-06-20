@@ -192,7 +192,7 @@ const Calendario = () => {
                         <button className='btn btn-primary' onClick={handleShowMenuDia}>Nuevo Turno</button>
                       </Col>
                       <Col>
-                        <Link to={{pathname: `/turno/`}} state={{fecha:fechaSeleccionada}} type="button" className="btn btn-primary"> {'Ver turnos'} </Link>
+                        <Link to={{pathname: `/turnos`}} state={fechaSeleccionada} type="button" className="btn btn-primary"> {'Ver turnos'} </Link>
                       </Col>
                     </Row>
                   </Modal.Body>

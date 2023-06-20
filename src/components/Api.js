@@ -26,7 +26,6 @@ export async function turnoById(id) {
 }
 
 export async function getTurnos(fechaSeleccionada) {
-	console.log(fechaSeleccionada)
 	const config =  { 
 		headers: { 
 			Authorization: `Bearer ${sessionStorage.getItem('currentUser')}`
@@ -173,18 +172,18 @@ export const agendarPaciente = (paciente) => {
 
 //ARCHIVOS
 export const getArchivosPaciente = (paginaArchivos) => {
-	return axios.get(`${API_URL}/archivos/paciente`, {params: paginaArchivos})
+	return axios.get(`${API_URL}/archivos/paciente`, {params: paginaArchivos, ...configAuth})
 		.then(response=> {
-			console.log(response.data)
+			console.log("GETARCHIVOSPACIENTE")
 			return response.data;
 		})
 		.catch(error => {
-			console.log(error.response.data.message)
+			console.log("Rompio getArchivosPaciente")
 		})
 }
 
 export const descargarArchivo = (archivo, nombreArchivo) => {
-	return axios.get(`${API_URL}/archivo/descargar`, {params: {idArchivo: archivo}, responseType: 'blob'})
+	return axios.get(`${API_URL}/archivo/descargar`, {params: {idArchivo: archivo}, responseType: 'blob', ...configAuth})
 	.then(response=> {
 		return response.data
 	})
@@ -194,7 +193,7 @@ export const cargarArchivo = (archivoNuevo, paciente) => {
 	const formData = new FormData();
     formData.append("archivo", archivoNuevo);
     formData.append("idPaciente", paciente);
-	return axios.post(`${API_URL}/archivo/cargar`, formData,{headers: {'Content-Type': 'multipart/form-data'}})
+	return axios.post(`${API_URL}/archivo/cargar`, formData,{headers: {'Content-Type': 'multipart/form-data'}, ...configAuth})
 	.then(response =>{
 		return response
 	})
@@ -207,22 +206,21 @@ export const cargarArchivo = (archivoNuevo, paciente) => {
 }
 
 export const eliminarArchivo = (idArchivoEliminar) => {
-	return axios.delete(`${API_URL}/archivo/eliminar`, {params: {idArchivo : idArchivoEliminar}})
+	return axios.delete(`${API_URL}/archivo/eliminar`, {params: {idArchivo : idArchivoEliminar}, ...configAuth})
 }
 
 export const cargarArchivoTurno = (archivoNuevo, turno) => {
 	const formData = new FormData();
     formData.append("archivo", archivoNuevo);
     formData.append("idTurno", turno);
-	return axios.post(`${API_URL}/archivo/cargar/turno`, formData,{headers: {'Content-Type': 'multipart/form-data'}})
+	return axios.post(`${API_URL}/archivo/cargar/turno`, formData,{headers: {'Content-Type': 'multipart/form-data'}, ...configAuth})
 	.then(response =>{
 		return response
 	})
 }
 
 export const getArchivosTurno = (paginaArchivos) => {
-	console.log(paginaArchivos.turnoId)
-	return axios.get(`${API_URL}/archivos/turno`, {params: paginaArchivos})
+	return axios.get(`${API_URL}/archivos/turno`, {params: paginaArchivos, ...configAuth})
 		.then(response=> {
 			return response.data;
 		})
@@ -232,7 +230,7 @@ export const getArchivosTurno = (paginaArchivos) => {
 }
 
 export const desasociarArchivoTurno = (idArchivoDesasociar, idTurno) => {
-	return axios.delete(`${API_URL}/archivo/turno`, {params: {archivoId : idArchivoDesasociar, turnoId: idTurno}})
+	return axios.delete(`${API_URL}/archivo/turno`, {params: {archivoId : idArchivoDesasociar, turnoId: idTurno}, ...configAuth})
 	.then(response => {
 		return response
 	})
