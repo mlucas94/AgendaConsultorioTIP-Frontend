@@ -1,12 +1,14 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import AsyncSelect from 'react-select/async'
-import { buscarPacienteLike, getPaciente } from "./Api"
+import { buscarPacienteLike, getPaciente, getArchivosPaciente, cargarArchivo, eliminarArchivo } from "./Api"
 import { Collapse } from "react-bootstrap"
 import Swal from "sweetalert2"
+import ArchivosPaginados from "./ArchivosPaginados"
+import { Link } from "react-router-dom"
 
-const BuscadorPacientes = () => {
+const BuscadorPacientes = (props) => {
     
-    const [dniONombre, setDniONombre] = useState("")
+    const [dniONombre, setDniONombre] = ""
     const [paciente, setPaciente] = useState({
         nombre: "",
         dni: null,
@@ -14,8 +16,85 @@ const BuscadorPacientes = () => {
         obraSocial: "",
         plan: "",
         email: "",
-        telefono: null
+        telefono: null,
+        id: null
     })
+
+    //ToRemove
+    const [paginaArchivos, setPaginaArchivos] = useState ({
+        numeroPagina: 0,
+        orderBy: "fechaCarga",
+        ascendingOrder: false,
+        pacienteId: null,
+    })
+
+    const [paginacion, setPaginacion] = useState ({
+        first: null,
+        last: null,
+        totalPages: null
+    })
+
+    useEffect(() => {
+        if(paginaArchivos.pacienteId !== null) {
+            traerArchivosPaginadosPaciente(paginaArchivos)
+        }
+    }, [paginaArchivos])
+
+    useEffect(() => {
+        if(props.pacienteId !== "") {
+            seleccionarPacienteProp()
+        }
+    },[])
+
+    const seleccionarPacienteProp = () => {
+        getPaciente(props.pacienteId)
+        .then(
+            data => {
+                setPaciente({
+                    nombre: data.nombre,
+                    dni: data.dni,
+                    edad: data.edad,
+                    obraSocial: data.obraSocial,
+                    plan: data.plan,
+                    email: data.email,
+                    telefono: data.telefono,
+                    id: data.id
+                })
+                //ToRemove
+                setPaginaArchivos({
+                    ...paginaArchivos,
+                    pacienteId: data.id
+                })
+            }
+        )
+        .catch(
+            error=> {
+                Swal.fire({
+                    title: 'Usuario no encontrado'
+                })
+            }
+        )
+    }
+
+    const [archivos, setArchivos] = useState ([]);
+
+    const [archivoNuevo, setArchivoNuevo] = useState (null)
+
+    const handleFileChange = (e) => {
+        setArchivoNuevo(e.target.files[0])
+    }
+
+    const handleSubirArchivo = (e) => {
+        e.preventDefault()
+        if(archivoNuevo !== null) {
+            cargarArchivo(archivoNuevo, paciente.id)
+            .then(data => {
+                traerArchivosPaginadosPaciente(paginaArchivos)
+            })
+        }
+    }
+
+    //StopRemove
 
     const handleInputPaciente = (input) => {
         return buscarPacienteLike({dniONombre: input})
@@ -35,14 +114,20 @@ const BuscadorPacientes = () => {
         getPaciente(pacienteId)
         .then(
             data => {
-                return setPaciente({
+                setPaciente({
                     nombre: data.nombre,
                     dni: data.dni,
                     edad: data.edad,
                     obraSocial: data.obraSocial,
                     plan: data.plan,
                     email: data.email,
-                    telefono: data.telefono
+                    telefono: data.telefono,
+                    id: data.id
+                })
+                //ToRemove
+                setPaginaArchivos({
+                    ...paginaArchivos,
+                    pacienteId: data.id
                 })
             }
         )
@@ -50,6 +135,20 @@ const BuscadorPacientes = () => {
             error=> {
                 Swal.fire({
                     title: 'Usuario no encontrado'
+                })
+            }
+        )
+    }
+
+    const traerArchivosPaginadosPaciente = () => {
+        getArchivosPaciente(paginaArchivos)
+        .then(
+            data => {
+                setArchivos(data.archivos)
+                setPaginacion({
+                    first: data.primera,
+                    last: data.ultima,
+                    totalPages: data.cantidadPaginas
                 })
             }
         )
@@ -65,6 +164,27 @@ const BuscadorPacientes = () => {
             email: "",
             telefono: null
         })
+    }
+
+    const handleEliminarArchivo = (id) => {
+        eliminarArchivo(id).then(
+            data => {
+                traerArchivosPaginadosPaciente()
+            }
+        )
+    }
+
+    const handleCambiarPagina = (nroPagina) => {
+        setPaginaArchivos({...paginaArchivos, numeroPagina: nroPagina})
+    }
+
+    //ToDelete
+    const handleIrAPrimero = () => {
+        setPaginaArchivos({...paginaArchivos, numeroPagina: 0})
+    }
+
+    const handleIrAUltimo = () => {
+        setPaginaArchivos({...paginaArchivos, numeroPagina: paginacion.totalPages-1})
     }
 
     return (
@@ -87,12 +207,36 @@ const BuscadorPacientes = () => {
                 <Collapse in={paciente.nombre.length > 0} >
                     <div className="row">
                         <div className="px-2 py-2 col-md-10">
-                            <h5>{paciente.nombre}</h5>
-                            <h5>{paciente.dni}</h5>
-                            <h5>{paciente.telefono}</h5>
-                            <h5>{paciente.email}</h5>
-                            <h5>{paciente.obraSocial ? paciente.obraSocial + " - " + paciente.plan : "No se encontro informacion de cobertura medica"}</h5>
-                            <h5>{"Proximo turno: No se encontro ningun turno agendado"}</h5>
+                            <hr/>
+                        <h4>Detalle del paciente</h4>
+                            <table className="table table-bordered table-striped    ">
+                                <tbody>
+                                    <tr>
+                                        <td><h6>Nombre</h6></td>
+                                        <td>{paciente.nombre}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><h6>DNI</h6></td>
+                                        <td>{paciente.dni}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><h6>Telefono</h6></td>
+                                        <td>{paciente.telefono}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><h6>Email</h6></td>
+                                        <td>{paciente.email}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><h6>Cobertura</h6></td>
+                                        <td>{paciente.obraSocial ? paciente.obraSocial + " - " + paciente.plan : "No se encontro informacion de cobertura medica"}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <h4>Historia Clinica</h4>
+                        <div className="px-2 py-2 col-md-10" id="archivos-paciente">
+                            <Link to={{pathname: `/archivos_paciente/${paciente.id}`}} className="btn btn-primary" >VER ARCHIVOS</Link>
                         </div>
                     </div>
                 </Collapse>

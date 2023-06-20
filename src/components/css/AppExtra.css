@@ -1,0 +1,7 @@
+.columna-nav {
+}
+
+.columna-main {
+    height: 100vh;
+    overflow-y: scroll;
+}

@@ -13,27 +13,34 @@ import ListaTurnos from './components/ListaTurnos'
 import NuevoTurno from './components/NuevoTurno'
 import Calendario from './components/Calendario'
 import BarraNavegacion from './components/BarraNavegacion';
+import Login from './components/Login';
 import { Col, Row } from 'react-bootstrap';
 import AgendarPaciente from './components/AgendarPaciente';
-import PacientesMain from './components/PacientesMain'
+import PacientesMain from './components/PacientesMain';
+import ArchivosPaginados from './components/ArchivosPaginados';
+import ArchivosPaginadosTurno from './components/ArchivosPaginadosTurno';
+import './components/css/AppExtra.css';
 
 const App = () => {
   return (
     <Router>
-      <div>
+      <div className=''>
         <Row>
-          <Col md={2}>
+          <Col md={2} className='columna-nav'>
             <BarraNavegacion/>
           </Col>
-          <Col md={10}>
+          <Col md={10} className='columna-main'>
                 <Routes>
+                  <Route path="/profesional/login" element={ <Login/> }/>
                   <Route path="/nuevo_paciente" element={<AgendarPaciente/>}/>
                   <Route path="/turno/:id" element={ <Turno/> }/>
                   <Route path="/turnos" element={ <ListaTurnos/> } />
-                  <Route path="/*" element={ <ListaTurnos/> }/>
+                  <Route path="/*" element={ <Login/> }/>
                   <Route path="/nuevo_turno" element={ <NuevoTurno/> }/>
                   <Route path="/calendario" element={ <Calendario/>}/>
-                  <Route path="/paciente" element={ <PacientesMain/>}/>
+                  <Route path="/pacientes" element={ <PacientesMain/>}/>
+                  <Route path="/archivos_paciente/:id" element={<ArchivosPaginados/>}/>
+                  <Route path="/archivos_paciente_turno/:id" element={<ArchivosPaginadosTurno/>}/>
                 </Routes>
           </Col>
         </Row>

@@ -6,7 +6,6 @@ import { Container, Modal, Row, Col } from 'react-bootstrap';
 import { es } from 'date-fns/locale';
 import './css/Calendario.css'
 import { Link } from 'react-router-dom';
-import NuevoTurno from './NuevoTurno'
 import NuevoTurnoFecha from './NuevoTurnoFecha'
 import { formatENtoES } from './FuncionesGenerales';
 import { cantidadTurnosPrioritarios, cantidadTurnosTotal, getPrioritariosDeMes } from './Api';
@@ -21,11 +20,13 @@ const Calendario = () => {
     const [diasConPrioritarios, setDiasConPrioritarios] = useState([]);
 
     useEffect(() => {
-      turnosEnFecha();
-      prioritariosEnFecha();
+      if(fechaSeleccionada != null) {
+        turnosEnFecha();
+        prioritariosEnFecha();
+      }
       getDiasConPrioritarios();
   }, [show, showMenu, activeDate])
-    
+
     const getHeader = () => {
         return (
           <div className="header">
@@ -82,8 +83,9 @@ const Calendario = () => {
               } 
               `
             }
-              onClick={() => {
+              onClick={(e) => {
                 if(isSameMonth(cloneDate, activeDate)) {
+                  console.log(cloneDate)
                   setFechaSeleccionada(format(cloneDate, 'yyyy-MM-dd'));
                   setShowMenu(true)
                 }
@@ -112,7 +114,8 @@ const Calendario = () => {
         const endOfTheSelectedMonth = endOfMonth(activeDate);
         const startDate = startOfWeek(startOfTheSelectedMonth);
         const endDate = endOfWeek(endOfTheSelectedMonth);
-        //getDiasConPrioritarios(primeroDelMes)      
+        //getDiasConPrioritarios(primeroDelMes)
+        //console.log("DiasConPrioritarios: " + diasConPrioritarios)      
         const diasConPrioritarioDelMes = diasConPrioritarios.map(fecha => parse(fecha, 'yyyy-MM-dd', new Date()))
         let currentDate = startDate;
   
@@ -152,6 +155,7 @@ const Calendario = () => {
       }
       
       const prioritariosEnFecha = () => {
+        //console.log(fechaSeleccionada)
         cantidadTurnosPrioritarios(fechaSeleccionada)
           .then(
             data => {
@@ -188,7 +192,7 @@ const Calendario = () => {
                         <button className='btn btn-primary' onClick={handleShowMenuDia}>Nuevo Turno</button>
                       </Col>
                       <Col>
-                        <Link to={{pathname: `/turno/`}} state={{fecha:fechaSeleccionada}} type="button" className="btn btn-primary"> {'Ver turnos'} </Link>
+                        <Link to={{pathname: `/turnos`}} state={fechaSeleccionada} type="button" className="btn btn-primary"> {'Ver turnos'} </Link>
                       </Col>
                     </Row>
                   </Modal.Body>

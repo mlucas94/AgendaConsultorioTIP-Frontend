@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useParams } from "react-router-dom"
 import { getTurnos } from './Api.js';
 import Col from 'react-bootstrap/Col';
 import Table from 'react-bootstrap/Table'
-import { useLocation } from 'react-router-dom'
 import { format } from 'date-fns'
 
-const ListaTurnos = () => {
+const ListaTurnos = (props) => {
 
     const location = useLocation()
+    const fechaSeleccionada = location.state;
+    //let { fechaSeleccionada } = useParams();
 
     const [listaTurnosData, setListaTurnosData] = useState([])
 
@@ -17,7 +18,8 @@ const ListaTurnos = () => {
     }, [])
 
     const getTurnosData = () => {
-        getTurnos(location.state ? location.state.fecha : format(new Date(), 'yyyy-MM-dd'))
+        console.log(fechaSeleccionada)
+        getTurnos(fechaSeleccionada ? fechaSeleccionada : format(new Date(), 'yyyy-MM-dd'))
             .then(
                 data => {
                     setListaTurnosData(
