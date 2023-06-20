@@ -21,11 +21,13 @@ const Calendario = () => {
     const [diasConPrioritarios, setDiasConPrioritarios] = useState([]);
 
     useEffect(() => {
-      turnosEnFecha();
-      prioritariosEnFecha();
+      if(fechaSeleccionada != null) {
+        turnosEnFecha();
+        prioritariosEnFecha();
+      }
       getDiasConPrioritarios();
   }, [show, showMenu, activeDate])
-    
+
     const getHeader = () => {
         return (
           <div className="header">
@@ -82,7 +84,7 @@ const Calendario = () => {
               } 
               `
             }
-              onClick={() => {
+              onClick={(e) => {
                 if(isSameMonth(cloneDate, activeDate)) {
                   setFechaSeleccionada(format(cloneDate, 'yyyy-MM-dd'));
                   setShowMenu(true)
@@ -113,7 +115,7 @@ const Calendario = () => {
         const startDate = startOfWeek(startOfTheSelectedMonth);
         const endDate = endOfWeek(endOfTheSelectedMonth);
         //getDiasConPrioritarios(primeroDelMes)
-        console.log("DiasConPrioritarios: " + diasConPrioritarios)      
+        //console.log("DiasConPrioritarios: " + diasConPrioritarios)      
         const diasConPrioritarioDelMes = diasConPrioritarios.map(fecha => parse(fecha, 'yyyy-MM-dd', new Date()))
         let currentDate = startDate;
   
@@ -153,6 +155,7 @@ const Calendario = () => {
       }
       
       const prioritariosEnFecha = () => {
+        //console.log(fechaSeleccionada)
         cantidadTurnosPrioritarios(fechaSeleccionada)
           .then(
             data => {
