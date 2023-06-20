@@ -1,6 +1,11 @@
 import axios from 'axios';
 const API_URL = 'http://localhost:8081';
 const ORIGIN_URL = 'http://localhost:3000';
+const configAuth = { 
+	headers: { 
+		Authorization: `Bearer ${sessionStorage.getItem('currentUser')}`
+	}
+}
 
 export async function turnoById(id) {
 	const config = { 
@@ -30,6 +35,7 @@ export async function getTurnos(fechaSeleccionada) {
 	console.log("session token " + sessionStorage.getItem('currentUser'))
 	return await axios.get(`${API_URL}/turnos`, {params:{fecha:fechaSeleccionada}, ...config})
 		.then(response => {
+			console.log("HOLA" + fechaSeleccionada)
 			return response.data
 		})
 		.catch(err => {
@@ -73,7 +79,7 @@ export async function buscarPacienteLike(searchParameter) {
 }
 
 export const getPaciente = (id) => {
-	return axios.get(`${API_URL}/pacientes/${id}`)
+	return axios.get(`${API_URL}/pacientes/${id}`, configAuth)
 		.then(response => {
 			return response.data
 		})
@@ -102,7 +108,7 @@ export async function cantidadTurnosTotal(fecha) {
 			Authorization: `Bearer ${sessionStorage.getItem('currentUser')}`
 		}
 	}
-	console.log("session token " + sessionStorage.getItem('currentUser'))
+	//console.log("session token " + sessionStorage.getItem('currentUser'))
 	return await axios.get(`${API_URL}/turnos/cantidadTotal`, {params: {fechaConsultada: fecha}, ...config})
 		.then(response => {
 			return response.data
@@ -156,7 +162,7 @@ export async function loginProfesional(emailLogin, passwordLogin) {
 }
 
 export const agendarPaciente = (paciente) => {
-	return axios.post(`${API_URL}/pacientes`, paciente)
+	return axios.post(`${API_URL}/pacientes`, paciente, configAuth)
 		.then(response => {
 			return true;
 		})
