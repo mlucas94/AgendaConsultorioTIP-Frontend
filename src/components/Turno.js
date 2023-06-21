@@ -70,6 +70,8 @@ const Turno = (props) => {
                 </table>
             </div>
             <Link to={{pathname: `/archivos_paciente_turno/${id}`}} className="btn btn-primary" >Ver archivos</Link>
+            <hr/>
+            <Link to={{pathname: `/pacientes`}} state={turnoData.pacienteId}  className="btn btn-primary">Ir a paciente</Link>
 
             
     	</div>
