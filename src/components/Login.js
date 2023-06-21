@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { loginProfesional } from './Api.js';
 import './css/Login.css';
-import Swal from 'sweetalert2';
 
 function Login(props) {
   const [email, setEmail] = useState("")
@@ -10,7 +9,7 @@ function Login(props) {
 
   const [redirect, setRedirect] = useState(false)
   const [errorLogin, setErrorLogin] = useState(false)
-  const [fromSuccessRegister, setFromSuccessRegister] = useState(false)
+  const [fromSuccessLogin, setFromSuccessLogin] = useState(false)
 
   useEffect(() => {
 
@@ -27,13 +26,13 @@ function Login(props) {
         accessToken = response.accessToken;
         console.log("session token", accessToken);
         sessionStorage.setItem('currentUser', accessToken);
-        setFromSuccessRegister(true)
+        setFromSuccessLogin(true)
         setRedirect(true);
       })
       .catch(e => {
         console.log(e)
         setErrorLogin(true)
-        setFromSuccessRegister(false)
+        setFromSuccessLogin(false)
       })
 
   }
@@ -73,15 +72,15 @@ function Login(props) {
             <>
               <hr></hr>
               <div class="alert alert-danger" role="alert">
-                Incorrect email or password!
+                Email y/o contraseña incorrectos
               </div>
             </>
           }
-          {fromSuccessRegister &&
+          {fromSuccessLogin &&
             <>
               <hr></hr>
               <div class="alert alert-success" role="alert">
-                You're registred!
+                Ha ingresado correctamente
               </div>
             </>
           }
