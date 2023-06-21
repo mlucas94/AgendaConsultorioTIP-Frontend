@@ -14,6 +14,7 @@ import NuevoTurno from './components/NuevoTurno'
 import Calendario from './components/Calendario'
 import BarraNavegacion from './components/BarraNavegacion';
 import Login from './components/Login';
+import Registrar from './components/Registrar';
 import { Col, Row } from 'react-bootstrap';
 import AgendarPaciente from './components/AgendarPaciente';
 import PacientesMain from './components/PacientesMain';
@@ -32,15 +33,17 @@ const App = () => {
           <Col md={10} className='columna-main'>
                 <Routes>
                   <Route path="/profesional/login" element={ <Login/> }/>
+                  <Route path="/profesional/registrarse" element={ <Registrar/> }/>
                   <Route path="/nuevo_paciente" element={<AgendarPaciente/>}/>
                   <Route path="/turno/:id" element={ <Turno/> }/>
                   <Route path="/turnos" element={ <ListaTurnos/> } />
-                  <Route path="/*" element={ <Login/> }/>
                   <Route path="/nuevo_turno" element={ <NuevoTurno/> }/>
                   <Route path="/calendario" element={ <Calendario/>}/>
                   <Route path="/pacientes" element={ <PacientesMain/>}/>
                   <Route path="/archivos_paciente/:id" element={<ArchivosPaginados/>}/>
                   <Route path="/archivos_paciente_turno/:id" element={<ArchivosPaginadosTurno/>}/>
+                  
+                  <Route path="/*" element={ <Login/> }/>
                 </Routes>
           </Col>
         </Row>

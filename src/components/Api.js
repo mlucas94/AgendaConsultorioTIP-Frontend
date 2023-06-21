@@ -1,6 +1,5 @@
 import axios from 'axios';
 const API_URL = 'http://localhost:8081';
-const ORIGIN_URL = 'http://localhost:3000';
 const configAuth = { 
 	headers: { 
 		Authorization: `Bearer ${sessionStorage.getItem('currentUser')}`
@@ -157,6 +156,13 @@ export async function loginProfesional(emailLogin, passwordLogin) {
 	return await axios.post(`${API_URL}/profesional/login`, body)
 		.then(response => {
 			return response.data
+		})
+}
+
+export async function registrarProfesional(payload) {
+	return await axios.post(`${API_URL}/profesional/registrarse`, payload)
+		.then(response => {
+			return response
 		})
 }
 
