@@ -178,9 +178,9 @@ const AgendarPaciente = () => {
                         </div>
                     </div>
                 </div>
-                <div className="row">
-                    <div className="col-2 p-2 ps-5">
-                        <button className='btn-primario'>AGENDAR</button>
+                <div className="row text-center">
+                    <div className="col pt-4 px-5 text-center ">
+                        <button className='btn-primario'>Guardar</button>
                     </div>
                 </div>
             </Form>

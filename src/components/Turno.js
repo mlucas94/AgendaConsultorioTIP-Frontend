@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { turnoById, getArchivosTurno, cargarArchivoTurno, desasociarArchivoTurno } from './Api.js';
+import { turnoById } from './Api.js';
 import { Link, useParams } from 'react-router-dom';
-import ArchivosPaginados from './ArchivosPaginados.js';
+import './css/Botones.css'
 
 const Turno = (props) => {
     const [turnoData, setTurnoData] = useState({
@@ -69,9 +69,9 @@ const Turno = (props) => {
                     </tbody>
                 </table>
             </div>
-            <Link to={{pathname: `/archivos_paciente_turno/${id}`}} className="btn btn-primary" >Ver archivos</Link>
+            <Link to={{pathname: `/archivos_paciente_turno/${id}`}} className=" btn-primario" style={{ textDecoration: 'none' }}>Ver archivos</Link>
             <hr/>
-            <Link to={{pathname: `/pacientes`}} state={turnoData.pacienteId}  className="btn btn-primary">Ir a paciente</Link>
+            <Link to={{pathname: `/pacientes`}} state={turnoData.pacienteId}  className=" btn-primario" style={{ textDecoration: 'none' }}>Ir a paciente</Link>
 
             
     	</div>

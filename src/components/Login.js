@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { loginProfesional } from './Api.js';
 import './css/Login.css';
+import './css/Botones.css'
 
 function Login(props) {
   const [email, setEmail] = useState("")
@@ -64,7 +65,7 @@ function Login(props) {
             <label for="password">Contraseña</label>
             <input type="password" class="form-control" id="password" onChange={(e) => setPassword(e.target.value)} />
           </div>
-          <button onClick={atemptLogin} disabled={canLogin()} className='btn btn-primary'>Ingresar</button>
+          <button onClick={atemptLogin} disabled={canLogin()} className='btn-primario'>Ingresar</button>
           <Link to="/profesional/registrarse" className="btn btn-light">Registrarse</Link>
           <hr></hr>
           <p>Para crear un nuevo usuario, elija la opción Registrarse</p>
