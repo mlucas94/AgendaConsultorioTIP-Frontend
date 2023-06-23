@@ -20,6 +20,7 @@ import PacientesMain from './components/PacientesMain';
 import ArchivosPaginados from './components/ArchivosPaginados';
 import ArchivosPaginadosTurno from './components/ArchivosPaginadosTurno';
 import './components/css/AppExtra.css';
+import LandingProfesional from './components/LandingProfesional';
 
 const App = () => {
   return (
@@ -36,6 +37,7 @@ const App = () => {
                   <Route path="/turno/:id" element={ <Turno/> }/>
                   <Route path="/turnos" element={ <ListaTurnos/> } />
                   <Route path="/*" element={ <Login/> }/>
+                  <Route path="/landing" element={ <LandingProfesional/> }/>
                   <Route path="/nuevo_turno" element={ <NuevoTurno/> }/>
                   <Route path="/calendario" element={ <Calendario/>}/>
                   <Route path="/pacientes" element={ <PacientesMain/>}/>

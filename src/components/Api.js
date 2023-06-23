@@ -243,3 +243,11 @@ export const proximoTurnoPaciente = (idPaciente) => {
 		return response.data;
 	})
 }
+
+export const getLanding = () => {
+	return axios.get(`${API_URL}/landing`, configAuth)
+	.then(response => {
+		return response.data;
+	})
+}
+
