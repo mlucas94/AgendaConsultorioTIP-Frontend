@@ -25,6 +25,10 @@ const BarraNavegacion = (props) => {
         setTituloData(titulo ? titulo : 'Inicio')
     }
 
+    const cerrarSesion = () => {
+        sessionStorage.removeItem("currentUser")
+    }
+
     return(
 
         <div>
@@ -50,7 +54,7 @@ const BarraNavegacion = (props) => {
                             <NavLink className='sidebar-link-text' href="/pacientes">Pacientes</NavLink>
                         </div>
                         <div className='sidebar-link'>
-                            <NavLink className='sidebar-link-text' href="/">Cerrar Sesion</NavLink>
+                            <NavLink className='sidebar-link-text' onClick={cerrarSesion} href="/profesional/login">Cerrar Sesion</NavLink>
                         </div>
                     </div>
                 </div>
