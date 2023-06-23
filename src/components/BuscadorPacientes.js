@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import AsyncSelect from 'react-select/async'
-import { buscarPacienteLike, getPaciente, getArchivosPaciente, cargarArchivo, eliminarArchivo } from "./Api"
+import { buscarPacienteLike, getPaciente, proximoTurnoPaciente } from "./Api"
 import { Collapse } from "react-bootstrap"
 import Swal from "sweetalert2"
 import ArchivosPaginados from "./ArchivosPaginados"
@@ -19,32 +19,38 @@ const BuscadorPacientes = (props) => {
         telefono: null,
         id: null
     })
-
-    //ToRemove
-    const [paginaArchivos, setPaginaArchivos] = useState ({
-        numeroPagina: 0,
-        orderBy: "fechaCarga",
-        ascendingOrder: false,
-        pacienteId: null,
+    const [proximoTurno, setProximoTurno] = useState({
+        idTurno: null,
+        fechaTurno: null,
     })
-
-    const [paginacion, setPaginacion] = useState ({
-        first: null,
-        last: null,
-        totalPages: null
-    })
-
-    useEffect(() => {
-        if(paginaArchivos.pacienteId !== null) {
-            traerArchivosPaginadosPaciente(paginaArchivos)
-        }
-    }, [paginaArchivos])
 
     useEffect(() => {
         if(props.pacienteId !== "") {
             seleccionarPacienteProp()
         }
     },[])
+
+    useEffect(() => {
+        if(paciente.id !== null) {
+            getProximoTurno()
+        }
+    },[paciente])
+
+    const getProximoTurno = () => {
+        proximoTurnoPaciente(paciente.id)
+        .then(
+            data => {
+                console.log(data)
+                if(data) {
+                    setProximoTurno({
+                        idTurno: data.id,
+                        fechaTurno: data.horarioInicio
+                    }
+                    )
+                }
+            }
+        )
+    }
 
     const seleccionarPacienteProp = () => {
         getPaciente(props.pacienteId)
@@ -60,11 +66,6 @@ const BuscadorPacientes = (props) => {
                     telefono: data.telefono,
                     id: data.id
                 })
-                //ToRemove
-                setPaginaArchivos({
-                    ...paginaArchivos,
-                    pacienteId: data.id
-                })
             }
         )
         .catch(
@@ -75,26 +76,6 @@ const BuscadorPacientes = (props) => {
             }
         )
     }
-
-    const [archivos, setArchivos] = useState ([]);
-
-    const [archivoNuevo, setArchivoNuevo] = useState (null)
-
-    const handleFileChange = (e) => {
-        setArchivoNuevo(e.target.files[0])
-    }
-
-    const handleSubirArchivo = (e) => {
-        e.preventDefault()
-        if(archivoNuevo !== null) {
-            cargarArchivo(archivoNuevo, paciente.id)
-            .then(data => {
-                traerArchivosPaginadosPaciente(paginaArchivos)
-            })
-        }
-    }
-
-    //StopRemove
 
     const handleInputPaciente = (input) => {
         return buscarPacienteLike({dniONombre: input})
@@ -124,31 +105,12 @@ const BuscadorPacientes = (props) => {
                     telefono: data.telefono,
                     id: data.id
                 })
-                //ToRemove
-                setPaginaArchivos({
-                    ...paginaArchivos,
-                    pacienteId: data.id
-                })
             }
         )
         .catch(
             error=> {
                 Swal.fire({
                     title: 'Usuario no encontrado'
-                })
-            }
-        )
-    }
-
-    const traerArchivosPaginadosPaciente = () => {
-        getArchivosPaciente(paginaArchivos)
-        .then(
-            data => {
-                setArchivos(data.archivos)
-                setPaginacion({
-                    first: data.primera,
-                    last: data.ultima,
-                    totalPages: data.cantidadPaginas
                 })
             }
         )
@@ -164,27 +126,6 @@ const BuscadorPacientes = (props) => {
             email: "",
             telefono: null
         })
-    }
-
-    const handleEliminarArchivo = (id) => {
-        eliminarArchivo(id).then(
-            data => {
-                traerArchivosPaginadosPaciente()
-            }
-        )
-    }
-
-    const handleCambiarPagina = (nroPagina) => {
-        setPaginaArchivos({...paginaArchivos, numeroPagina: nroPagina})
-    }
-
-    //ToDelete
-    const handleIrAPrimero = () => {
-        setPaginaArchivos({...paginaArchivos, numeroPagina: 0})
-    }
-
-    const handleIrAUltimo = () => {
-        setPaginaArchivos({...paginaArchivos, numeroPagina: paginacion.totalPages-1})
     }
 
     return (
@@ -237,6 +178,11 @@ const BuscadorPacientes = (props) => {
                         <h4>Historia Clinica</h4>
                         <div className="px-2 py-2 col-md-10" id="archivos-paciente">
                             <Link to={{pathname: `/archivos_paciente/${paciente.id}`}} className="btn btn-primary" >VER ARCHIVOS</Link>
+                        </div>
+                        <div>
+                            {proximoTurno.idTurno ?
+                             <Link to={{pathname: `/turno/${proximoTurno.idTurno}`}} className="btn btn-primary">Proximo turno</Link>
+                             : <h5>No hay turnos agendados para el paciente</h5>}
                         </div>
                     </div>
                 </Collapse>

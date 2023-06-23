@@ -42,7 +42,7 @@ function Login(props) {
   }
 
   if (redirect) {
-    return <Navigate to='/turnos' />
+    return <Navigate to='/landing' />
   }
 
   return (

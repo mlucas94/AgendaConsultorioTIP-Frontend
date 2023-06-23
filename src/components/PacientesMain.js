@@ -7,9 +7,6 @@ const PacientesMain = (props) => {
     const location = useLocation();
     const propsData = location.state;
 
-    const [proximosTurnos, setProximosTurnos] = useState([])
-    const [proximoPacientePrioritario, setProximoPacientePrioritario] = useState(null)
-
     return (
         <div className="p-3">
             <h3>Buscador de pacientes</h3>

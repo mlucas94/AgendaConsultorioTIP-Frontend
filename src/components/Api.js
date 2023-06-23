@@ -241,3 +241,19 @@ export const desasociarArchivoTurno = (idArchivoDesasociar, idTurno) => {
 		return response
 	})
 }
+
+export const proximoTurnoPaciente = (idPaciente) => {
+	console.log("ID del paciente : " + idPaciente)
+	return axios.get(`${API_URL}/proximo_turno/${idPaciente}`, configAuth)
+	.then(response => {
+		return response.data;
+	})
+}
+
+export const getLanding = () => {
+	return axios.get(`${API_URL}/landing`, configAuth)
+	.then(response => {
+		return response.data;
+	})
+}
+
