@@ -257,3 +257,25 @@ export const getLanding = () => {
 	})
 }
 
+export const guardarRespuestas = (respuestas) => {
+	return axios.post(`${API_URL}/formulario/guardar`, respuestas, configAuth)
+	.then(response => {
+		console.log("HEY")
+		return response
+	})
+	.catch(error => {
+		throw Error("Ocurrio un error")
+	})
+}
+
+export const getRespuestas = (id) => {
+	console.log("session token " + sessionStorage.getItem('currentUser'))
+	return axios.get(`${API_URL}/formulario`, {params: {idFormulario: id}, ...configAuth})
+	.then(response => {
+		return response.data;
+	})
+	.catch(error => {
+		throw Error(error.message);
+	})
+}
+
