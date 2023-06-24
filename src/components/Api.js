@@ -55,7 +55,8 @@ export async function agendarTurno(turno) {
 		})
 		.catch(err => {
 			console.log("Rompio agendarTurno")
-			return err
+			console.log(err.message)
+			throw Error(err.message)
 		})
 }
 

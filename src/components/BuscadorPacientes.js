@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react"
 import AsyncSelect from 'react-select/async'
 import { buscarPacienteLike, getPaciente, proximoTurnoPaciente } from "./Api"
-import { Collapse } from "react-bootstrap"
+import { Col, Collapse, Row } from "react-bootstrap"
 import Swal from "sweetalert2"
 import ArchivosPaginados from "./ArchivosPaginados"
 import { Link } from "react-router-dom"
+import './css/Botones.css'
 
 const BuscadorPacientes = (props) => {
     
@@ -40,7 +41,6 @@ const BuscadorPacientes = (props) => {
         proximoTurnoPaciente(paciente.id)
         .then(
             data => {
-                console.log(data)
                 if(data) {
                     setProximoTurno({
                         idTurno: data.id,
@@ -124,7 +124,8 @@ const BuscadorPacientes = (props) => {
             obraSocial: "",
             plan: "",
             email: "",
-            telefono: null
+            telefono: null,
+            id: null
         })
     }
 
@@ -143,7 +144,7 @@ const BuscadorPacientes = (props) => {
                     />
                 </div>
                 <div className="col-md-5" >
-                    <button className="btn btn-primary" onClick={handleLimpiarPaciente}>Limpiar busqueda</button>
+                    <button className=" btn-primario" onClick={handleLimpiarPaciente}>Limpiar busqueda</button>
                 </div>
                 <Collapse in={paciente.nombre.length > 0} >
                     <div className="row">
@@ -172,17 +173,27 @@ const BuscadorPacientes = (props) => {
                                         <td><h6>Cobertura</h6></td>
                                         <td>{paciente.obraSocial ? paciente.obraSocial + " - " + paciente.plan : "No se encontro informacion de cobertura medica"}</td>
                                     </tr>
+                                    <tr>
+                                        <td><h6>Proximo Turno</h6></td>
+                                        <td>
+                                        {proximoTurno.idTurno ?
+                                            <Row>
+                                                <Col className="inline">
+                                                    <div>{proximoTurno.fechaTurno}</div>
+                                                </Col>
+                                                <Col>
+                                                    <Link to={{pathname: `/turno/${proximoTurno.idTurno}`}} className="btn-primario" style={{ textDecoration: 'none' }}>Ir al turno</Link>
+                                                </Col>
+                                            </Row>
+                                            : <div>No hay turnos agendados para el paciente</div>}
+                                        </td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
                         <h4>Historia Clinica</h4>
                         <div className="px-2 py-2 col-md-10" id="archivos-paciente">
-                            <Link to={{pathname: `/archivos_paciente/${paciente.id}`}} className="btn btn-primary" >VER ARCHIVOS</Link>
-                        </div>
-                        <div>
-                            {proximoTurno.idTurno ?
-                             <Link to={{pathname: `/turno/${proximoTurno.idTurno}`}} className="btn btn-primary">Proximo turno</Link>
-                             : <h5>No hay turnos agendados para el paciente</h5>}
+                            <Link to={{pathname: `/archivos_paciente/${paciente.id}`}} className="btn-primario" style={{ textDecoration: 'none' }} >VER ARCHIVOS</Link>
                         </div>
                     </div>
                 </Collapse>

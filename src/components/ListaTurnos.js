@@ -4,12 +4,12 @@ import { getTurnos } from './Api.js';
 import Col from 'react-bootstrap/Col';
 import Table from 'react-bootstrap/Table'
 import { format } from 'date-fns'
+import './css/Botones.css';
 
 const ListaTurnos = (props) => {
 
     const location = useLocation()
     const fechaSeleccionada = location.state;
-    //let { fechaSeleccionada } = useParams();
 
     const [listaTurnosData, setListaTurnosData] = useState([])
 
@@ -33,8 +33,9 @@ const ListaTurnos = (props) => {
     return (
         <div className='container'>
             <h1>Turnos</h1>
-            <Link to={{pathname: `/calendario`}} type="button" className="btn btn-primary"> Nuevo turno </Link>
+            <Link to={{pathname: `/calendario`}} type="button" className="btn-primario" style={{ textDecoration: 'none' }}> Nuevo turno </Link>
             <div>
+            <br/>
             <Table bordered>
                 <thead>
                     {/* meter en un css el text align a th */}
@@ -57,7 +58,7 @@ const ListaTurnos = (props) => {
                         <td align='center'>{turno.paciente.nombre}</td>
                         <td align='center'>{turno.horarioInicio.substr(11, 5)}</td>
                         <td align='center'>
-                        <Link to={{pathname: `/turno/${turno.id}`}} type="button" className="btn btn-primary"> Ver </Link>
+                        <Link to={{pathname: `/turno/${turno.id}`}} type="button" className="btn-primario" style={{ textDecoration: 'none' }}> Ver </Link>
                         </td>
                     </tr>
                 )}

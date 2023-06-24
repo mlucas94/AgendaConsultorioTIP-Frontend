@@ -10,6 +10,7 @@ import { Button, Table } from 'react-bootstrap';
 import './css/NuevoTurnoFecha.css'
 import { useNavigate } from 'react-router-dom';
 import AsyncSelect from 'react-select/async';
+import { mostrarAlertaCarga, cerrarAlertaCarga } from './FuncionesGenerales.js';
 
     const NuevoTurnoFecha = (props) => {
 
@@ -90,17 +91,11 @@ import AsyncSelect from 'react-select/async';
                 tipo: tipoTurno,
                 paciente: turnoData.paciente.value,
             }
+            mostrarAlertaCarga();
             agendarTurno(turnoAgendar)
                 .then(
                     data => {
-                        if (typeof data === "string") {
-                            Swal.fire ({
-                                title: 'Datos no validos para turno',
-                                text: data,
-                                icon: 'error'
-                            })
-                            return
-                        }
+                        cerrarAlertaCarga();
                         Swal.fire ({
                             title: 'Agendado con exito!',
                             text: '¿Desea agendar un nuevo turno?',
@@ -121,9 +116,10 @@ import AsyncSelect from 'react-select/async';
                 )
                 .catch( 
                     error => {
+                        cerrarAlertaCarga();
                         Swal.fire({
-                            title: "Error de conexión",
-                            text: "No se pudo guardar el turno.",
+                            title: "No se guardo el turno",
+                            text: "Seleccione un paciente y horario validos",
                             icon: 'error',
                             confirmButtonText: 'Aceptar'
                         })
