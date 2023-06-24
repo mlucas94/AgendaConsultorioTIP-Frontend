@@ -188,11 +188,11 @@ const Calendario = () => {
                   <Modal.Header> Turnos prioritarios: {prioritariosEnDia}</Modal.Header>
                   <Modal.Body className='container' centered>
                     <Row>
-                      <Col>
-                        <button className='btn btn-primary' onClick={handleShowMenuDia}>Nuevo Turno</button>
+                      <Col className='text-center'>
+                        <button className='btn-primario' onClick={handleShowMenuDia}>Nuevo Turno</button>
                       </Col>
-                      <Col>
-                        <Link to={{pathname: `/turnos`}} state={fechaSeleccionada} type="button" className="btn btn-primary"> {'Ver turnos'} </Link>
+                      <Col className='text-center'>
+                        <Link to={{pathname: `/turnos`}} state={fechaSeleccionada} type="button" className=" btn-primario" style={{ textDecoration: 'none' }}> {'Ver turnos'} </Link>
                       </Col>
                     </Row>
                   </Modal.Body>

@@ -4,6 +4,7 @@ import { Col } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 import { getArchivosTurno, cargarArchivoTurno, eliminarArchivo } from "./Api";
 import Swal from "sweetalert2"
+import './css/Botones.css';
 
 const ArchivosPaginadosTurno = (props) => {
 
@@ -115,7 +116,7 @@ const ArchivosPaginadosTurno = (props) => {
                                     <td>{archivo.fechaCarga}</td>
                                     <td>{archivo.nombreArchivo}</td>
                                     <td>
-                                        <button className="btn btn-primary" onClick={(e) => handleDescargarArchivo(archivo.id, archivo.nombreArchivo)}>Descargar</button> 
+                                        <button className="btn-primario" onClick={(e) => handleDescargarArchivo(archivo.id, archivo.nombreArchivo)}>Descargar</button> 
                                         <button className="btn btn-danger" onClick={(e)=> handleEliminarArchivo(archivo.id)}>Eliminar</button>
                                     </td>
                                 </tr>  
@@ -130,20 +131,20 @@ const ArchivosPaginadosTurno = (props) => {
                         <h6>Actualmente mostrando la unica pagina disponible</h6>
                         : 
                         <div className="row">
-                            <Col md={3}><button onClick={handleIrAPrimero} className={'btn btn-' + (paginacion.first ? "secondary\" disabled" : "primary")  } >Primera</button></Col>
-                            <Col md={3}><button onClick={(e) => handleCambiarPagina(paginaArchivos.numeroPagina - 1)} className={'btn btn-' + (paginacion.first ? "secondary\" disabled" : "primary")  } >Anterior</button></Col>
-                            <Col md={3}><button onClick={(e) => handleCambiarPagina(paginaArchivos.numeroPagina + 1)} className={'btn btn-' + (paginacion.last ? "secondary\" disabled" : "primary")  } >Siguiente</button></Col>
-                            <Col md={3}><button onClick={handleIrAUltimo} className={'btn btn-' + (paginacion.last ? "secondary\" disabled" : "primary")  } >Ultima</button></Col>
+                            <Col md={3}><button onClick={handleIrAPrimero} className={' btn-' + (paginacion.first ? "secundario \" disabled" : "primario")  } >Primera</button></Col>
+                            <Col md={3}><button onClick={(e) => handleCambiarPagina(paginaArchivos.numeroPagina - 1)} className={' btn-' + (paginacion.first ? "secundario \" disabled" : "primario")  } >Anterior</button></Col>
+                            <Col md={3}><button onClick={(e) => handleCambiarPagina(paginaArchivos.numeroPagina + 1)} className={' btn-' + (paginacion.last ? "secundario \" disabled" : "primario")  } >Siguiente</button></Col>
+                            <Col md={3}><button onClick={handleIrAUltimo} className={' btn-' + (paginacion.last ? "secundario \" disabled" : "primario")  } >Ultima</button></Col>
                         </div>
                     }
             <br/>
-            <div>
+            <div className="pt-4">
                         <h6>Carga de archivos</h6>
                 <input type ="file" onChange={handleFileChange}/>
-                <button className="btn btn-primary" type="submit" onClick={handleSubirArchivo}>Guardar Archivo</button>
+                <button className="btn-primario" type="submit" onClick={handleSubirArchivo}>Guardar Archivo</button>
             </div>
-            <div>
-                <Link to={{pathname: `/turno/${id}`}}  className="btn btn-primary">Volver a turno</Link>
+            <div className="pt-3">
+                <Link to={{pathname: `/turno/${id}`}}  className=" btn-primario" style={{ textDecoration: 'none' }}>Volver a turno</Link>
             </div>
         </div>
 

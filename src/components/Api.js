@@ -55,7 +55,26 @@ export async function agendarTurno(turno) {
 		})
 		.catch(err => {
 			console.log("Rompio agendarTurno")
-			return err
+			console.log(err.message)
+			throw Error(err.message)
+		})
+}
+
+export async function cancelarTurno(idTurno) {
+	const config = { 
+		headers: { 
+			Authorization: `Bearer ${sessionStorage.getItem('currentUser')}`
+		}
+	}
+	console.log("session token " + sessionStorage.getItem('currentUser'))
+	return await axios.post(`${API_URL}/turnos/cancelar/` + idTurno, {}, config)
+		.then(response => {
+			return true;
+		})
+		.catch(err => {
+			console.log("Rompio cancelarTurno")
+			console.log(err.message)
+			throw Error(err.message)
 		})
 }
 

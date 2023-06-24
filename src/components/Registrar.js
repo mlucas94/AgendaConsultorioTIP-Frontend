@@ -3,6 +3,7 @@ import './css/Registrar.css'
 import { registrarProfesional } from './Api.js';
 import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import './css/Botones.css'
 
 function Register(props) {
 
@@ -26,7 +27,10 @@ function Register(props) {
                 Swal.fire({
                     title: '¡Nuevo profesional ' + nombre + ' registrado!',
                     icon: 'success'
-                })
+                }).then ((result) => {
+                    if(result.isConfirmed) {
+                        window.location='/'
+                    }})
                 return
             })
             .catch(e => {
@@ -62,8 +66,8 @@ function Register(props) {
                         <input type="password" class="form-control" id="password" name="password" onChange={(e) => setPassword(e.target.value)} />
                     </div>
                     <div className="registerButtons">
-                        <button className='btn btn-primary' onClick={atemptRegister} disabled={canAtemptRegister()}>Registrarse</button>
-                        <button type="reset" className='btn btn-light'>Limpiar selección</button>
+                        <button className=' btn-primario' onClick={atemptRegister} disabled={canAtemptRegister()}>Registrarse</button>
+                        <button type="reset" className='btn-secundario'>Limpiar selección</button>
 
                         {errorRegister &&
                             <>
