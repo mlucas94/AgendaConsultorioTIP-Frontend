@@ -1,4 +1,4 @@
-import { Col, Form, FormCheck, FormControl, FormLabel, FormSelect, FormText, Row } from "react-bootstrap"
+import { ButtonGroup, Col, Collapse, Form, FormCheck, FormControl, FormLabel, FormSelect, FormText, Row } from "react-bootstrap"
 import { useEffect, useRef, useState } from "react"
 //import { guardarRespuestas } from "./Api"
 //import Swal from "sweetalert2"
@@ -17,12 +17,13 @@ const Formulario = () => {
 
     const [formulario, setFormulario] = useState({
         titulo: "",
-        preguntas: {}
+        preguntas: []
     })   
     
     useEffect(() => {
         construirFormulario();
     },[formulario])
+
     
     const handleInputTitulo = (e) => {
         setFormulario({...formulario, titulo: e.target.value})
@@ -67,7 +68,22 @@ const Formulario = () => {
 
     const handleCheckObligatorio = (e) => {
         setNuevaPregunta({...nuevaPregunta, obligatoria: e.target.checked})
-        console.log(formulario)
+    }
+
+    const [respuestaData, setRespuestaData] = useState({})
+
+    const handleInputRespuestaText = (e) => {
+        setRespuestaData((prevData) => ({
+            ...prevData,
+            [e.target.name]: e.target.value
+        }))
+    }
+
+    const handleInputRespuestaCheck = (e) => {
+        setRespuestaData((prevData) => ({
+            ...prevData,
+            [e.target.name]: e.target.value
+        }))
     }
 
     const construirFormulario = () => {
@@ -79,13 +95,41 @@ const Formulario = () => {
             <Form name={formulario.titulo}>
                 {Object.keys(formulario.preguntas).map((preguntaKey) => {
                     const pregunta = formulario.preguntas[preguntaKey]
-                    return (
-                        <div key={preguntaKey}>
+                    if(pregunta.tipo === 'text') {
+                        return (
+                            <div key={preguntaKey} className="mb-2">
                             <FormLabel>{pregunta.pregunta_nombre}</FormLabel>
-                            <FormControl name={preguntaKey} required={pregunta.obligatoria}/>
+                            <FormControl name={preguntaKey} required={pregunta.obligatoria} onChange={handleInputRespuestaText}/>
                             <span id={preguntaKey + '-validacion'}></span>
                         </div>
                     )
+                    }
+                    if(pregunta.tipo === 'radio') {
+                        return <div key={preguntaKey} className="mb-2">
+                            <FormLabel>{pregunta.pregunta_nombre}</FormLabel>
+                            <FormCheck
+                                className="mx-4"
+                                inline
+                                type="radio"
+                                name={preguntaKey}
+                                label="Si"
+                                value="Si"
+                                onChange={handleInputRespuestaCheck}
+                            />
+                            <FormCheck
+                                inline
+                                type="radio"
+                                name={preguntaKey}
+                                label="No"
+                                value="No"
+                                onChange={handleInputRespuestaCheck}
+                            />
+                            <span id={preguntaKey + '-validacion'}></span>
+                        </div>
+                    }
+                    if(pregunta.tipo === 'multipleselect'){
+                        
+                    }
                 })}
             </Form>
         </div>
@@ -96,6 +140,35 @@ const Formulario = () => {
 
     const [formularioHecho, setFormularioHecho] = useState(null)
 
+
+    //Multiselect opciones
+    const [opcionMultiselect, setOpcionMultiselect] = useState("");
+
+    const handleInputOpcionMultiselect = (e) => {
+        setOpcionMultiselect(e.target.value);
+    }
+
+    const handleAgregarOpcion = (e) => {
+        e.preventDefault()
+        const opcionNueva = opcionMultiselect.trim()
+        if(nuevaPregunta.lista_opciones.indexOf(opcionNueva) === -1){
+            setNuevaPregunta((prevData) => ({
+                ...prevData,
+                lista_opciones: [...prevData.lista_opciones, opcionNueva]
+            }))
+        }
+        setOpcionMultiselect("");
+        // document.getElementById("nueva-opcion");
+    }
+
+    //Ver porque esto no renderiza nada
+    const mostrarOpcionesAgregadas = () => {
+        return nuevaPregunta.lista_opciones.map((indexOpcion) => {
+                return <Col key={indexOpcion+"-opcion"}>{nuevaPregunta.lista_opciones[indexOpcion]}</Col>
+            }
+
+            )
+    }
 
     return (
         <div className="p-3 container">
@@ -129,12 +202,28 @@ const Formulario = () => {
                             <FormCheck type="checkbox" label="Obligatorio"  id="nuevo-campo-obligatorio" onChange={handleCheckObligatorio}/>
                         </Col>
                     </Row>
+                    <Collapse in={nuevaPregunta.tipo == "multiselect"} >
+                        <div>
+                            <Row>
+                                <Col className="pt-3">
+                                    <FormLabel>Agregar Opcion</FormLabel>
+                                    <FormControl id="nueva-opcion" value={opcionMultiselect} onChange={handleInputOpcionMultiselect}/>
+                                </Col>
+                                <Col className="d-flex align-items-end">
+                                    <button className="btn-primario" onClick={handleAgregarOpcion}>Agregar Opcion</button>
+                                </Col>
+                            </Row>
+                            <Row>
+                                {mostrarOpcionesAgregadas()}
+                            </Row>
+                        </div>
+                    </Collapse>
                     <div className="pt-4">
                         <button className="btn-primario" >Agregar campo</button>
                     </div>
                 </Form>
                 <div className="pt-4">
-                        <button className="btn-primario" onClick={construirFormulario} >Generar Formulario</button>
+                        <button className="btn-primario" onClick={(e)=>console.log(respuestaData)} >Generar Formulario</button>
                 </div>
                 <div>
                     {formularioHecho}
