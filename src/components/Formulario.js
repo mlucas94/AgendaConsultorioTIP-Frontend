@@ -1,12 +1,8 @@
-import { ButtonGroup, Col, Collapse, Form, FormCheck, FormControl, FormLabel, FormSelect, FormText, Row } from "react-bootstrap"
+import { Col, Collapse, Form, FormCheck, FormControl, FormGroup, FormLabel, FormSelect, Row } from "react-bootstrap"
 import { useEffect, useRef, useState } from "react"
-//import { guardarRespuestas } from "./Api"
-//import Swal from "sweetalert2"
 import "./css/Botones.css"
 
 const Formulario = () => {
-    
-    const formElementRef = useRef(null);
 
     const [nuevaPregunta, setNuevaPregunta] = useState({
         pregunta_nombre: "",
@@ -86,6 +82,14 @@ const Formulario = () => {
         }))
     }
 
+    const handleInputRespuestaMultiselect = (e) => {
+        //console.log(respuestaData)
+        setRespuestaData((prevData) => ({
+            ...prevData,
+            [e.target.name]: e.target.value
+        }))
+    }
+
     const construirFormulario = () => {
         const jsonFormulario = formulario.preguntas;
         console.log(jsonFormulario)
@@ -127,8 +131,16 @@ const Formulario = () => {
                             <span id={preguntaKey + '-validacion'}></span>
                         </div>
                     }
-                    if(pregunta.tipo === 'multipleselect'){
-                        
+                    if(pregunta.tipo === 'multiselect'){
+                        console.log("MULTISELECT ENTRO")
+                        return <div key={preguntaKey} className="mb-2">
+                                <FormLabel>{pregunta.pregunta_nombre}</FormLabel>
+                                <FormSelect as="select" name={preguntaKey} multiple onChange={handleInputRespuestaMultiselect}>
+                                    {pregunta.lista_opciones.map((opcion) => {
+                                        return <option value={opcion}>{opcion}</option>
+                                    })}
+                                </FormSelect>
+                        </div>
                     }
                 })}
             </Form>
@@ -151,7 +163,7 @@ const Formulario = () => {
     const handleAgregarOpcion = (e) => {
         e.preventDefault()
         const opcionNueva = opcionMultiselect.trim()
-        if(nuevaPregunta.lista_opciones.indexOf(opcionNueva) === -1){
+        if(nuevaPregunta.lista_opciones.indexOf(opcionNueva) === -1 && opcionNueva !== ""){
             setNuevaPregunta((prevData) => ({
                 ...prevData,
                 lista_opciones: [...prevData.lista_opciones, opcionNueva]
@@ -163,11 +175,14 @@ const Formulario = () => {
 
     //Ver porque esto no renderiza nada
     const mostrarOpcionesAgregadas = () => {
-        return nuevaPregunta.lista_opciones.map((indexOpcion) => {
-                return <Col key={indexOpcion+"-opcion"}>{nuevaPregunta.lista_opciones[indexOpcion]}</Col>
+        //opcionesString
+        return <div>
+            <h5>Opciones Agregadas:</h5>
+            {nuevaPregunta.lista_opciones.map((opcion) => {
+                return <Col key={opcion+"-opcion"}>{opcion}</Col>
             }
-
-            )
+                )}
+        </div>
     }
 
     return (
