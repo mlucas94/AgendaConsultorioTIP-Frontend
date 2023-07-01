@@ -34,13 +34,6 @@ const FormularioTemplate = () => {
             })
     },[])
 
-
-
-    // useEffect(() => {
-    //     //console.log(formularioJson)
-    //     construirFormulario();
-    // },[formularioJson])
-
     const [respuestaData, setRespuestaData] = useState({})
 
     const handleInputRespuestaText = (e) => {
@@ -80,6 +73,7 @@ const FormularioTemplate = () => {
     }
 
     const construirFormulario = (backendResponse) => {
+        //TODO cambiar para recibir objeto formulario template
         const formulario = JSON.parse(backendResponse);
         
         const resultado = <div>

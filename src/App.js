@@ -27,6 +27,7 @@ import FormularioCompletado from './components/FormularioCompletado';
 import Formulario from './components/Formulario';
 import ListaFormularios from './components/ListaFormularios';
 import FormularioTemplate from './components/FormularioTemplate';
+import FormularioPaciente from './components/FormularioPaciente';
 
 const App = () => {
   return (
@@ -55,6 +56,8 @@ const App = () => {
 
                   <Route path="/formulario_listado" element={<ListaFormularios/>}/>
                   <Route path="/formulario/:id" element={<FormularioTemplate/>}/>
+                  <Route path="/formulario_completado/:id" element={<FormularioPaciente/>}/>
+                  <Route path="/paciente/formularios/:id" element={<ListaFormulariosCompletos/>}/>
                   
                   <Route path="/*" element={ <Login/> }/>
                 </Routes>

@@ -2,14 +2,14 @@ import { useState, useEffect } from "react"
 import { getRespuestasPaciente } from "./Api"
 import { useParams } from "react-router-dom";
 
-const FormularioCompletado = (props) => {
+const FormularioPaciente = () => {
 
     const [respuestas, setRespuestas] = useState({});
 
     let { id } = useParams();
 
     useEffect(() => {
-        recuperarRespuestas(id);
+        recuperarRespuestas();
     },[]);
 
     const recuperarRespuestas = () => {
@@ -36,7 +36,7 @@ const FormularioCompletado = (props) => {
                         {
                         campos.map((campoNombre) => (
                             <tr campo={campoNombre} >
-                                <td>{campoNombre}</td>
+                                <td>{campoNombre.charAt(0).toUpperCase() + campoNombre.slice(1).split('_').join(' ')}</td>
                                 <td>{respuestas[campoNombre]}</td>
                             </tr>
                         ))}
@@ -59,4 +59,4 @@ const FormularioCompletado = (props) => {
     )
 }
 
-export default FormularioCompletado
+export default FormularioPaciente
