@@ -35,8 +35,21 @@ const Formulario = () => {
         //validar que nuevaPregunta este completa
         if (preguntaValida()) {
             //Lo guardo en el json para persistirlo
-            setFormulario({...formulario, preguntas:{...formulario.preguntas, [nuevaPregunta.pregunta_nombre]: nuevaPregunta }})
+            //setFormulario({...formulario, preguntas:{...formulario.preguntas, [nuevaPregunta.pregunta_nombre]: nuevaPregunta }})
             //Agrego un string vacio para que se guardar las preguntas no obligatorias que no tengan respuesta
+            const indexRepetido =   formulario.preguntas.findIndex(
+                (pregunta) => pregunta.pregunta_nombre === nuevaPregunta.pregunta_nombre
+            );
+            if(indexRepetido !== -1) {
+                const arrayReemplazo = [...formulario.preguntas];
+                arrayReemplazo[indexRepetido] = nuevaPregunta;
+                setFormulario({...formulario, preguntas: arrayReemplazo})
+            } else {
+                let preguntasNuevo = formulario.preguntas;
+                preguntasNuevo.push(nuevaPregunta)
+                setFormulario({...formulario, preguntas:preguntasNuevo})
+            }
+            
             setRespuestaData({...respuestaData, [nuevaPregunta.pregunta_nombre]: ''})
             limpiarPregunta();
         } 
