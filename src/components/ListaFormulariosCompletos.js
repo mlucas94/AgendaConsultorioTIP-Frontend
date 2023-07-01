@@ -43,11 +43,11 @@ const ListaTurnos = () => {
             {
                 listaFormulariosCompletos.map((formulario) =>
                     <tr>
-                        <td align='center'>{formulario.titulo}</td> 
+                        <td align='center'>{formulario.id}</td> 
                         <td align='center'>{formulario.pacienteId}</td> 
                         {/* <td align='center'>{formulario.tipo}</td> */}
                         <td align='center'>
-                        <Link to={{pathname: `/formulario/${formulario.id}`}} type="button" className="btn-primario" style={{ textDecoration: 'none' }}> Ver </Link>
+                        <Link to={{pathname: `/formulario_completo/${formulario.id}`}} type="button" className="btn-primario" style={{ textDecoration: 'none' }}> Ver </Link>
                         </td>
                     </tr>
                 )}

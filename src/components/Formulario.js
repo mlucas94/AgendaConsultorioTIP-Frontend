@@ -1,5 +1,5 @@
 import { Alert, Col, Collapse, Form, FormCheck, FormControl, FormLabel, FormSelect, Row } from "react-bootstrap"
-import { getPaciente, buscarPacienteLike, guardarFormulario } from "./Api"
+import { getPaciente, buscarPacienteLike, guardarFormulario, guardarRespuestas } from "./Api"
 import { useEffect, useState } from "react"
 import Select from 'react-select'
 import "./css/Botones.css"
@@ -18,7 +18,7 @@ const Formulario = () => {
 
     const [formulario, setFormulario] = useState({
         titulo: "",
-        preguntas: []
+        preguntas: {}
     })   
     
     useEffect(() => {
@@ -35,20 +35,20 @@ const Formulario = () => {
         //validar que nuevaPregunta este completa
         if (preguntaValida()) {
             //Lo guardo en el json para persistirlo
-            //setFormulario({...formulario, preguntas:{...formulario.preguntas, [nuevaPregunta.pregunta_nombre]: nuevaPregunta }})
+            setFormulario({...formulario, preguntas:{...formulario.preguntas, [nuevaPregunta.pregunta_nombre]: nuevaPregunta }})
             //Agrego un string vacio para que se guardar las preguntas no obligatorias que no tengan respuesta
-            const indexRepetido =   formulario.preguntas.findIndex(
-                (pregunta) => pregunta.pregunta_nombre === nuevaPregunta.pregunta_nombre
-            );
-            if(indexRepetido !== -1) {
-                const arrayReemplazo = [...formulario.preguntas];
-                arrayReemplazo[indexRepetido] = nuevaPregunta;
-                setFormulario({...formulario, preguntas: arrayReemplazo})
-            } else {
-                let preguntasNuevo = formulario.preguntas;
-                preguntasNuevo.push(nuevaPregunta)
-                setFormulario({...formulario, preguntas:preguntasNuevo})
-            }
+            // const indexRepetido =   formulario.preguntas.findIndex(
+            //     (pregunta) => pregunta.pregunta_nombre === nuevaPregunta.pregunta_nombre
+            // );
+            // if(indexRepetido !== -1) {
+            //     const arrayReemplazo = [...formulario.preguntas];
+            //     arrayReemplazo[indexRepetido] = nuevaPregunta;
+            //     setFormulario({...formulario, preguntas: arrayReemplazo})
+            // } else {
+            //     let preguntasNuevo = formulario.preguntas;
+            //     preguntasNuevo.push(nuevaPregunta)
+            //     setFormulario({...formulario, preguntas:preguntasNuevo})
+            // }
             
             setRespuestaData({...respuestaData, [nuevaPregunta.pregunta_nombre]: ''})
             limpiarPregunta();
@@ -135,6 +135,10 @@ const Formulario = () => {
 
     const handleSubmitRespuestas = (e) => {
         e.preventDefault()
+        const stringRespuestas = JSON.stringify(respuestaData);
+        guardarRespuestas(stringRespuestas)
+        .then((response) => Swal.fire({title:"Se guardaron las respuestas correctamente"}))
+        .catch((error) => Swal.fire({title:error.message}))
     }
 
     //PACIENTE
@@ -268,17 +272,8 @@ const Formulario = () => {
     const handleGuardarFormulario = (e) => {
 
         e.preventDefault();
-        // formulario.preguntas.map((pregunta) => {
-        //     const indexPregunta = formulario.preguntas.indexOf(pregunta)
-        //     const listaString = JSON.stringify(pregunta.lista_opciones);
-        //     setFormulario((prevData) => ({
-        //         ...prevData,
-        //         preguntas[indexPregunta]
-        //     }))
-        // })
-        // const listaString = JSON.stringify(formulario)
-        //setFormulario({...formulario, lista_opciones:listaString})
-        guardarFormulario(formulario)
+        const formString = JSON.stringify(formulario)
+        guardarFormulario(formString)
         .then((response) => {
             Swal.fire({title: "Se guardo"})
         })

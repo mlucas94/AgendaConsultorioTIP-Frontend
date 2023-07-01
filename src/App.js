@@ -25,6 +25,8 @@ import LandingProfesional from './components/LandingProfesional';
 import FormularioIngresoClinico from './components/FormularioIngresoClinico';
 import FormularioCompletado from './components/FormularioCompletado';
 import Formulario from './components/Formulario';
+import ListaFormularios from './components/ListaFormularios';
+import FormularioTemplate from './components/FormularioTemplate';
 
 const App = () => {
   return (
@@ -50,6 +52,9 @@ const App = () => {
                   <Route path="/formulario" element={<Formulario/>}/>
                   <Route path="/formulario_completo/:id" element={<FormularioCompletado/>}/>
                   <Route path="/formulario-2" element={<FormularioIngresoClinico/>}/>
+
+                  <Route path="/formulario_listado" element={<ListaFormularios/>}/>
+                  <Route path="/formulario/:id" element={<FormularioTemplate/>}/>
                   
                   <Route path="/*" element={ <Login/> }/>
                 </Routes>

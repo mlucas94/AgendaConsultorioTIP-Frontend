@@ -300,7 +300,8 @@ export const getRespuestasPaciente = (id) => {
 export const guardarFormulario = (formulario) => {
 	const config =  { 
 		headers: { 
-			Authorization: `Bearer ${sessionStorage.getItem('currentUser')}`
+			Authorization: `Bearer ${sessionStorage.getItem('currentUser')}`,
+			'Content-Type': 'text/plain'
 		}
 	}
 	console.log("session token " + sessionStorage.getItem('currentUser'))
@@ -314,11 +315,26 @@ export const guardarFormulario = (formulario) => {
 	})
 }
 
-export const getListaFormularios = (id) => {
-	
+export const getListaFormularios = () => {
+	return axios.get(`${API_URL}/formularios`, configAuth)
+	.then(response => {
+		return response.data;
+	})
+	.catch(error => {
+		console.log(error)
+		throw Error(error.message);
+	})
+
 }
 
 export const getFormulario = (id) => {
-
+	return axios.get(`${API_URL}/formularios/${id}`, configAuth)
+	.then(response => {
+		return response.data;
+	})
+	.catch(error => {
+		console.log(error)
+		throw Error(error.message);
+	})
 }
 

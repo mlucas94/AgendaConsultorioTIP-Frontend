@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation, useParams } from "react-router-dom"
-import { getTurnos } from './Api.js';
+import { Link, useParams } from "react-router-dom"
+import { getListaFormularios } from './Api.js';
 import Table from 'react-bootstrap/Table'
 import { format } from 'date-fns'
 import './css/Botones.css';
 
-const ListaTurnos = () => {
+const ListaFormularios = () => {
 
     const [listaFormularios, setListaFormularios] = useState([])
 
@@ -14,14 +14,14 @@ const ListaTurnos = () => {
     }, [])
 
     const getFormularios = () => {
-        getFormularios()
-            .then(
-                data => {
-                    setListaFormularios(
-                        data
-                    )
-                }
-            )
+        getListaFormularios()
+        .then(
+            data => {
+                setListaFormularios(
+                    data
+                )
+            }
+        )
             
     }
     
@@ -34,16 +34,14 @@ const ListaTurnos = () => {
             <Table bordered>
                 <thead>
                     {/* meter en un css el text align a th */}
-                    <th style={{textAlign: 'center'}}>Tipo de turno</th>
-                    <th style={{textAlign: 'center'}}>Paciente</th>
-                    <th style={{textAlign: 'center'}}>Hora de inicio</th>
+                    <th style={{textAlign: 'center'}}>Id</th>
                     <th style={{textAlign: 'center'}}>Acciones</th>
                 </thead>
                 <tbody>
             {
                 listaFormularios.map((formulario) =>
                     <tr>
-                        <td align='center'>{formulario.titulo}</td> 
+                        <td align='center'>{formulario.id}</td> 
                         {/* <td align='center'>{formulario.tipo}</td> */}
                         <td align='center'>
                         <Link to={{pathname: `/formulario/${formulario.id}`}} type="button" className="btn-primario" style={{ textDecoration: 'none' }}> Ver </Link>
@@ -58,4 +56,4 @@ const ListaTurnos = () => {
     )
 }
 
-export default ListaTurnos;
+export default ListaFormularios;
