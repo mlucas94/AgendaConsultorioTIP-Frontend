@@ -1,6 +1,8 @@
-import { Col, Collapse, Form, FormCheck, FormControl, FormGroup, FormLabel, FormSelect, Row } from "react-bootstrap"
-import { useEffect, useRef, useState } from "react"
+import { Alert, Col, Collapse, Form, FormCheck, FormControl, FormLabel, FormSelect, Row } from "react-bootstrap"
+import { useEffect, useState } from "react"
+import Select from 'react-select'
 import "./css/Botones.css"
+
 
 const Formulario = () => {
 
@@ -31,18 +33,36 @@ const Formulario = () => {
         if (preguntaValida()) {
             //Lo guardo en el json para persistirlo
             setFormulario({...formulario, preguntas:{...formulario.preguntas, [nuevaPregunta.pregunta_nombre]: nuevaPregunta }})
+            //Agrego un string vacio para que se guardar las preguntas no obligatorias que no tengan respuesta
+            setRespuestaData({...respuestaData, [nuevaPregunta.pregunta_nombre]: ''})
             limpiarPregunta();
-        } else {
-            //Mostrar spans con errores de validacion en pregunta
-            return
-        }
+        } 
         
     }
 
+    //State validaciones
+    const [validacionNombrePregunta, setValidacionNombrePregunta] = useState(false);
+
+    const [validacionMultiselectSinOpciones, setValidacionMultiselectSinOpciones] = useState(false);
+
+    const [validacionNombreOpcionMultiselectVacia, setValidacionNombreOpcionMultiselectVacia] = useState(false);
+
     const preguntaValida = () => {
-        let nombre = nuevaPregunta.pregunta_nombre
-        return (nombre.trim() != "");
+        if(nuevaPregunta.pregunta_nombre.trim() === "") {
+            setValidacionNombrePregunta(true)
+            return false;
+        } else {
+            setValidacionNombrePregunta(false)
+        }
+        if( nuevaPregunta.tipo === "multiselect" && nuevaPregunta.lista_opciones.length < 2) {
+            setValidacionMultiselectSinOpciones(true)
+            return false;
+        } else {
+            setValidacionMultiselectSinOpciones(false)
+        }
+        return true
     }
+    
 
     const limpiarPregunta = () => {
         setNuevaPregunta({
@@ -59,6 +79,7 @@ const Formulario = () => {
     }
 
     const handleInputPregunta = (e) => {
+        setValidacionNombrePregunta(false)
         setNuevaPregunta({...nuevaPregunta, pregunta_nombre: e.target.value.trim()})
     }
 
@@ -82,27 +103,36 @@ const Formulario = () => {
         }))
     }
 
-    const handleInputRespuestaMultiselect = (e) => {
-        //console.log(respuestaData)
+    const handleInputMultiselect = (e) => {
+        let opcionesElegidas = []
+        let selectTarget;
+        e.map((opcionSeleccionada) => {
+            opcionesElegidas.push(opcionSeleccionada.value)
+            selectTarget = opcionSeleccionada.idSelect
+        })
+        if(opcionesElegidas.length > 0)
         setRespuestaData((prevData) => ({
             ...prevData,
-            [e.target.name]: e.target.value
+            [selectTarget]: opcionesElegidas.join(';')
         }))
+    }
+
+    const handleSubmitRespuestas = (e) => {
+        e.preventDefault()
     }
 
     const construirFormulario = () => {
         const jsonFormulario = formulario.preguntas;
-        console.log(jsonFormulario)
         
         const resultado = <div>
             <h3>{formulario.titulo}</h3>
-            <Form name={formulario.titulo}>
+            <Form name={formulario.titulo} onSubmit={handleSubmitRespuestas}>
                 {Object.keys(formulario.preguntas).map((preguntaKey) => {
                     const pregunta = formulario.preguntas[preguntaKey]
                     if(pregunta.tipo === 'text') {
                         return (
                             <div key={preguntaKey} className="mb-2">
-                            <FormLabel>{pregunta.pregunta_nombre}</FormLabel>
+                            <FormLabel>{pregunta.pregunta_nombre + (pregunta.obligatoria ? "*" : "") }</FormLabel>
                             <FormControl name={preguntaKey} required={pregunta.obligatoria} onChange={handleInputRespuestaText}/>
                             <span id={preguntaKey + '-validacion'}></span>
                         </div>
@@ -110,7 +140,7 @@ const Formulario = () => {
                     }
                     if(pregunta.tipo === 'radio') {
                         return <div key={preguntaKey} className="mb-2">
-                            <FormLabel>{pregunta.pregunta_nombre}</FormLabel>
+                            <FormLabel>{pregunta.pregunta_nombre + (pregunta.obligatoria ? "*" : "")}</FormLabel>
                             <FormCheck
                                 className="mx-4"
                                 inline
@@ -132,17 +162,17 @@ const Formulario = () => {
                         </div>
                     }
                     if(pregunta.tipo === 'multiselect'){
-                        console.log("MULTISELECT ENTRO")
+                        let optionsArray = []
+                        pregunta.lista_opciones.map((opcion) => {
+                            optionsArray.push({value: opcion, label: opcion, idSelect: preguntaKey})
+                        })
                         return <div key={preguntaKey} className="mb-2">
-                                <FormLabel>{pregunta.pregunta_nombre}</FormLabel>
-                                <FormSelect as="select" name={preguntaKey} multiple onChange={handleInputRespuestaMultiselect}>
-                                    {pregunta.lista_opciones.map((opcion) => {
-                                        return <option value={opcion}>{opcion}</option>
-                                    })}
-                                </FormSelect>
+                                <FormLabel>{pregunta.pregunta_nombre + (pregunta.obligatoria ? "*" : "")}</FormLabel>
+                                <Select name={preguntaKey} options={optionsArray} isMulti required={pregunta.obligatoria} onChange={handleInputMultiselect} />
                         </div>
                     }
                 })}
+                <button>SUBMIT</button>
             </Form>
         </div>
 
@@ -157,6 +187,8 @@ const Formulario = () => {
     const [opcionMultiselect, setOpcionMultiselect] = useState("");
 
     const handleInputOpcionMultiselect = (e) => {
+        setValidacionNombreOpcionMultiselectVacia(false)
+        setValidacionMultiselectSinOpciones(false)
         setOpcionMultiselect(e.target.value);
     }
 
@@ -168,14 +200,14 @@ const Formulario = () => {
                 ...prevData,
                 lista_opciones: [...prevData.lista_opciones, opcionNueva]
             }))
+        } else {
+            setValidacionNombreOpcionMultiselectVacia(true);
         }
         setOpcionMultiselect("");
-        // document.getElementById("nueva-opcion");
     }
 
-    //Ver porque esto no renderiza nada
+    //Ver como mostrarlo mejor
     const mostrarOpcionesAgregadas = () => {
-        //opcionesString
         return <div>
             <h5>Opciones Agregadas:</h5>
             {nuevaPregunta.lista_opciones.map((opcion) => {
@@ -217,17 +249,38 @@ const Formulario = () => {
                             <FormCheck type="checkbox" label="Obligatorio"  id="nuevo-campo-obligatorio" onChange={handleCheckObligatorio}/>
                         </Col>
                     </Row>
+                    <Collapse in={validacionNombrePregunta}>
+                        <div className="pt-3">
+                            <Alert variant="danger">
+                                La pregunta no puede estar vacia
+                            </Alert>
+                        </div>
+                    </Collapse>
                     <Collapse in={nuevaPregunta.tipo == "multiselect"} >
                         <div>
                             <Row>
                                 <Col className="pt-3">
-                                    <FormLabel>Agregar Opcion</FormLabel>
+                                    <FormLabel>Opciones</FormLabel>
                                     <FormControl id="nueva-opcion" value={opcionMultiselect} onChange={handleInputOpcionMultiselect}/>
                                 </Col>
                                 <Col className="d-flex align-items-end">
                                     <button className="btn-primario" onClick={handleAgregarOpcion}>Agregar Opcion</button>
                                 </Col>
                             </Row>
+                            <Collapse in={validacionNombreOpcionMultiselectVacia}>
+                                <div className="pt-3">
+                                    <Alert variant="danger">
+                                        Debe ingresar el valor de la opcion para agregarla
+                                    </Alert>
+                                </div>
+                            </Collapse>
+                            <Collapse in={validacionMultiselectSinOpciones}>
+                                <div className="pt-3">
+                                    <Alert variant="danger">
+                                        No se puede agregar una pregunta de tipo seleccion multiple sin opciones
+                                    </Alert>
+                                </div>
+                            </Collapse>
                             <Row>
                                 {mostrarOpcionesAgregadas()}
                             </Row>
@@ -238,7 +291,9 @@ const Formulario = () => {
                     </div>
                 </Form>
                 <div className="pt-4">
-                        <button className="btn-primario" onClick={(e)=>console.log(respuestaData)} >Generar Formulario</button>
+                        <button className="btn-primario" onClick={(e)=>console.log(respuestaData)} >Mostrar log Respuestas</button>
+                        <button className="btn-primario" onClick={(e)=>console.log(formulario)} >Mostrar log </button>
+                        <button className="btn-primario" onClick={(e)=>console.log(nuevaPregunta)} >Mostrar Pregunta </button>
                 </div>
                 <div>
                     {formularioHecho}
