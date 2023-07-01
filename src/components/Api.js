@@ -314,3 +314,11 @@ export const guardarFormulario = (formulario) => {
 	})
 }
 
+export const getListaFormularios = (id) => {
+	
+}
+
+export const getFormulario = (id) => {
+
+}
+

@@ -266,7 +266,18 @@ const Formulario = () => {
     }
 
     const handleGuardarFormulario = (e) => {
+
         e.preventDefault();
+        // formulario.preguntas.map((pregunta) => {
+        //     const indexPregunta = formulario.preguntas.indexOf(pregunta)
+        //     const listaString = JSON.stringify(pregunta.lista_opciones);
+        //     setFormulario((prevData) => ({
+        //         ...prevData,
+        //         preguntas[indexPregunta]
+        //     }))
+        // })
+        // const listaString = JSON.stringify(formulario)
+        //setFormulario({...formulario, lista_opciones:listaString})
         guardarFormulario(formulario)
         .then((response) => {
             Swal.fire({title: "Se guardo"})
