@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { getRespuestas } from "./Api"
+import { getRespuestasPaciente } from "./Api"
 import { useParams } from "react-router-dom";
 
 const FormularioCompletado = () => {
@@ -13,7 +13,7 @@ const FormularioCompletado = () => {
     },[]);
 
     const recuperarRespuestas = () => {
-        getRespuestas(id)
+        getRespuestasPaciente(id)
         .then(data => {
             console.log(data.contenido);
             setRespuestas(JSON.parse(data.contenido));

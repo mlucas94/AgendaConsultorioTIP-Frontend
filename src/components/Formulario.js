@@ -313,7 +313,7 @@ const Formulario = () => {
                         <FormControl id="nuevo-formulario-titulo" onChange={handleInputTitulo} value={formulario.titulo} />
                     </Col>
                     <Col md={2}>
-                        <btn className="btn-primario" onClick={handleGuardarFormulario}>Guardar Formulario</btn>
+                        <button className="btn-primario" onClick={handleGuardarFormulario}>Guardar Formulario</button>
                     </Col>
                 </Row>
                 <hr/>
