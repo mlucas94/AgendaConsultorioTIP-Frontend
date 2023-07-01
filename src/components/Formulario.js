@@ -1,7 +1,10 @@
 import { Alert, Col, Collapse, Form, FormCheck, FormControl, FormLabel, FormSelect, Row } from "react-bootstrap"
+import { getPaciente, buscarPacienteLike, guardarFormulario } from "./Api"
 import { useEffect, useState } from "react"
 import Select from 'react-select'
 import "./css/Botones.css"
+import AsyncSelect from 'react-select/async'
+import Swal from "sweetalert2"
 
 
 const Formulario = () => {
@@ -121,6 +124,58 @@ const Formulario = () => {
         e.preventDefault()
     }
 
+    //PACIENTE
+    const [dniONombre, setDniONombre] = ""
+    const [paciente, setPaciente] = useState({
+        nombre: "",
+        dni: null,
+        edad: null,
+        obraSocial: "",
+        plan: "",
+        email: "",
+        telefono: null,
+        id: null
+    })
+
+    const handleInputPaciente = (input) => {
+        return buscarPacienteLike({dniONombre: input})
+        .then(
+            data => {
+                return data.map((t) => ({value: t.id, label: t.nombre}))        
+            }
+        )
+        .catch(
+            error=> {
+            }
+        )
+    }
+
+    const seleccionarPaciente = (e) => {
+        const pacienteId = e.value
+        getPaciente(pacienteId)
+        .then(
+            data => {
+                setPaciente({
+                    nombre: data.nombre,
+                    dni: data.dni,
+                    edad: data.edad,
+                    obraSocial: data.obraSocial,
+                    plan: data.plan,
+                    email: data.email,
+                    telefono: data.telefono,
+                    id: data.id
+                })
+            }
+        )
+        .catch(
+            error=> {
+                Swal.fire({
+                    title: 'Fallo al traer datos de usuario'
+                })
+            }
+        )
+    }
+
     const construirFormulario = () => {
         const jsonFormulario = formulario.preguntas;
         
@@ -172,12 +227,40 @@ const Formulario = () => {
                         </div>
                     }
                 })}
-                <button>SUBMIT</button>
+                <Row className="pt-4">
+                    <h5>Seleccionar Paciente</h5>
+                </Row>
+                <Row className="px-4">
+                    <Col>
+                        <AsyncSelect
+                        name="paciente-select"
+                        required="Por favor elija un paciente"
+                        error="NOT VALID"
+                        onChange={seleccionarPaciente}
+                        loadOptions={handleInputPaciente}
+                        placeholder={"Ingrese dni o nombre de paciente"}
+                        />
+                    </Col>
+                    <Col>
+                        <button className="btn-primario">Enviar Respuestas</button>
+                    </Col>
+                </Row>
             </Form>
         </div>
 
         setFormularioHecho(resultado);
         return;
+    }
+
+    const handleGuardarFormulario = (e) => {
+        e.preventDefault();
+        guardarFormulario(formulario)
+        .then((response) => {
+            Swal.fire({title: "Se guardo"})
+        })
+        .catch((error) => {
+            Swal.fire({title:error.message})
+        })
     }
 
     const [formularioHecho, setFormularioHecho] = useState(null)
@@ -228,6 +311,9 @@ const Formulario = () => {
                     </Col>
                     <Col md={4} className="align-items-end">
                         <FormControl id="nuevo-formulario-titulo" onChange={handleInputTitulo} value={formulario.titulo} />
+                    </Col>
+                    <Col md={2}>
+                        <btn className="btn-primario" onClick={handleGuardarFormulario}>Guardar Formulario</btn>
                     </Col>
                 </Row>
                 <hr/>

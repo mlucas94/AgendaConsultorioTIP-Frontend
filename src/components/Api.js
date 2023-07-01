@@ -277,23 +277,39 @@ export const getLanding = () => {
 }
 
 export const guardarRespuestas = (respuestas) => {
-	return axios.post(`${API_URL}/formulario/guardar`, respuestas, configAuth)
+	return axios.post(`${API_URL}/formulario/responder`, respuestas, configAuth)
 	.then(response => {
-		console.log("HEY")
 		return response
 	})
 	.catch(error => {
-		throw Error("Ocurrio un error")
+		throw Error("Ocurrio un error al guardar las respuestas")
 	})
 }
 
-export const getRespuestas = (id) => {
+export const getRespuestasPaciente = (id) => {
 	console.log("session token " + sessionStorage.getItem('currentUser'))
-	return axios.get(`${API_URL}/formulario`, {params: {idFormulario: id}, ...configAuth})
+	return axios.get(`${API_URL}/formularios/completados/${id}`, configAuth)
 	.then(response => {
 		return response.data;
 	})
 	.catch(error => {
+		throw Error(error.message);
+	})
+}
+
+export const guardarFormulario = (formulario) => {
+	const config =  { 
+		headers: { 
+			Authorization: `Bearer ${sessionStorage.getItem('currentUser')}`
+		}
+	}
+	console.log("session token " + sessionStorage.getItem('currentUser'))
+	return axios.post(`${API_URL}/formularios/crear`, formulario, configAuth)
+	.then(response => {
+		return response.data;
+	})
+	.catch(error => {
+		console.log(error)
 		throw Error(error.message);
 	})
 }
