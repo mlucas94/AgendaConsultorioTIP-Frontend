@@ -22,12 +22,12 @@ import ArchivosPaginados from './components/ArchivosPaginados';
 import ArchivosPaginadosTurno from './components/ArchivosPaginadosTurno';
 import './components/css/AppExtra.css';
 import LandingProfesional from './components/LandingProfesional';
-import FormularioIngresoClinico from './components/FormularioIngresoClinico';
 import FormularioCompletado from './components/FormularioCompletado';
-import Formulario from './components/Formulario';
+import CrearFormulario from './components/CrearFormulario';
 import ListaFormularios from './components/ListaFormularios';
 import FormularioTemplate from './components/FormularioTemplate';
 import FormularioPaciente from './components/FormularioPaciente';
+import ListaFormulariosCompletos from './components/ListaFormulariosCompletos';
 
 const App = () => {
   return (
@@ -50,13 +50,12 @@ const App = () => {
                   <Route path="/pacientes" element={ <PacientesMain/>}/>
                   <Route path="/archivos_paciente/:id" element={<ArchivosPaginados/>}/>
                   <Route path="/archivos_paciente_turno/:id" element={<ArchivosPaginadosTurno/>}/>
-                  <Route path="/formulario" element={<Formulario/>}/>
-                  <Route path="/formulario_completo/:id" element={<FormularioCompletado/>}/>
-                  <Route path="/formulario-2" element={<FormularioIngresoClinico/>}/>
 
+                  <Route path="/formulario" element={<CrearFormulario/>}/>
+                  <Route path="/formulario_completo/:id" element={<FormularioCompletado/>}/>
                   <Route path="/formulario_listado" element={<ListaFormularios/>}/>
                   <Route path="/formulario/:id" element={<FormularioTemplate/>}/>
-                  <Route path="/formulario_completado/:id" element={<FormularioPaciente/>}/>
+                  <Route path="/formularios_completados/:id" element={<FormularioPaciente/>}/>
                   <Route path="/paciente/formularios/:id" element={<ListaFormulariosCompletos/>}/>
                   
                   <Route path="/*" element={ <Login/> }/>

@@ -5,7 +5,7 @@ import Table from 'react-bootstrap/Table'
 import { format } from 'date-fns'
 import './css/Botones.css';
 
-const ListaTurnos = () => {
+const ListaFormulariosCompletos = () => {
 
     const [listaFormulariosCompletos, setListaFormulariosCompletos] = useState([])
 
@@ -14,14 +14,14 @@ const ListaTurnos = () => {
     }, [])
 
     const getFormularios = () => {
-        getFormulariosCompletos()
-            .then(
-                data => {
-                    setListaFormulariosCompletos(
-                        data
-                    )
-                }
-            )
+        // getFormulariosCompletos()
+        //     .then(
+        //         data => {
+        //             setListaFormulariosCompletos(
+        //                 data
+        //             )
+        //         }
+        //     )
             
     }
     
@@ -59,4 +59,4 @@ const ListaTurnos = () => {
     )
 }
 
-export default ListaTurnos;
+export default ListaFormulariosCompletos;

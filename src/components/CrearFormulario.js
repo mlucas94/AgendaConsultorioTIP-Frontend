@@ -6,7 +6,7 @@ import "./css/Botones.css"
 import Swal from "sweetalert2"
 
 
-const Formulario = () => {
+const CrearFormulario = () => {
 
     const [nuevaPregunta, setNuevaPregunta] = useState({
         pregunta_nombre: "",
@@ -17,7 +17,7 @@ const Formulario = () => {
 
     const [formulario, setFormulario] = useState({
         titulo: "",
-        preguntas: {}
+        preguntas: []
     })   
     
     useEffect(() => {
@@ -26,6 +26,7 @@ const Formulario = () => {
 
     
     const handleInputTitulo = (e) => {
+        setValidacionTitulo(false)
         setFormulario({...formulario, titulo: e.target.value})
     }
     
@@ -33,29 +34,33 @@ const Formulario = () => {
         e.preventDefault()
         //validar que nuevaPregunta este completa
         if (preguntaValida()) {
-            //Lo guardo en el json para persistirlo
-            setFormulario({...formulario, preguntas:{...formulario.preguntas, [nuevaPregunta.pregunta_nombre]: nuevaPregunta }})
-            //Agrego un string vacio para que se guardar las preguntas no obligatorias que no tengan respuesta
-            // const indexRepetido =   formulario.preguntas.findIndex(
-            //     (pregunta) => pregunta.pregunta_nombre === nuevaPregunta.pregunta_nombre
-            // );
-            // if(indexRepetido !== -1) {
-            //     const arrayReemplazo = [...formulario.preguntas];
-            //     arrayReemplazo[indexRepetido] = nuevaPregunta;
-            //     setFormulario({...formulario, preguntas: arrayReemplazo})
-            // } else {
-            //     let preguntasNuevo = formulario.preguntas;
-            //     preguntasNuevo.push(nuevaPregunta)
-            //     setFormulario({...formulario, preguntas:preguntasNuevo})
-            // }
+            //Lo guardo en el json para persistirlo. Asi se guarda si es un objeto de objetos pregunta
+            //setFormulario({ ...formulario, preguntas: { ...formulario.preguntas, [nuevaPregunta.pregunta_nombre]: nuevaPregunta } })
             
-            setRespuestaData({...respuestaData, [nuevaPregunta.pregunta_nombre]: ''})
+            //Asi lo guardo para tener una lista
+            const indexRepetido = formulario.preguntas.findIndex(
+                (pregunta) => pregunta.pregunta_nombre === nuevaPregunta.pregunta_nombre
+            );
+            if (indexRepetido !== -1) {
+                const arrayReemplazo = [...formulario.preguntas];
+                arrayReemplazo[indexRepetido] = nuevaPregunta;
+                setFormulario({ ...formulario, preguntas: arrayReemplazo })
+            } else {
+                let preguntasNuevo = formulario.preguntas;
+                preguntasNuevo.push(nuevaPregunta)
+                setFormulario({ ...formulario, preguntas: preguntasNuevo })
+            }
+
+            //Agrego un string vacio para que se guardar las preguntas no obligatorias que no tengan respuesta
+            //setRespuestaData({ ...respuestaData, [nuevaPregunta.pregunta_nombre]: '' })
             limpiarPregunta();
-        } 
-        
+        }
+
     }
 
     //State validaciones
+    const [validacionTitulo, setValidacionTitulo] = useState(false);
+
     const [validacionNombrePregunta, setValidacionNombrePregunta] = useState(false);
 
     const [validacionMultiselectSinOpciones, setValidacionMultiselectSinOpciones] = useState(false);
@@ -105,6 +110,7 @@ const Formulario = () => {
     const [respuestaData, setRespuestaData] = useState({})
 
     const handleInputRespuestaText = (e) => {
+        console.log(e.target)
         setRespuestaData((prevData) => ({
             ...prevData,
             [e.target.name]: e.target.value
@@ -128,22 +134,16 @@ const Formulario = () => {
         if(opcionesElegidas.length > 0)
         setRespuestaData((prevData) => ({
             ...prevData,
-            [selectTarget]: opcionesElegidas.join(';')
+            [selectTarget]: opcionesElegidas.join('; ')
         }))
     }
 
     const handleSubmitRespuestas = (e) => {
         e.preventDefault()
-        const stringRespuestas = JSON.stringify(respuestaData);
-        guardarRespuestas(stringRespuestas)
-        .then((response) => Swal.fire({title:"Se guardaron las respuestas correctamente"}))
-        .catch((error) => Swal.fire({title:error.message}))
     }
 
 
-    const construirFormulario = () => {
-        const jsonFormulario = formulario.preguntas;
-        
+    const construirFormulario = () => {      
         const resultado = <div>
             <h3>{formulario.titulo}</h3>
             <Form name={formulario.titulo} onSubmit={handleSubmitRespuestas}>
@@ -203,6 +203,10 @@ const Formulario = () => {
 
         e.preventDefault();
         const formString = JSON.stringify(formulario)
+        if(formulario.titulo.trim()=="") {
+            setValidacionTitulo(true)
+            return
+        }
         guardarFormulario(formString)
         .then((response) => {
             Swal.fire({title: "Se guardo"})
@@ -265,7 +269,15 @@ const Formulario = () => {
                         <button className="btn-primario" onClick={handleGuardarFormulario}>Guardar Formulario</button>
                     </Col>
                 </Row>
+                <Collapse in={validacionTitulo}>
+                    <div className="pt-3">
+                        <Alert variant="danger">
+                            El formulario requiere un titulo
+                        </Alert>
+                    </div>
+                </Collapse>
                 <hr/>
+                <h3>Nuevo campo</h3>
                 <Form id="nueva-pregunta-form" onSubmit={handleAddPregunta}>
                     <Row>
                         <Col md={4} xs={6} className="pt-4">
@@ -330,6 +342,8 @@ const Formulario = () => {
                         <button className="btn-primario" onClick={(e)=>console.log(formulario)} >Mostrar log </button>
                         <button className="btn-primario" onClick={(e)=>console.log(nuevaPregunta)} >Mostrar Pregunta </button>
                 </div>
+                <hr/>
+                <h2>Vista previa de formulario</h2>
                 <div>
                     {formularioHecho}
                 </div>
@@ -338,4 +352,4 @@ const Formulario = () => {
     )
 }
 
-export default Formulario
+export default CrearFormulario

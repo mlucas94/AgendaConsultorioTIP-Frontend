@@ -60,7 +60,7 @@ const FormularioTemplate = () => {
         if(opcionesElegidas.length > 0)
         setRespuestaData((prevData) => ({
             ...prevData,
-            [selectTarget]: opcionesElegidas.join(';')
+            [selectTarget]: opcionesElegidas.join('; ')
         }))
     }
 
