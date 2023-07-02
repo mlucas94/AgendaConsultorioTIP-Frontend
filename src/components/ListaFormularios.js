@@ -28,8 +28,8 @@ const ListaFormularios = () => {
     
     return (
         <div className='container'>
-            <h1>Turnos</h1>
-            <Link to={{pathname: `/calendario`}} type="button" className="btn-primario" style={{ textDecoration: 'none' }}> Nuevo turno </Link>
+            <h1>Formularios disponibles</h1>
+            <Link to={{pathname: `/formulario`}} type="button" className="btn-primario" style={{ textDecoration: 'none' }}> Crear nuevo </Link>
             <div>
             <br/>
             <Table bordered>
@@ -42,7 +42,7 @@ const ListaFormularios = () => {
             {
                 listaFormularios.map((formulario) =>
                     <tr>
-                        <td align='center'>{formulario.id}</td> 
+                        <td align='center'>{formulario.titulo}</td> 
                         {/* <td align='center'>{formulario.tipo}</td> */}
                         <td align='center'>
                         <Link to={{pathname: `/formulario/${formulario.id}`}} type="button" className="btn-primario" style={{ textDecoration: 'none' }}> Ver </Link>

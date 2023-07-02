@@ -32,40 +32,45 @@ const BarraNavegacion = (props) => {
     return(
 
         <div>
+            
+            {
+                (location.pathname ==="/" || location.pathname === "/profesional/registrarse" || location.pathname === "/profesional/login" ) ? null :
 
-            <Nav
-                activeKey="/home"
-            >
-                <div className='d-flex flex-column sidebar'>
-                    <div>
-                        <div className='sidebar-title'>
-                            <h4>{tituloData}</h4>
+            
+                <Nav
+                    activeKey="/home"
+                >
+                    <div className='d-flex flex-column sidebar'>
+                        <div>
+                            <div className='sidebar-title'>
+                                <h4>{tituloData}</h4>
+                            </div>
+                            <div className='sidebar-link'>
+                                <NavLink className='sidebar-link-text' href="/">Inicio</NavLink>
+                            </div>
+                            <div className='sidebar-link'>
+                            <NavLink className='sidebar-link-text' href="/calendario">Turnos</NavLink>
+                            </div>
+                            <div className='sidebar-link'>
+                                <NavLink className='sidebar-link-text' href="/nuevo_paciente">Agendar Paciente</NavLink>
+                            </div>
+                            <div className='sidebar-link'>
+                                <NavLink className='sidebar-link-text' href="/pacientes">Pacientes</NavLink>
+                            </div>
+                            <div className='sidebar-link'>
+                                <NavLink className='sidebar-link-text' href="/formulario/">Crear Formulario</NavLink>
+                            </div>
+                            <div className='sidebar-link'>
+                                <NavLink className='sidebar-link-text' href="/formulario_listado">Lista Formularios</NavLink>
+                            </div>
+                            <div className='sidebar-link'>
+                                <NavLink className='sidebar-link-text' onClick={cerrarSesion} href="/profesional/login">Cerrar Sesion</NavLink>
+                            </div>
+                            
                         </div>
-                        <div className='sidebar-link'>
-                            <NavLink className='sidebar-link-text' href="/">Inicio</NavLink>
-                        </div>
-                        <div className='sidebar-link'>
-                        <NavLink className='sidebar-link-text' href="/calendario">Turnos</NavLink>
-                        </div>
-                        <div className='sidebar-link'>
-                            <NavLink className='sidebar-link-text' href="/nuevo_paciente">Agendar Paciente</NavLink>
-                        </div>
-                        <div className='sidebar-link'>
-                            <NavLink className='sidebar-link-text' href="/pacientes">Pacientes</NavLink>
-                        </div>
-                        <div className='sidebar-link'>
-                            <NavLink className='sidebar-link-text' href="/formulario/">Crear Formulario</NavLink>
-                        </div>
-                        <div className='sidebar-link'>
-                            <NavLink className='sidebar-link-text' href="/formulario_listado">Lista Formularios</NavLink>
-                        </div>
-                        <div className='sidebar-link'>
-                            <NavLink className='sidebar-link-text' onClick={cerrarSesion} href="/profesional/login">Cerrar Sesion</NavLink>
-                        </div>
-                        
                     </div>
-                </div>
-            </Nav>
+                </Nav>
+            }
         </div>
         
     )

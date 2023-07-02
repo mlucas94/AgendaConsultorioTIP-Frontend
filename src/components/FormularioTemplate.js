@@ -1,5 +1,5 @@
 import { Alert, Col, Collapse, Form, FormCheck, FormControl, FormLabel, FormSelect, Row } from "react-bootstrap"
-import { getPaciente, buscarPacienteLike, guardarFormulario, guardarRespuestas, getFormulario } from "./Api"
+import { getPaciente, buscarPacienteLike, guardarRespuestas, getFormulario } from "./Api"
 import { useEffect, useState } from "react"
 import Select from 'react-select'
 import "./css/Botones.css"
@@ -29,6 +29,13 @@ const FormularioTemplate = () => {
 
     let { id } = useParams();
 
+    //Respuesta
+    const [respuestaData, setRespuestaData] = useState({
+        pacienteId: null,
+        idFormulario: id,
+        respuestas: []
+    })
+
     useEffect(() => {
         getFormulario(id)
         .then((response) => {
@@ -42,42 +49,111 @@ const FormularioTemplate = () => {
         construirFormulario()
     },[formulario])
 
-    const [respuestaData, setRespuestaData] = useState({})
+    useEffect(() => {
+        console.log("USE EFFECT")
+        const idDelPaciente = paciente.id
+        console.log(paciente.id)
+        console.log(idDelPaciente)
+        if(paciente.id !== null) {
+            setRespuestaData((prevData) => ({
+                idFormulario: prevData.idFormulario,
+                respuestas: prevData.respuestas,
+                pacienteId: idDelPaciente
+            }))
+        }
+    },[paciente])
 
     const handleInputRespuestaText = (e) => {
-        setRespuestaData((prevData) => ({
-            ...prevData,
-            [e.target.name]: e.target.value
-        }))
+        console.log(respuestaData)
+        const idNuevaRespuesta = e.target.name;
+        const textoRespuesta = e.target.value;
+
+        const indexReemplazar = respuestaData.respuestas.findIndex(respuesta => respuesta.idPregunta === idNuevaRespuesta)
+
+        if(indexReemplazar !== -1) {
+            let respuestasReemplazo = respuestaData.respuestas;
+            respuestasReemplazo[indexReemplazar] = {idPregunta:idNuevaRespuesta, respuestaNombre: textoRespuesta};
+            setRespuestaData((prevState) => ({
+                ...prevState,
+                respuestas: respuestasReemplazo
+            }));
+        } else {
+            let respuestasReemplazo = respuestaData.respuestas;
+            respuestasReemplazo.push({idPregunta:idNuevaRespuesta, respuestaNombre: textoRespuesta})
+            setRespuestaData((prevState) => ({
+                ...prevState,
+                respuestas: respuestasReemplazo
+            }));
+        }
     }
 
     const handleInputRespuestaCheck = (e) => {
-        setRespuestaData((prevData) => ({
-            ...prevData,
-            [e.target.name]: e.target.value
-        }))
+        const idNuevaRespuesta = e.target.name;
+        const textoRespuesta = e.target.value;
+
+        const indexReemplazar = respuestaData.respuestas.findIndex(respuesta => respuesta.idPregunta === idNuevaRespuesta)
+
+        if(indexReemplazar !== -1) {
+            let respuestasReemplazo = respuestaData.respuestas;
+            respuestasReemplazo[indexReemplazar] = {idPregunta:idNuevaRespuesta, respuestaNombre: textoRespuesta};
+            setRespuestaData((prevState) => ({
+                ...prevState,
+                respuestas: respuestasReemplazo
+            }));
+        } else {
+            let respuestasReemplazo = respuestaData.respuestas;
+            respuestasReemplazo.push({idPregunta:idNuevaRespuesta, respuestaNombre: textoRespuesta})
+            setRespuestaData((prevState) => ({
+                ...prevState,
+                respuestas: respuestasReemplazo
+            }));
+        }
     }
 
     const handleInputMultiselect = (e) => {
+        console.log(e)
         let opcionesElegidas = []
         let selectTarget;
         e.map((opcionSeleccionada) => {
             opcionesElegidas.push(opcionSeleccionada.value)
             selectTarget = opcionSeleccionada.idSelect
         })
-        if(opcionesElegidas.length > 0)
-        setRespuestaData((prevData) => ({
-            ...prevData,
-            [selectTarget]: opcionesElegidas.join('; ')
-        }))
+        if(opcionesElegidas.length > 0) {
+            const idNuevaRespuesta = selectTarget;
+            const textoRespuesta = opcionesElegidas;
+    
+            const indexReemplazar = respuestaData.respuestas.findIndex(respuesta => respuesta.idPregunta === idNuevaRespuesta)
+    
+            if(indexReemplazar !== -1) {
+                let respuestasReemplazo = respuestaData.respuestas;
+                respuestasReemplazo[indexReemplazar] = {idPregunta:idNuevaRespuesta, respuestaNombre: textoRespuesta};
+                setRespuestaData((prevState) => ({
+                    ...prevState,
+                    respuestas: respuestasReemplazo
+                }));
+            } else {
+                let respuestasReemplazo = respuestaData.respuestas;
+                respuestasReemplazo.push({idPregunta:idNuevaRespuesta, respuestaNombre: textoRespuesta})
+                setRespuestaData((prevState) => ({
+                    ...prevState,
+                    respuestas: respuestasReemplazo
+                }));
+            }
+        }
+
+
+        // setRespuestaData((prevData) => ({
+        //     ...prevData,
+        //     [selectTarget]: opcionesElegidas.join('; ')
+        // }))
     }
 
     const handleSubmitRespuestas = (e) => {
         e.preventDefault()
-        const stringRespuestas = JSON.stringify(respuestaData);
-        guardarRespuestas(stringRespuestas)
-        .then((response) => Swal.fire({title:"Se guardaron las respuestas correctamente"}))
-        .catch((error) => Swal.fire({title:error.message}))
+            // const stringRespuestas = JSON.stringify(respuestaData);
+            // guardarRespuestas(stringRespuestas)
+            // .then((response) => Swal.fire({title:"Se guardaron las respuestas correctamente"}))
+            // .catch((error) => Swal.fire({title:error.message}))
     }
 
     const construirFormulario = () => {   
@@ -175,6 +251,8 @@ const FormularioTemplate = () => {
         getPaciente(pacienteId)
         .then(
             data => {
+                console.log("ID PACIENTE")
+                console.log(data.id)
                 setPaciente({
                     nombre: data.nombre,
                     dni: data.dni,

@@ -50,9 +50,6 @@ const CrearFormulario = () => {
                 preguntasNuevo.push(nuevaPregunta)
                 setFormulario({ ...formulario, preguntas: preguntasNuevo })
             }
-
-            //Agrego un string vacio para que se guardar las preguntas no obligatorias que no tengan respuesta
-            //setRespuestaData({ ...respuestaData, [nuevaPregunta.pregunta_nombre]: '' })
             limpiarPregunta();
         }
 
@@ -202,7 +199,6 @@ const CrearFormulario = () => {
     const handleGuardarFormulario = (e) => {
 
         e.preventDefault();
-        //const formString = JSON.stringify(formulario)
         if(formulario.titulo.trim()=="") {
             setValidacionTitulo(true)
             return

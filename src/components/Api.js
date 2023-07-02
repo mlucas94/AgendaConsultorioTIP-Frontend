@@ -316,8 +316,9 @@ export const guardarFormulario = (formulario) => {
 }
 
 export const getListaFormularios = () => {
-	return axios.get(`${API_URL}/formularios`, configAuth)
+	return axios.get(`${API_URL}/formularios/templates`, configAuth)
 	.then(response => {
+		//console.log(response.data)
 		return response.data;
 	})
 	.catch(error => {
