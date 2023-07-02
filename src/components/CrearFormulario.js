@@ -202,12 +202,12 @@ const CrearFormulario = () => {
     const handleGuardarFormulario = (e) => {
 
         e.preventDefault();
-        const formString = JSON.stringify(formulario)
+        //const formString = JSON.stringify(formulario)
         if(formulario.titulo.trim()=="") {
             setValidacionTitulo(true)
             return
         }
-        guardarFormulario(formString)
+        guardarFormulario(formulario)
         .then((response) => {
             Swal.fire({title: "Se guardo"})
         })

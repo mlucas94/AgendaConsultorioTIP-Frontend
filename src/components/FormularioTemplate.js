@@ -9,7 +9,11 @@ import { useParams } from "react-router-dom"
 
 const FormularioTemplate = () => {
 
-    const [formularioJson, setFormularioJson] = useState("")
+    const [formulario, setFormulario] = useState({
+        id: null,
+        titulo: "",
+        preguntas: []
+    })
 
     const [dniONombre, setDniONombre] = ""
     const [paciente, setPaciente] = useState({
@@ -28,11 +32,15 @@ const FormularioTemplate = () => {
     useEffect(() => {
         getFormulario(id)
         .then((response) => {
-            const stringResponse = response.form
-            setFormularioJson(stringResponse)
-            construirFormulario(stringResponse)
+            //const stringResponse = response.form
+            setFormulario(response)
+            //construirFormulario(response)
             })
     },[])
+
+    useEffect(() => {
+        construirFormulario()
+    },[formulario])
 
     const [respuestaData, setRespuestaData] = useState({})
 
@@ -72,32 +80,29 @@ const FormularioTemplate = () => {
         .catch((error) => Swal.fire({title:error.message}))
     }
 
-    const construirFormulario = (backendResponse) => {
-        //TODO cambiar para recibir objeto formulario template
-        const formulario = JSON.parse(backendResponse);
-        
+    const construirFormulario = () => {   
+
         const resultado = <div>
             <h3>{formulario.titulo}</h3>
             <Form name={formulario.titulo} onSubmit={handleSubmitRespuestas}>
-                {Object.keys(formulario.preguntas).map((preguntaKey) => {
-                    const pregunta = formulario.preguntas[preguntaKey]
-                    if(pregunta.tipo === 'text') {
+                {formulario.preguntas.map((pregunta) => {
+                    if(pregunta.tipo === 'TEXT') {
                         return (
-                            <div key={preguntaKey} className="mb-2">
-                            <FormLabel>{pregunta.pregunta_nombre + (pregunta.obligatoria ? "*" : "") }</FormLabel>
-                            <FormControl name={preguntaKey} required={pregunta.obligatoria} onChange={handleInputRespuestaText}/>
-                            <span id={preguntaKey + '-validacion'}></span>
+                            <div key={pregunta.id} className="mb-2">
+                            <FormLabel>{pregunta.preguntaNombre + (pregunta.obligatoria ? "*" : "") }</FormLabel>
+                            <FormControl name={pregunta.id} required={pregunta.obligatoria} onChange={handleInputRespuestaText}/>
+                            <span id={pregunta.id + '-validacion'}></span>
                         </div>
                     )
                     }
-                    if(pregunta.tipo === 'radio') {
-                        return <div key={preguntaKey} className="mb-2">
-                            <FormLabel>{pregunta.pregunta_nombre + (pregunta.obligatoria ? "*" : "")}</FormLabel>
+                    if(pregunta.tipo === 'RADIO') {
+                        return <div key={pregunta.id} className="mb-2">
+                            <FormLabel>{pregunta.preguntaNombre + (pregunta.obligatoria ? "*" : "")}</FormLabel>
                             <FormCheck
                                 className="mx-4"
                                 inline
                                 type="radio"
-                                name={preguntaKey}
+                                name={pregunta.id}
                                 label="Si"
                                 value="Si"
                                 onChange={handleInputRespuestaCheck}
@@ -105,22 +110,23 @@ const FormularioTemplate = () => {
                             <FormCheck
                                 inline
                                 type="radio"
-                                name={preguntaKey}
+                                name={pregunta.id}
                                 label="No"
                                 value="No"
                                 onChange={handleInputRespuestaCheck}
                             />
-                            <span id={preguntaKey + '-validacion'}></span>
+                            <span id={pregunta.id + '-validacion'}></span>
                         </div>
                     }
-                    if(pregunta.tipo === 'multiselect'){
-                        let optionsArray = []
-                        pregunta.lista_opciones.map((opcion) => {
-                            optionsArray.push({value: opcion, label: opcion, idSelect: preguntaKey})
+                    if(pregunta.tipo === 'MULTISELECT'){
+                        let optionsArray = [];
+                        const opcionesDeMultiselect = pregunta.opciones.split(';');
+                        opcionesDeMultiselect.map((opcion) => {
+                            optionsArray.push({value: opcion, label: opcion, idSelect: pregunta.id})
                         })
-                        return <div key={preguntaKey} className="mb-2">
-                                <FormLabel>{pregunta.pregunta_nombre + (pregunta.obligatoria ? "*" : "")}</FormLabel>
-                                <Select name={preguntaKey} options={optionsArray} isMulti required={pregunta.obligatoria} onChange={handleInputMultiselect} />
+                        return <div key={pregunta.id} className="mb-2">
+                                <FormLabel>{pregunta.preguntaNombre + (pregunta.obligatoria ? "*" : "")}</FormLabel>
+                                <Select name={pregunta.id} options={optionsArray} isMulti required={pregunta.obligatoria} onChange={handleInputMultiselect} />
                         </div>
                     }
                 })}

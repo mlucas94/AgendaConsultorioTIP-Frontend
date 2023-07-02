@@ -17,6 +17,7 @@ const ListaFormularios = () => {
         getListaFormularios()
         .then(
             data => {
+                console.log(data)
                 setListaFormularios(
                     data
                 )
