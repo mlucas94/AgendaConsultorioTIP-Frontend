@@ -277,7 +277,7 @@ export const getLanding = () => {
 }
 
 export const guardarRespuestas = (respuestas) => {
-	return axios.post(`${API_URL}/formulario/responder`, respuestas, configAuth)
+	return axios.post(`${API_URL}/formularios/responder`, respuestas, configAuth)
 	.then(response => {
 		return response
 	})
@@ -316,7 +316,7 @@ export const guardarFormulario = (formulario) => {
 }
 
 export const getListaFormularios = () => {
-	return axios.get(`${API_URL}/formularios/templates`, configAuth)
+	return axios.get(`${API_URL}/formularios/listado`, configAuth)
 	.then(response => {
 		//console.log(response.data)
 		return response.data;

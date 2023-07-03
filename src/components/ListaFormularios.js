@@ -2,12 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { Link, useParams } from "react-router-dom"
 import { getListaFormularios } from './Api.js';
 import Table from 'react-bootstrap/Table'
-import { format } from 'date-fns'
 import './css/Botones.css';
+import { useLocation } from 'react-router-dom';
 
 const ListaFormularios = () => {
 
+    const location = useLocation();
+    const idDelPaciente = location.state;
+
     const [listaFormularios, setListaFormularios] = useState([])
+
+    const pacienteId = idDelPaciente;
 
     useEffect(() => {
         getFormularios();
@@ -45,7 +50,7 @@ const ListaFormularios = () => {
                         <td align='center'>{formulario.titulo}</td> 
                         {/* <td align='center'>{formulario.tipo}</td> */}
                         <td align='center'>
-                        <Link to={{pathname: `/formulario/${formulario.id}`}} type="button" className="btn-primario" style={{ textDecoration: 'none' }}> Ver </Link>
+                        <Link to={{ pathname: `/formulario/${formulario.id}` }} state={pacienteId} type="button" className="btn-primario" style={{ textDecoration: 'none' }}> Ver </Link>
                         </td>
                     </tr>
                 )}

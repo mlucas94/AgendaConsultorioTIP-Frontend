@@ -6,8 +6,12 @@ import "./css/Botones.css"
 import AsyncSelect from 'react-select/async'
 import Swal from "sweetalert2"
 import { useParams } from "react-router-dom"
+import { useLocation } from 'react-router-dom';
 
-const FormularioTemplate = () => {
+const FormularioTemplate = (props) => {
+
+    const location = useLocation();
+    const idDelPaciente = location.state;
 
     const [formulario, setFormulario] = useState({
         id: null,
@@ -24,17 +28,22 @@ const FormularioTemplate = () => {
         plan: "",
         email: "",
         telefono: null,
-        id: null
+        pacienteId: null
     })
 
     let { id } = useParams();
 
+    //let { pacienteId } = props.pacienteId
+
     //Respuesta
-    const [respuestaData, setRespuestaData] = useState({
-        pacienteId: null,
-        idFormulario: id,
-        respuestas: []
-    })
+    // const [respuestaData, setRespuestaData] = useState({
+    //     pacienteId: null,
+    //     respuestas: []
+    // })
+
+    const [respuestasData, setRespuestasData] = useState([])
+
+    const [idPaciente, setIdPaciente] = useState(idDelPaciente)
 
     useEffect(() => {
         getFormulario(id)
@@ -49,41 +58,21 @@ const FormularioTemplate = () => {
         construirFormulario()
     },[formulario])
 
-    useEffect(() => {
-        console.log("USE EFFECT")
-        const idDelPaciente = paciente.id
-        console.log(paciente.id)
-        console.log(idDelPaciente)
-        if(paciente.id !== null) {
-            setRespuestaData((prevData) => ({
-                idFormulario: prevData.idFormulario,
-                respuestas: prevData.respuestas,
-                pacienteId: idDelPaciente
-            }))
-        }
-    },[paciente])
-
     const handleInputRespuestaText = (e) => {
-        console.log(respuestaData)
+        console.log(respuestasData)
         const idNuevaRespuesta = e.target.name;
         const textoRespuesta = e.target.value;
 
-        const indexReemplazar = respuestaData.respuestas.findIndex(respuesta => respuesta.idPregunta === idNuevaRespuesta)
+        const indexReemplazar = respuestasData.findIndex(respuesta => respuesta.idPregunta === idNuevaRespuesta)
 
         if(indexReemplazar !== -1) {
-            let respuestasReemplazo = respuestaData.respuestas;
+            let respuestasReemplazo = respuestasData;
             respuestasReemplazo[indexReemplazar] = {idPregunta:idNuevaRespuesta, respuestaNombre: textoRespuesta};
-            setRespuestaData((prevState) => ({
-                ...prevState,
-                respuestas: respuestasReemplazo
-            }));
+            setRespuestasData(respuestasReemplazo);
         } else {
-            let respuestasReemplazo = respuestaData.respuestas;
+            let respuestasReemplazo = respuestasData;
             respuestasReemplazo.push({idPregunta:idNuevaRespuesta, respuestaNombre: textoRespuesta})
-            setRespuestaData((prevState) => ({
-                ...prevState,
-                respuestas: respuestasReemplazo
-            }));
+            setRespuestasData(respuestasReemplazo);
         }
     }
 
@@ -91,22 +80,16 @@ const FormularioTemplate = () => {
         const idNuevaRespuesta = e.target.name;
         const textoRespuesta = e.target.value;
 
-        const indexReemplazar = respuestaData.respuestas.findIndex(respuesta => respuesta.idPregunta === idNuevaRespuesta)
+        const indexReemplazar = respuestasData.findIndex(respuesta => respuesta.idPregunta === idNuevaRespuesta)
 
         if(indexReemplazar !== -1) {
-            let respuestasReemplazo = respuestaData.respuestas;
+            let respuestasReemplazo = respuestasData;
             respuestasReemplazo[indexReemplazar] = {idPregunta:idNuevaRespuesta, respuestaNombre: textoRespuesta};
-            setRespuestaData((prevState) => ({
-                ...prevState,
-                respuestas: respuestasReemplazo
-            }));
+            setRespuestasData(respuestasReemplazo);
         } else {
-            let respuestasReemplazo = respuestaData.respuestas;
+            let respuestasReemplazo = respuestasData;
             respuestasReemplazo.push({idPregunta:idNuevaRespuesta, respuestaNombre: textoRespuesta})
-            setRespuestaData((prevState) => ({
-                ...prevState,
-                respuestas: respuestasReemplazo
-            }));
+            setRespuestasData(respuestasReemplazo);
         }
     }
 
@@ -119,41 +102,46 @@ const FormularioTemplate = () => {
             selectTarget = opcionSeleccionada.idSelect
         })
         if(opcionesElegidas.length > 0) {
-            const idNuevaRespuesta = selectTarget;
-            const textoRespuesta = opcionesElegidas;
+            const idNuevaRespuesta = selectTarget
+            const textoRespuesta = opcionesElegidas.join("; ");
     
-            const indexReemplazar = respuestaData.respuestas.findIndex(respuesta => respuesta.idPregunta === idNuevaRespuesta)
+            const indexReemplazar = respuestasData.findIndex(respuesta => respuesta.idPregunta === idNuevaRespuesta)
     
             if(indexReemplazar !== -1) {
-                let respuestasReemplazo = respuestaData.respuestas;
+                let respuestasReemplazo = respuestasData;
                 respuestasReemplazo[indexReemplazar] = {idPregunta:idNuevaRespuesta, respuestaNombre: textoRespuesta};
-                setRespuestaData((prevState) => ({
-                    ...prevState,
-                    respuestas: respuestasReemplazo
-                }));
+                setRespuestasData(respuestasReemplazo);
             } else {
-                let respuestasReemplazo = respuestaData.respuestas;
+                let respuestasReemplazo = respuestasData;
                 respuestasReemplazo.push({idPregunta:idNuevaRespuesta, respuestaNombre: textoRespuesta})
-                setRespuestaData((prevState) => ({
-                    ...prevState,
-                    respuestas: respuestasReemplazo
-                }));
+                setRespuestasData(respuestasReemplazo);
             }
         }
-
-
-        // setRespuestaData((prevData) => ({
-        //     ...prevData,
-        //     [selectTarget]: opcionesElegidas.join('; ')
-        // }))
     }
 
     const handleSubmitRespuestas = (e) => {
         e.preventDefault()
             // const stringRespuestas = JSON.stringify(respuestaData);
-            // guardarRespuestas(stringRespuestas)
-            // .then((response) => Swal.fire({title:"Se guardaron las respuestas correctamente"}))
-            // .catch((error) => Swal.fire({title:error.message}))
+            console.log(idPaciente)
+            const objetoRespuestas = {idPaciente: idPaciente, idFormulario: id, nuevasRespuestas: respuestasData }
+            console.log(objetoRespuestas)
+            
+            guardarRespuestas(objetoRespuestas)
+                .then((response) => Swal.fire ({
+                    title: 'Se guardaron las respuestas',
+                    showCancelButton: true,
+                    confirmButtonText: 'Formularios completados',
+                    cancelButtonText: 'Volver a inicio',
+                    allowOutsideClick: false,
+                    icon: 'success'
+                }).then ((result) => {
+                    if(result.isConfirmed) {
+                        window.location='/pacientes'
+                    } else {
+                        window.location='/'
+                    }
+                }))
+                .catch((error) => Swal.fire({title:error.message}))
     }
 
     const construirFormulario = () => {   
@@ -207,19 +195,6 @@ const FormularioTemplate = () => {
                     }
                 })}
                 <Row className="pt-4">
-                    <h5>Seleccionar Paciente</h5>
-                </Row>
-                <Row className="py-2">
-                    <Col>
-                        <AsyncSelect
-                        name="paciente-select"
-                        required="Por favor elija un paciente"
-                        error="NOT VALID"
-                        onChange={seleccionarPaciente}
-                        loadOptions={handleInputPaciente}
-                        placeholder={"Ingrese dni o nombre de paciente"}
-                        />
-                    </Col>
                     <Col>
                         <button className="btn-primario">Enviar Respuestas</button>
                     </Col>
@@ -251,18 +226,19 @@ const FormularioTemplate = () => {
         getPaciente(pacienteId)
         .then(
             data => {
-                console.log("ID PACIENTE")
-                console.log(data.id)
-                setPaciente({
-                    nombre: data.nombre,
-                    dni: data.dni,
-                    edad: data.edad,
-                    obraSocial: data.obraSocial,
-                    plan: data.plan,
-                    email: data.email,
-                    telefono: data.telefono,
-                    id: data.id
-                })
+                console.log("ID DEL PACIENTE")
+                console.log(pacienteId);
+                //setIdPaciente(pacienteId);
+                // setPaciente({
+                //     nombre: data.nombre,
+                //     dni: data.dni,
+                //     edad: data.edad,
+                //     obraSocial: data.obraSocial,
+                //     plan: data.plan,
+                //     email: data.email,
+                //     telefono: data.telefono,
+                //     pacienteId: data.id
+                // })
             }
         )
         .catch(
