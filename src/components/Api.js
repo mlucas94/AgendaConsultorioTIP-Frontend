@@ -286,9 +286,9 @@ export const guardarRespuestas = (respuestas) => {
 	})
 }
 
-export const getRespuestasPaciente = (id) => {
+export const getFormulariosCompletados = (idPaciente) => {
 	console.log("session token " + sessionStorage.getItem('currentUser'))
-	return axios.get(`${API_URL}/formularios/completados/${id}`, configAuth)
+	return axios.get(`${API_URL}/formularios/respondidos/${idPaciente}`, configAuth)
 	.then(response => {
 		return response.data;
 	})
@@ -339,3 +339,13 @@ export const getFormulario = (id) => {
 	})
 }
 
+export const getRespuestasPaciente = (idFormulario, idPaciente) => {
+	return axios.get(`${API_URL}/formularios/respuestas/${idFormulario}`, {params: {idPaciente: idPaciente}, ...configAuth})
+	.then(response => {
+		return response.data;
+	})
+	.catch(error => {
+		console.log(error)
+		throw Error(error.message);
+	})
+}

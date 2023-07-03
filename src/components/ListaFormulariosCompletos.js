@@ -1,16 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useParams } from "react-router-dom"
-import { getTurnos } from './Api.js';
+import { getFormulariosCompletados } from './Api.js';
 import Table from 'react-bootstrap/Table'
 import { format } from 'date-fns'
 import './css/Botones.css';
+import Swal from 'sweetalert2';
 
 const ListaFormulariosCompletos = () => {
 
     const [listaFormulariosCompletos, setListaFormulariosCompletos] = useState([])
 
+    let { idPaciente } = useParams();
+
     useEffect(() => {
-        getFormularios();
+        getFormulariosCompletados(idPaciente)
+        .then((respuesta) => {
+            setListaFormulariosCompletos(respuesta)
+        })
+        .catch((error) => {
+            Swal.fire({title:error.message})
+        })
     }, [])
 
     const getFormularios = () => {
@@ -27,27 +36,22 @@ const ListaFormulariosCompletos = () => {
     
     return (
         <div className='container'>
-            <h1>Turnos</h1>
-            <Link to={{pathname: `/calendario`}} type="button" className="btn-primario" style={{ textDecoration: 'none' }}> Nuevo turno </Link>
+            <h1>Formularios completados</h1>
             <div>
             <br/>
             <Table bordered>
                 <thead>
                     {/* meter en un css el text align a th */}
-                    <th style={{textAlign: 'center'}}>Tipo de turno</th>
-                    <th style={{textAlign: 'center'}}>Paciente</th>
-                    <th style={{textAlign: 'center'}}>Hora de inicio</th>
+                    <th style={{textAlign: 'center'}}>Titulo</th>
                     <th style={{textAlign: 'center'}}>Acciones</th>
                 </thead>
                 <tbody>
             {
                 listaFormulariosCompletos.map((formulario) =>
                     <tr>
-                        <td align='center'>{formulario.id}</td> 
-                        <td align='center'>{formulario.pacienteId}</td> 
-                        {/* <td align='center'>{formulario.tipo}</td> */}
+                        <td align='center'>{formulario.titulo}</td> 
                         <td align='center'>
-                        <Link to={{pathname: `/formulario_completo/${formulario.id}`}} type="button" className="btn-primario" style={{ textDecoration: 'none' }}> Ver </Link>
+                        <Link to={{pathname: `/formulario_completo/${formulario.id}/${idPaciente}`}} type="button" className="btn-primario" style={{ textDecoration: 'none' }}> Ver </Link>
                         </td>
                     </tr>
                 )}

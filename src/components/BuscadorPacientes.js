@@ -192,11 +192,14 @@ const BuscadorPacientes = (props) => {
                             </table>
                         </div>
                         <h4>Historia Clinica</h4>
-                        <div className="px-2 py-2 col-md-10" id="archivos-paciente">
+                        <div className="px-2 py-3 col-md-10" id="archivos-paciente">
                             <Link to={{pathname: `/archivos_paciente/${paciente.id}`}} className="btn-primario" style={{ textDecoration: 'none' }} >VER ARCHIVOS</Link>
                         </div>
-                        <div className="px-2 py-2 col-md-10" id="formularios-paciente">
-                        <Link to={{ pathname: `/formulario_listado` }} state={paciente.id} className="btn-primario" style={{ textDecoration: 'none' }} >VER FORMULARIOS</Link>
+                        <div className="px-2 py-3 col-md-10" id="formularios-paciente">
+                            <Link to={{ pathname: `/formulario_listado` }} state={paciente.id} className="btn-primario" style={{ textDecoration: 'none' }} >RELLENAR FORMULARIO</Link>
+                        </div>
+                        <div className="px-2 py-3 col-md-10" id="formularios-paciente">
+                            <Link to={{ pathname: `/paciente/formularios/${paciente.id}` }} className="btn-primario" style={{ textDecoration: 'none' }} >FORMULARIOS COMPLETADOS</Link>
                         </div>
                     </div>
                 </Collapse>

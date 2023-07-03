@@ -1,43 +1,47 @@
 import { useState, useEffect } from "react"
-import { getRespuestasPaciente } from "./Api"
 import { useParams } from "react-router-dom";
+import { getRespuestasPaciente } from "./Api";
 
 const FormularioCompletado = () => {
 
-    const [respuestas, setRespuestas] = useState({});
+    const [tituloFormulario, setTituloFormulario] = useState("");
 
-    let { id } = useParams();
+    const [respuestas, setRespuestas] = useState([]);
 
-    useEffect(() => {
-        recuperarRespuestas();
-    },[]);
+    const { idFormulario, idPaciente } = useParams();
 
     const recuperarRespuestas = () => {
-        getRespuestasPaciente(id)
+        getRespuestasPaciente(idFormulario, idPaciente)
         .then(data => {
-            console.log(data.contenido);
-            setRespuestas(JSON.parse(data.contenido));
+            console.log(data);
+            setTituloFormulario(data.titulo);
+            setRespuestas(data.preguntasRespondidas);
         })
     }
 
+    useEffect(() => {
+        recuperarRespuestas()
+    }, [])
+
 
     const tablaResultados = () => {
-        if(respuestas != {}) {
-            const campos = Object.keys(respuestas);
+        if(respuestas != []) {
             return <div className="pt-3">
                 <table className="table table-bordered table-striped">
                     <thead>
                         <tr>
                             <th>Campo</th>
                             <th>Respuesta</th>
+                            <th>Fecha</th>
                         </tr>
                     </thead>
                     <tbody>
                         {
-                        campos.map((campoNombre) => (
-                            <tr campo={campoNombre} >
-                                <td>{campoNombre.charAt(0).toUpperCase() + campoNombre.slice(1).split('_').join(' ')}</td>
-                                <td>{respuestas[campoNombre]}</td>
+                        respuestas.map((respuesta) => (
+                            <tr pregunta={respuesta.idPregunta} >
+                                <td>{respuesta.preguntaNombre}</td>
+                                <td>{respuesta.respuestaNombre}</td>
+                                <td>{respuesta.fecha}</td>
                             </tr>
                         ))}
                     </tbody>
@@ -49,9 +53,9 @@ const FormularioCompletado = () => {
 
     return (
         <div className="p-4">
-            <h3>Formulario primera consulta clinica</h3>
+            <h3>{tituloFormulario}</h3>
             {
-            respuestas !={} ?
+            respuestas !=[] ?
             tablaResultados()
             : <div>Cargando</div>
             }
