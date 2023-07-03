@@ -47,6 +47,11 @@ const BuscadorPacientes = (props) => {
                         fechaTurno: data.horarioInicio
                     }
                     )
+                }else{
+                    setProximoTurno({
+                        idTurno: null,
+                        fechaTurno: null
+                    })
                 }
             }
         )

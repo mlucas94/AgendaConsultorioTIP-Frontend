@@ -96,7 +96,12 @@ export async function buscarPacienteLike(searchParameter) {
 }
 
 export const getPaciente = (id) => {
-	return axios.get(`${API_URL}/pacientes/${id}`, configAuth)
+	const config = { 
+		headers: { 
+			Authorization: `Bearer ${sessionStorage.getItem('currentUser')}`
+		}
+	}
+	return axios.get(`${API_URL}/pacientes/${id}`, config)
 		.then(response => {
 			return response.data
 		})
@@ -186,7 +191,12 @@ export async function registrarProfesional(payload) {
 }
 
 export const agendarPaciente = (paciente) => {
-	return axios.post(`${API_URL}/pacientes`, paciente, configAuth)
+	const config = { 
+		headers: { 
+			Authorization: `Bearer ${sessionStorage.getItem('currentUser')}`
+		}
+	}
+	return axios.post(`${API_URL}/pacientes`, paciente, config)
 		.then(response => {
 			return true;
 		})
@@ -197,7 +207,12 @@ export const agendarPaciente = (paciente) => {
 
 //ARCHIVOS
 export const getArchivosPaciente = (paginaArchivos) => {
-	return axios.get(`${API_URL}/archivos/paciente`, {params: paginaArchivos, ...configAuth})
+	const config = { 
+		headers: { 
+			Authorization: `Bearer ${sessionStorage.getItem('currentUser')}`
+		}
+	}
+	return axios.get(`${API_URL}/archivos/paciente`, {params: paginaArchivos, ...config})
 		.then(response=> {
 			console.log("GETARCHIVOSPACIENTE")
 			return response.data;
@@ -208,17 +223,27 @@ export const getArchivosPaciente = (paginaArchivos) => {
 }
 
 export const descargarArchivo = (archivo, nombreArchivo) => {
-	return axios.get(`${API_URL}/archivo/descargar`, {params: {idArchivo: archivo}, responseType: 'blob', ...configAuth})
+	const config = { 
+		headers: { 
+			Authorization: `Bearer ${sessionStorage.getItem('currentUser')}`
+		}
+	}
+	return axios.get(`${API_URL}/archivo/descargar`, {params: {idArchivo: archivo}, responseType: 'blob', ...config})
 	.then(response=> {
 		return response.data
 	})
 }
 
 export const cargarArchivo = (archivoNuevo, paciente) => {
+	const config = { 
+		headers: { 
+			Authorization: `Bearer ${sessionStorage.getItem('currentUser')}`
+		}
+	}
 	const formData = new FormData();
     formData.append("archivo", archivoNuevo);
     formData.append("idPaciente", paciente);
-	return axios.post(`${API_URL}/archivo/cargar`, formData,{headers: {'Content-Type': 'multipart/form-data'}, ...configAuth})
+	return axios.post(`${API_URL}/archivo/cargar`, formData,{headers: {'Content-Type': 'multipart/form-data'}, ...config})
 	.then(response =>{
 		return response
 	})
@@ -231,21 +256,36 @@ export const cargarArchivo = (archivoNuevo, paciente) => {
 }
 
 export const eliminarArchivo = (idArchivoEliminar) => {
-	return axios.delete(`${API_URL}/archivo/eliminar`, {params: {idArchivo : idArchivoEliminar}, ...configAuth})
+	const config = { 
+		headers: { 
+			Authorization: `Bearer ${sessionStorage.getItem('currentUser')}`
+		}
+	}
+	return axios.delete(`${API_URL}/archivo/eliminar`, {params: {idArchivo : idArchivoEliminar}, ...config})
 }
 
 export const cargarArchivoTurno = (archivoNuevo, turno) => {
+	const config = { 
+		headers: { 
+			Authorization: `Bearer ${sessionStorage.getItem('currentUser')}`
+		}
+	}
 	const formData = new FormData();
     formData.append("archivo", archivoNuevo);
     formData.append("idTurno", turno);
-	return axios.post(`${API_URL}/archivo/cargar/turno`, formData,{headers: {'Content-Type': 'multipart/form-data'}, ...configAuth})
+	return axios.post(`${API_URL}/archivo/cargar/turno`, formData,{headers: {'Content-Type': 'multipart/form-data'}, ...config})
 	.then(response =>{
 		return response
 	})
 }
 
 export const getArchivosTurno = (paginaArchivos) => {
-	return axios.get(`${API_URL}/archivos/turno`, {params: paginaArchivos, ...configAuth})
+	const config = { 
+		headers: { 
+			Authorization: `Bearer ${sessionStorage.getItem('currentUser')}`
+		}
+	}
+	return axios.get(`${API_URL}/archivos/turno`, {params: paginaArchivos, ...config})
 		.then(response=> {
 			return response.data;
 		})
@@ -255,22 +295,37 @@ export const getArchivosTurno = (paginaArchivos) => {
 }
 
 export const desasociarArchivoTurno = (idArchivoDesasociar, idTurno) => {
-	return axios.delete(`${API_URL}/archivo/turno`, {params: {archivoId : idArchivoDesasociar, turnoId: idTurno}, ...configAuth})
+	const config = { 
+		headers: { 
+			Authorization: `Bearer ${sessionStorage.getItem('currentUser')}`
+		}
+	}
+	return axios.delete(`${API_URL}/archivo/turno`, {params: {archivoId : idArchivoDesasociar, turnoId: idTurno}, ...config})
 	.then(response => {
 		return response
 	})
 }
 
 export const proximoTurnoPaciente = (idPaciente) => {
+	const config = { 
+		headers: { 
+			Authorization: `Bearer ${sessionStorage.getItem('currentUser')}`
+		}
+	}
 	console.log("ID del paciente : " + idPaciente)
-	return axios.get(`${API_URL}/proximo_turno/${idPaciente}`, configAuth)
+	return axios.get(`${API_URL}/proximo_turno/${idPaciente}`, config)
 	.then(response => {
 		return response.data;
 	})
 }
 
 export const getLanding = () => {
-	return axios.get(`${API_URL}/landing`, configAuth)
+	const config = { 
+		headers: { 
+			Authorization: `Bearer ${sessionStorage.getItem('currentUser')}`
+		}
+	}
+	return axios.get(`${API_URL}/landing`, config)
 	.then(response => {
 		return response.data;
 	})
