@@ -27,6 +27,7 @@ const BarraNavegacion = (props) => {
 
     const cerrarSesion = () => {
         sessionStorage.removeItem("currentUser")
+        sessionStorage.removeItem("nombreUsuario")
     }
 
     return(

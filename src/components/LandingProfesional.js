@@ -49,7 +49,7 @@ const LandingProfesional = (props) => {
 
     return (
         <div className='container'> 
-            <h3 className="pt-4">Bienvenido</h3>
+            <h3 className="pt-4">Bienvenido, {sessionStorage.getItem('nombreUsuario')}</h3>
             <hr/>
             <div id='proximo-prioritario'>
                 { mostrarPrioritario() } 
