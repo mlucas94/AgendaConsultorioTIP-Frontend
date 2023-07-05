@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react"
 import { Col, Collapse, Row, Table } from "react-bootstrap"
-import { getLanding } from "./Api"
+import { getLanding, getIdsTurnosDesplazados } from "./Api"
 import { Link } from "react-router-dom"
+import { formatEStoEN } from "./FuncionesGenerales"
 import './css/Botones.css';
 
 const LandingProfesional = (props) => {
@@ -9,11 +10,25 @@ const LandingProfesional = (props) => {
     const [proximosTurnos, setProximosTurnos] = useState([])
     const [proximoPrioritario, setProximoPrioritario] = useState(null)
     const [cantTurnosHoy, setCantTurnosHoy] = useState(0)
+    const [turnosDesplazados, setTurnosDesplazados] = useState([])
 
     useEffect(() => {
         console.log("Renderizando")
         getDatosLanding();
     }, [])
+
+    useEffect(() => {
+        if(proximoPrioritario !== null) {
+            recuperarTurnosDesplazados();
+        }   
+    },[proximoPrioritario])
+
+    const recuperarTurnosDesplazados = () =>{
+        getIdsTurnosDesplazados(proximoPrioritario.id)
+        .then((data) => {
+            setTurnosDesplazados(data)
+        })
+    }
 
     const getDatosLanding = () => {
         getLanding()
@@ -27,6 +42,15 @@ const LandingProfesional = (props) => {
     }
 
     const mostrarPrioritario = () => {
+        if(turnosDesplazados.length > 0) {
+            const proximaFecha = proximoPrioritario.horarioInicio.split(" ");
+            const fechaSeleccionada = formatEStoEN(proximaFecha[0]);
+            return <div>
+                <Row className="bg-danger align-items-center" style={{ height: '50px',  borderRadius: "0.375rem"}}>
+                    <Link to={{pathname: `/turnos`}} state={fechaSeleccionada} type="button" className=" text-white" style={{ textDecoration: 'none' }}> {'Su proximo turno prioritario se superpone con turnos previamente agendados. Puede modificarlos aqui'} </Link>
+                </Row>
+            </div>
+        }
         if (proximoPrioritario) {
            return <div>
             <Row className="bg-danger align-items-center" style={{ height: '50px',  borderRadius: "0.375rem"}}>
