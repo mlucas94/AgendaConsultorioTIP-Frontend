@@ -414,3 +414,11 @@ export const getIdsTurnosDesplazados = (idTurno) => {
 		throw Error(error.message);
 	})
 }
+
+export const getRespuestasTurno = (idFormulario, idTurno) => {
+
+}
+
+export const guardarRespuestasTurno = (objetoRespuestasTurno) => {
+
+}

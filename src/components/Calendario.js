@@ -30,7 +30,7 @@ const Calendario = () => {
 
     const getHeader = () => {
         return (
-          <div className="header">
+          <div className="header pb-3">
             <Container fluid>
             <Row className=''>
               <Col className='text-end'>
@@ -180,6 +180,7 @@ const Calendario = () => {
       
         <div className='container py-3'>
           <h2 className="currentMonth py-2">{format(activeDate, "MMMM yyyy", {locale:es})}</h2>
+            {getHeader()} 
             <Table bordered>
                 <thead>
                     {getWeekDaysNames()}
@@ -188,7 +189,6 @@ const Calendario = () => {
                     {getDates()}
                 </tbody>
             </Table>
-            {getHeader()} 
             <div>
                 <Modal show={show} onHide={handleCloseMenuDia} centered>
                     <NuevoTurnoFecha closeFunction={handleCloseMenuDia} fecha={fechaSeleccionada} tipo={'REGULAR'}/>

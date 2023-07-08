@@ -55,6 +55,8 @@ const App = () => {
                   <Route path="/formulario/:id" element={<FormularioTemplate/>}/>
                   <Route path="/formulario_completo/:idFormulario/:idPaciente" element={<FormularioCompletado/>}/>
                   <Route path="/paciente/formularios/:idPaciente" element={<ListaFormulariosCompletos/>}/>
+
+                  {/* Aca irian 4 links mas: uno para ListaFormularioTurno, uno para ListaFormularioCompletoTurno, uno para FormularioCompletoTurno, uno para FormularioTemplateTurno */}
                   
                   <Route path="/*" element={ <Login/> }/>
                 </Routes>
