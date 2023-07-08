@@ -32,7 +32,8 @@ const ListaFormulariosTurno = () => {
     return (
         <div className='container'>
             <h1>Formularios disponibles</h1>
-            <Link to={{pathname: `/formulario`}} type="button" className="btn-primario" style={{ textDecoration: 'none' }}> Crear nuevo </Link>
+            <Link to={{pathname: `/formulario`}} type="button" className="mx-2 btn-primario" style={{ textDecoration: 'none' }}> Crear nuevo </Link>
+            <Link to={{pathname: `/turno/${idTurno}`}} type="button" className="mx-2 btn-primario" style={{ textDecoration: 'none' }}> Volver a turno </Link>
             <div>
             <br/>
             <Table bordered>

@@ -34,6 +34,9 @@ const ListaFormulariosCompletosTurno = () => {
         <div className='container'>
             <h1>Formularios completados</h1>
             <div>
+            <div>
+                <Link to={{pathname: `/turno/${idTurno}`}} type="button" className="btn-primario" style={{ textDecoration: 'none' }}> Volver a turno </Link>      
+            </div>
             <br/>
             <Table bordered>
                 <thead>

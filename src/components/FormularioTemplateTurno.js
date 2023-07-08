@@ -5,7 +5,7 @@ import Select from 'react-select'
 import "./css/Botones.css"
 import AsyncSelect from 'react-select/async'
 import Swal from "sweetalert2"
-import { useParams } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import { useLocation } from 'react-router-dom';
 
 const FormularioTemplateTurno = (props) => {
@@ -170,6 +170,11 @@ const FormularioTemplateTurno = (props) => {
                 <Row className="pt-4">
                     <Col>
                         <button className="btn-primario">Enviar Respuestas</button>
+                    </Col>
+                </Row>
+                <Row className="py-3">
+                    <Col>
+                    <Link to={{ pathname: `/formularios_turno/${idTurno}` }} className=" btn-primario" style={{ textDecoration: 'none' }}>Volver a formularios</Link>
                     </Col>
                 </Row>
             </Form>
