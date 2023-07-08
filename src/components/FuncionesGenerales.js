@@ -5,6 +5,11 @@ export const formatENtoES = (fecha) => {
     return day + '-' + month + '-' + year;
   } 
 
+export const formatEStoEN = (fecha) => {
+  const [day, month, year] = fecha.split("-")
+  return year + '-' + month + '-' + day;
+}
+
 
 export const mostrarAlertaCarga = () => {
     Swal.fire({

@@ -404,3 +404,21 @@ export const getRespuestasPaciente = (idFormulario, idPaciente) => {
 		throw Error(error.message);
 	})
 }
+
+export const getIdsTurnosDesplazados = (idTurno) => {
+	return axios.get(`${API_URL}/landing/alerta_desplazado/${idTurno}`, configAuth)
+	.then(response => {
+		return response.data
+	})
+	.catch(error => {
+		throw Error(error.message);
+	})
+}
+
+export const getRespuestasTurno = (idFormulario, idTurno) => {
+
+}
+
+export const guardarRespuestasTurno = (objetoRespuestasTurno) => {
+
+}
