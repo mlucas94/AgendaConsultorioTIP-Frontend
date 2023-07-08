@@ -15,6 +15,10 @@ const ListaFormulariosCompletosTurno = () => {
     //TODO: En vez de param mandarlo como un attributo de elemento html y renderizarlo sobre la misma vista de turno para rellenar abajo
 
     useEffect(() => {
+        recuperarFormulariosCompletos()
+    }, [])
+
+    const recuperarFormulariosCompletos = () => {
         getFormulariosCompletadosTurno(idTurno)
         .then((respuesta) => {
             setListaFormulariosCompletos(respuesta)
@@ -22,7 +26,9 @@ const ListaFormulariosCompletosTurno = () => {
         .catch((error) => {
             Swal.fire({title:error.message})
         })
-    }, [])
+    }
+
+
     
     return (
         <div className='container'>
@@ -41,7 +47,7 @@ const ListaFormulariosCompletosTurno = () => {
                     <tr>
                         <td align='center'>{formulario.titulo}</td> 
                         <td align='center'>
-                        <Link to={{pathname: `/formulario_completo/${formulario.id}/${idTurno}`}} type="button" className="btn-primario" style={{ textDecoration: 'none' }}> Ver </Link>
+                        <Link to={{pathname: `/formulario_completo_turno/${formulario.id}/${idTurno}`}} type="button" className="btn-primario" style={{ textDecoration: 'none' }}> Ver </Link>
                         </td>
                     </tr>
                 )}

@@ -7,12 +7,11 @@ import { useLocation } from 'react-router-dom';
 
 const ListaFormulariosTurno = () => {
 
-    const location = useLocation();
-    const idDelTurno = location.state;
+    const { idTurno } = useParams()
 
     const [listaFormularios, setListaFormularios] = useState([])
 
-    const turnoId = idDelTurno;
+    const turnoId = idTurno;
 
     useEffect(() => {
         getFormulariosTurno();
@@ -49,7 +48,7 @@ const ListaFormulariosTurno = () => {
                         <td align='center'>{formulario.titulo}</td> 
                         {/* <td align='center'>{formulario.tipo}</td> */}
                         <td align='center'>
-                        <Link to={{ pathname: `/formulario/${formulario.id}` }} state={turnoId} type="button" className="btn-primario" style={{ textDecoration: 'none' }}> Ver </Link>
+                        <Link to={{ pathname: `/turno/formulario/${turnoId}/${formulario.id}` }} state={turnoId} type="button" className="btn-primario" style={{ textDecoration: 'none' }}> Ver </Link>
                         </td>
                     </tr>
                 )}

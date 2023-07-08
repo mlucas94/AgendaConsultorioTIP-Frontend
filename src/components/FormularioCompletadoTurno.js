@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react"
 import { useParams } from "react-router-dom";
 import { getRespuestasTurno } from "./Api";
+import { Row, Col } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 const FormularioCompletadoTurno = () => {
 
@@ -11,6 +13,7 @@ const FormularioCompletadoTurno = () => {
     const { idFormulario, idTurno } = useParams();
 
     const recuperarRespuestas = () => {
+        console.log("HOLA")
         getRespuestasTurno(idFormulario, idTurno)
         .then(data => {
             console.log(data);
@@ -58,7 +61,7 @@ const FormularioCompletadoTurno = () => {
                     <h3>{tituloFormulario}</h3>
                 </Col>
                 <Col>
-                    <Link className="btn-primario">Volver a turno</Link>
+                <Link to={{ pathname: `/turno/${idTurno}` }} className=" btn-primario" style={{ textDecoration: 'none' }}>Volver a turno</Link>
                 </Col>
             </Row>
             {

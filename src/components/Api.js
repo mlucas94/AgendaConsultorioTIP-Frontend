@@ -416,9 +416,34 @@ export const getIdsTurnosDesplazados = (idTurno) => {
 }
 
 export const getRespuestasTurno = (idFormulario, idTurno) => {
-
+	return axios.get(`${API_URL}/formularios/respuestas_turno/${idFormulario}`, {params: {idTurno: idTurno}, ...configAuth})
+	.then(response => {
+		return response.data;
+	})
+	.catch(error => {
+		console.log("HOLA")
+		console.log(error)
+		throw Error(error.message);
+	})
 }
 
 export const guardarRespuestasTurno = (objetoRespuestasTurno) => {
+	return axios.post(`${API_URL}/formularios/responder/turno`, objetoRespuestasTurno, configAuth)
+	.then(response => {
+		return response
+	})
+	.catch(error => {
+		throw Error("Ocurrio un error al guardar las respuestas")
+	})
+}
 
+export const getFormulariosCompletadosTurno = (idTurno) => {
+	console.log("session token " + sessionStorage.getItem('currentUser'))
+	return axios.get(`${API_URL}/formularios/respondidos/turno/${idTurno}`, configAuth)
+	.then(response => {
+		return response.data;
+	})
+	.catch(error => {
+		throw Error(error.message);
+	})
 }
