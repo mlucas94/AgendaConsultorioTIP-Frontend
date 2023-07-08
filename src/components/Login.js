@@ -24,9 +24,12 @@ function Login(props) {
     loginProfesional(email, password)
       .then(response => {
         let accessToken;
+        let nombreUsuario;
         accessToken = response.accessToken;
+        nombreUsuario = response.nombreUsuario;
         console.log("session token", accessToken);
         sessionStorage.setItem('currentUser', accessToken);
+        sessionStorage.setItem('nombreUsuario', nombreUsuario);
         setFromSuccessLogin(true)
         setRedirect(true);
       })

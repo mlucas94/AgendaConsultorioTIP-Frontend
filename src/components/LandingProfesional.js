@@ -49,7 +49,7 @@ const LandingProfesional = (props) => {
 
     return (
         <div className='container'> 
-            <h3 className="pt-4">Bienvenido</h3>
+            <h3 className="pt-4">Bienvenido/a, {sessionStorage.getItem('nombreUsuario')}</h3>
             <hr/>
             <div id='proximo-prioritario'>
                 { mostrarPrioritario() } 
@@ -102,7 +102,7 @@ const LandingProfesional = (props) => {
                             </tbody>
                         </Table>
                     </div>
-                        : <h4 className="text-center pt-5">No se encontro ningun turno pendiente</h4>
+                        : <h4 className="text-center pt-5">No se encontró ningún turno pendiente</h4>
                     }
         </div>
     )

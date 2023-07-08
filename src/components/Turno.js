@@ -109,7 +109,7 @@ const Turno = (props) => {
                 </table>
             </div>
             <Link to={{ pathname: `/archivos_paciente_turno/${id}` }} className=" btn-primario" style={{ textDecoration: 'none' }}>Ver archivos</Link>
-            <button type='button' className="btn btn-primary btn-sm" onClick={cancelarTurnoPorId}>Cancelar turno</button>
+            <Link onClick={cancelarTurnoPorId} className="mx-2 btn-primario" style={{ textDecoration: 'none' }}>Cancelar turno</Link>
             <hr />
             <Link to={{ pathname: `/pacientes` }} state={turnoData.pacienteId} className=" btn-primario" style={{ textDecoration: 'none' }}>Ir a paciente</Link>
 
