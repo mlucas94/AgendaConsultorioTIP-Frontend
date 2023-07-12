@@ -3,6 +3,7 @@ import './css/Registrar.css'
 import { registrarProfesional } from './Api.js';
 import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import './css/Registrar.css';
 import './css/Botones.css'
 
 function Register(props) {
