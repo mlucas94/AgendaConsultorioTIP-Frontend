@@ -20,7 +20,8 @@ function Login(props) {
 
   })
 
-  const atemptLogin = () => {
+  const atemptLogin = (e) => {
+    e.preventDefault()
     loginProfesional(email, password)
       .then(response => {
         let accessToken;
@@ -49,7 +50,7 @@ function Login(props) {
     return <Navigate to='/landing' />
   }
 
-  return (
+  /*return (
     <div className="container">
       <div className="row">
         <div className="col-sm">
@@ -92,7 +93,67 @@ function Login(props) {
         </div>
       </div>
     </div>
-  );
+  );*/
+
+  return (
+    <div className="Auth-form-container">
+
+      <div>
+        <img className="login-logo" src={process.env.PUBLIC_URL + '/agendate_logo_transparente.png'} />
+      </div>
+      <form className="Auth-form" onSubmit={atemptLogin}>
+        <div className="Auth-form-content">
+          <h3 className="Auth-form-title">Ingresar</h3>
+          <div className="text-center">
+            ¿Aún no se ha registrado?{" "}
+            <Link to="/profesional/registrarse" className="btn btn-outline-info">
+              Registrarse
+            </Link>
+          </div>
+          <div className="form-group mt-3">
+            <label>Email</label>
+            <input
+              type="email"
+              className="form-control mt-1"
+              placeholder="Ingrese email"
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+          <div className="form-group mt-3">
+            <label>Contraseña</label>
+            <input
+              type="password"
+              className="form-control mt-1"
+              placeholder="Ingrese contraseña"
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+          <div className="d-grid gap-2 mt-3">
+            <button onClick={atemptLogin} disabled={canLogin()} className='btn-primario'>
+              Ingresar
+            </button>
+          </div>
+          {errorLogin &&
+            <>
+              <hr></hr>
+              <div class="alert alert-danger" role="alert">
+                Email y/o contraseña incorrectos
+              </div>
+            </>
+          }
+          {fromSuccessLogin &&
+            <>
+              <hr></hr>
+              <div class="alert alert-success" role="alert">
+                Ha ingresado correctamente
+              </div>
+            </>
+          }
+        </div>
+      </form>
+
+    </div>
+  )
 }
 
 export default Login;
