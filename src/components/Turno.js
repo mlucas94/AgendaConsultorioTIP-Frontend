@@ -108,10 +108,12 @@ const Turno = (props) => {
                     </tbody>
                 </table>
             </div>
-            <Link to={{ pathname: `/archivos_paciente_turno/${id}` }} className=" btn-primario" style={{ textDecoration: 'none' }}>Ver archivos</Link>
+            <Link to={{ pathname: `/archivos_paciente_turno/${id}` }} className="mx-2 btn-primario" style={{ textDecoration: 'none' }}>Ver archivos</Link>
+            <Link to={{ pathname: `/formularios_turno/${id}` }} className="mx-2 btn-primario" style={{ textDecoration: 'none' }}>Responder Formulario</Link>
+            <Link to={{ pathname: `/formularios_completos_turno/${id}` }} className="mx-2 btn-primario" style={{ textDecoration: 'none' }}>Formularios Completados</Link>
             <Link onClick={cancelarTurnoPorId} className="mx-2 btn-primario" style={{ textDecoration: 'none' }}>Cancelar turno</Link>
             <hr />
-            <Link to={{ pathname: `/pacientes` }} state={turnoData.pacienteId} className=" btn-primario" style={{ textDecoration: 'none' }}>Ir a paciente</Link>
+            <Link to={{ pathname: `/pacientes` }} state={turnoData.pacienteId} className="mx-2 btn-primario" style={{ textDecoration: 'none' }}>Ir a paciente</Link>
 
 
         </div>

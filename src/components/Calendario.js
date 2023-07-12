@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import NuevoTurnoFecha from './NuevoTurnoFecha'
 import { formatENtoES } from './FuncionesGenerales';
 import { cantidadTurnosPrioritarios, cantidadTurnosTotal, getPrioritariosDeMes } from './Api';
+import './css/Botones.css'
 
 const Calendario = () => {
     const [show, setShow] = useState(false);
@@ -29,30 +30,39 @@ const Calendario = () => {
 
     const getHeader = () => {
         return (
-          <div className="header">
-            <button
-              className="todayButton"
-              onClick={() => {
-                setActiveDate(new Date());
-              }}
-            >
-              Mes actual
-            </button>
-            <button
-              type='button'
-              className="btn btn-primary btn-sm"
-              onClick={() => setActiveDate(subMonths(activeDate, 1))}
-            >
-                Ant.
-            </button>
-            <button
-              type='button'
-              className="btn btn-primary btn-sm"
-              onClick={() => setActiveDate(addMonths(activeDate, 1))}
-            >
-                Sig.
-            </button>
-            <h2 className="currentMonth">{format(activeDate, "MMMM yyyy", {locale:es})}</h2>
+          <div className="header pb-3">
+            <Container fluid>
+            <Row className=''>
+              <Col className='text-end'>
+                <button
+                  type='button'
+                  className="btn-primario"
+                  onClick={() => setActiveDate(subMonths(activeDate, 1))}
+                  >
+                    Anterior
+                </button>
+              </Col>
+              <Col className='text-center'>
+                <button
+                  className="todayButton btn-primario"
+                  onClick={() => {
+                    setActiveDate(new Date());
+                  }}
+                  >
+                  Mes Actual
+                </button>
+              </Col>
+              <Col className='text-start'>
+                <button
+                  type='button'
+                  className="btn-primario"
+                  onClick={() => setActiveDate(addMonths(activeDate, 1))}
+                  >
+                    Siguiente
+                </button>
+              </Col>
+            </Row>
+            </Container>
           </div>
         );
       };
@@ -168,7 +178,8 @@ const Calendario = () => {
       
       <Container fluid>
       
-        <div className='container'>
+        <div className='container py-3'>
+          <h2 className="currentMonth py-2">{format(activeDate, "MMMM yyyy", {locale:es})}</h2>
             {getHeader()} 
             <Table bordered>
                 <thead>

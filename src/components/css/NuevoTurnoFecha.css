@@ -14,8 +14,9 @@
 }
 
 .ocupado {
-    background-color: grey !important;
-    border-color: grey !important;
+    background-color: lightcoral !important;
+    border-color: lightcoral !important;
+    color: black !important;
 }
 
 .disponible:hover {

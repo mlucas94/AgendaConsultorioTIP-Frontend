@@ -65,9 +65,8 @@ const BarraNavegacion = (props) => {
                                 <NavLink className='sidebar-link-text' href="/formulario_listado">Lista Formularios</NavLink>
                             </div>
                             <div className='sidebar-link'>
-                                <NavLink className='sidebar-link-text' onClick={cerrarSesion} href="/login">Cerrar Sesion</NavLink>
+                                <NavLink className='sidebar-link-text' onClick={cerrarSesion} href="/login">Cerrar Sesión</NavLink>
                             </div>
-                            
                         </div>
                     </div>
                 </Nav>
