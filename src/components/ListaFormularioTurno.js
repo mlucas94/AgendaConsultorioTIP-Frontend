@@ -7,12 +7,11 @@ import { useLocation } from 'react-router-dom';
 
 const ListaFormulariosTurno = () => {
 
-    const location = useLocation();
-    const idDelTurno = location.state;
+    const { idTurno } = useParams()
 
     const [listaFormularios, setListaFormularios] = useState([])
 
-    const turnoId = idDelTurno;
+    const turnoId = idTurno;
 
     useEffect(() => {
         getFormulariosTurno();
@@ -33,7 +32,8 @@ const ListaFormulariosTurno = () => {
     return (
         <div className='container'>
             <h1>Formularios disponibles</h1>
-            <Link to={{pathname: `/formulario`}} type="button" className="btn-primario" style={{ textDecoration: 'none' }}> Crear nuevo </Link>
+            <Link to={{pathname: `/formulario`}} type="button" className="mx-2 btn-primario" style={{ textDecoration: 'none' }}> Crear nuevo </Link>
+            <Link to={{pathname: `/turno/${idTurno}`}} type="button" className="mx-2 btn-primario" style={{ textDecoration: 'none' }}> Volver a turno </Link>
             <div>
             <br/>
             <Table bordered>
@@ -49,7 +49,7 @@ const ListaFormulariosTurno = () => {
                         <td align='center'>{formulario.titulo}</td> 
                         {/* <td align='center'>{formulario.tipo}</td> */}
                         <td align='center'>
-                        <Link to={{ pathname: `/formulario/${formulario.id}` }} state={turnoId} type="button" className="btn-primario" style={{ textDecoration: 'none' }}> Ver </Link>
+                        <Link to={{ pathname: `/turno/formulario/${turnoId}/${formulario.id}` }} state={turnoId} type="button" className="btn-primario" style={{ textDecoration: 'none' }}> Ver </Link>
                         </td>
                     </tr>
                 )}

@@ -27,6 +27,10 @@ import CrearFormulario from './components/CrearFormulario';
 import ListaFormularios from './components/ListaFormularios';
 import FormularioTemplate from './components/FormularioTemplate';
 import ListaFormulariosCompletos from './components/ListaFormulariosCompletos';
+import ListaFormulariosTurno from './components/ListaFormularioTurno';
+import FormularioTemplateTurno from './components/FormularioTemplateTurno';
+import FormularioCompletadoTurno from './components/FormularioCompletadoTurno';
+import ListaFormulariosCompletosTurno from './components/ListaFormularioCompletoTurno';
 
 const App = () => {
   return (
@@ -57,7 +61,12 @@ const App = () => {
                   <Route path="/paciente/formularios/:idPaciente" element={<ListaFormulariosCompletos/>}/>
 
                   {/* Aca irian 4 links mas: uno para ListaFormularioTurno, uno para ListaFormularioCompletoTurno, uno para FormularioCompletoTurno, uno para FormularioTemplateTurno */}
-                  
+
+                  <Route path="/formularios_turno/:idTurno" element={<ListaFormulariosTurno/>}/>
+                  <Route path="/turno/formulario/:idTurno/:idFormulario" element={<FormularioTemplateTurno/>}/>
+                  <Route path="/formulario_completo_turno/:idFormulario/:idTurno" element={<FormularioCompletadoTurno/>}/>
+                  <Route path="/formularios_completos_turno/:idTurno" element={<ListaFormulariosCompletosTurno/>}/>
+
                   <Route path="/*" element={ <Login/> }/>
                 </Routes>
           </Col>

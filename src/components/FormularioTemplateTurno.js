@@ -5,13 +5,15 @@ import Select from 'react-select'
 import "./css/Botones.css"
 import AsyncSelect from 'react-select/async'
 import Swal from "sweetalert2"
-import { useParams } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import { useLocation } from 'react-router-dom';
 
-const FormularioTemplate = (props) => {
+const FormularioTemplateTurno = (props) => {
 
-    const location = useLocation();
-    const idDelTurno = location.state;
+    const { idTurno, idFormulario } = useParams();
+
+    const idDelTurno = idTurno;
+    const idDelFormulario = idFormulario
 
     const [formulario, setFormulario] = useState({
         id: null,
@@ -19,24 +21,10 @@ const FormularioTemplate = (props) => {
         preguntas: []
     })
 
-    const [dniONombre, setDniONombre] = ""
-    const [paciente, setPaciente] = useState({
-        nombre: "",
-        dni: null,
-        edad: null,
-        obraSocial: "",
-        plan: "",
-        email: "",
-        telefono: null,
-        pacienteId: null
-    })
-
-    let { id } = useParams();
-
     const [respuestasData, setRespuestasData] = useState([])
 
     useEffect(() => {
-        getFormulario(id)
+        getFormulario(idFormulario)
         .then((response) => {
             setFormulario(response)
             })
@@ -109,10 +97,8 @@ const FormularioTemplate = (props) => {
 
     const handleSubmitRespuestas = (e) => {
         e.preventDefault()
-            // const stringRespuestas = JSON.stringify(respuestaData);
-            const objetoRespuestas = {idTurno: idDelTurno, idFormulario: id, nuevasRespuestas: respuestasData }
+            const objetoRespuestas = {idTurno: idDelTurno, idFormulario: idFormulario, nuevasRespuestas: respuestasData }
             console.log(objetoRespuestas)
-            
             guardarRespuestasTurno(objetoRespuestas)
                 .then((response) => Swal.fire ({
                     title: 'Se guardaron las respuestas',
@@ -186,6 +172,11 @@ const FormularioTemplate = (props) => {
                         <button className="btn-primario">Enviar Respuestas</button>
                     </Col>
                 </Row>
+                <Row className="py-3">
+                    <Col>
+                    <Link to={{ pathname: `/formularios_turno/${idTurno}` }} className=" btn-primario" style={{ textDecoration: 'none' }}>Volver a formularios</Link>
+                    </Col>
+                </Row>
             </Form>
         </div>
 
@@ -210,4 +201,4 @@ const FormularioTemplate = (props) => {
 
 }
 
-export default FormularioTemplate
+export default FormularioTemplateTurno
