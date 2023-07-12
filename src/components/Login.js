@@ -50,51 +50,6 @@ function Login(props) {
     return <Navigate to='/landing' />
   }
 
-  /*return (
-    <div className="container">
-      <div className="row">
-        <div className="col-sm">
-          <img className="login-logo" src={process.env.PUBLIC_URL + '/agendate_logo_transparente.png'} />
-        </div>
-        <div className="col-sm" />
-
-        <div className="col-sm login-forms" >
-          <h1>Ingresar</h1>
-          <hr></hr>
-          <div class="form-group">
-            <label for="email">E-mail</label>
-            <input type="email" class="form-control" id="email" aria-describedby="emailHelp" onChange={(e) => setEmail(e.target.value)} />
-          </div>
-          <div class="form-group">
-            <label for="password">Contraseña</label>
-            <input type="password" class="form-control" id="password" onChange={(e) => setPassword(e.target.value)} />
-          </div>
-          <button onClick={atemptLogin} disabled={canLogin()} className='btn-primario'>Ingresar</button>
-          <Link to="/profesional/registrarse" className="btn btn-light">Registrarse</Link>
-          <hr></hr>
-          <p>Para crear un nuevo usuario, elija la opción Registrarse</p>
-          {errorLogin &&
-            <>
-              <hr></hr>
-              <div class="alert alert-danger" role="alert">
-                Email y/o contraseña incorrectos
-              </div>
-            </>
-          }
-          {fromSuccessLogin &&
-            <>
-              <hr></hr>
-              <div class="alert alert-success" role="alert">
-                Ha ingresado correctamente
-              </div>
-            </>
-          }
-
-        </div>
-      </div>
-    </div>
-  );*/
-
   return (
     <div className="Auth-form-container">
 
