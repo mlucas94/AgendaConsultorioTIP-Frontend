@@ -251,10 +251,25 @@ const CrearFormulario = () => {
         return <div>
             <h5>Opciones Agregadas:</h5>
             {nuevaPregunta.lista_opciones.map((opcion) => {
-                return <Col key={opcion+"-opcion"}>{opcion}</Col>
+                return <Row className="pt-2 align-items-center">
+                    <Col md={1}><button className="btn btn-danger btn-sm" onClick={(e) => handleQuitar(e, opcion)}> Quitar </button></Col>
+                    <Col key={opcion+"-opcion"}><b>{opcion}</b></Col>
+                </Row>
             }
                 )}
         </div>
+    }
+
+    const handleQuitar = (e, paraBorrar) => {
+        e.preventDefault()
+        let listaSinOpcion = nuevaPregunta.lista_opciones;
+        listaSinOpcion = listaSinOpcion.filter((opcion) => {
+            return opcion !== paraBorrar;
+        })
+        setNuevaPregunta({
+            ...nuevaPregunta,
+            lista_opciones : listaSinOpcion
+        })
     }
 
     return (
