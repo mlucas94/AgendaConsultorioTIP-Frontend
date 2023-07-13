@@ -20,7 +20,8 @@ function Login(props) {
 
   })
 
-  const atemptLogin = () => {
+  const atemptLogin = (e) => {
+    e.preventDefault()
     loginProfesional(email, password)
       .then(response => {
         let accessToken;
@@ -50,28 +51,43 @@ function Login(props) {
   }
 
   return (
-    <div className="container">
-      <div className="row">
-        <div className="col-sm">
-          <img className="login-logo" src={process.env.PUBLIC_URL + '/agendate_logo_transparente.png'} />
-        </div>
-        <div className="col-sm" />
+    <div className="Auth-form-container">
 
-        <div className="col-sm login-forms" >
-          <h1>Ingresar</h1>
-          <hr></hr>
-          <div class="form-group">
-            <label for="email">E-mail</label>
-            <input type="email" class="form-control" id="email" aria-describedby="emailHelp" onChange={(e) => setEmail(e.target.value)} />
+      <div>
+        <img className="login-logo" src={process.env.PUBLIC_URL + '/agendate_logo_transparente.png'} />
+      </div>
+      <form className="Auth-form" onSubmit={atemptLogin}>
+        <div className="Auth-form-content">
+          <h3 className="Auth-form-title">Ingresar</h3>
+          <div className="text-center">
+            ¿Aún no se ha registrado?{" "}
+            <Link to="/profesional/registrarse" className="btn btn-outline-info">
+              Registrarse
+            </Link>
           </div>
-          <div class="form-group">
-            <label for="password">Contraseña</label>
-            <input type="password" class="form-control" id="password" onChange={(e) => setPassword(e.target.value)} />
+          <div className="form-group mt-3">
+            <label>Email</label>
+            <input
+              type="email"
+              className="form-control mt-1"
+              placeholder="Ingrese email"
+              onChange={(e) => setEmail(e.target.value)}
+            />
           </div>
-          <button onClick={atemptLogin} disabled={canLogin()} className='btn-primario'>Ingresar</button>
-          <Link to="/profesional/registrarse" className="btn btn-light">Registrarse</Link>
-          <hr></hr>
-          <p>Para crear un nuevo usuario, elija la opción Registrarse</p>
+          <div className="form-group mt-3">
+            <label>Contraseña</label>
+            <input
+              type="password"
+              className="form-control mt-1"
+              placeholder="Ingrese contraseña"
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+          <div className="d-grid gap-2 mt-3">
+            <button onClick={atemptLogin} disabled={canLogin()} className='btn-primario'>
+              Ingresar
+            </button>
+          </div>
           {errorLogin &&
             <>
               <hr></hr>
@@ -88,11 +104,11 @@ function Login(props) {
               </div>
             </>
           }
-
         </div>
-      </div>
+      </form>
+
     </div>
-  );
+  )
 }
 
 export default Login;

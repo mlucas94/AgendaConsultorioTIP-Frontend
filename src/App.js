@@ -42,7 +42,7 @@ const App = () => {
           </Col>
           <Col md={10} className='columna-main'>
                 <Routes>
-                  <Route path="/profesional/login" element={ <Login/> }/>
+                  <Route path="/login" element={ <Login/> }/>
                   <Route path="/profesional/registrarse" element={ <Registrar/> }/>
                   <Route path="/nuevo_paciente" element={<AgendarPaciente/>}/>
                   <Route path="/turno/:id" element={ <Turno/> }/>

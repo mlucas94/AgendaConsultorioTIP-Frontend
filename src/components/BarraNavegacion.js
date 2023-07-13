@@ -35,7 +35,7 @@ const BarraNavegacion = (props) => {
         <div>
             
             {
-                (location.pathname ==="/" || location.pathname === "/profesional/registrarse" || location.pathname === "/profesional/login" ) ? null :
+                (location.pathname ==="/" || location.pathname === "/profesional/registrarse" || location.pathname === "/login" ) ? null :
 
             
                 <Nav
@@ -62,9 +62,11 @@ const BarraNavegacion = (props) => {
                                 <NavLink className='sidebar-link-text' href="/formulario/">Crear Formulario</NavLink>
                             </div>
                             <div className='sidebar-link'>
-                                <NavLink className='sidebar-link-text' onClick={cerrarSesion} href="/profesional/login">Cerrar Sesion</NavLink>
+                                <NavLink className='sidebar-link-text' href="/formulario_listado">Lista Formularios</NavLink>
                             </div>
-                            
+                            <div className='sidebar-link'>
+                                <NavLink className='sidebar-link-text' onClick={cerrarSesion} href="/login">Cerrar Sesión</NavLink>
+                            </div>
                         </div>
                     </div>
                 </Nav>
