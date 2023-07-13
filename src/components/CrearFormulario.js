@@ -238,6 +238,14 @@ const CrearFormulario = () => {
         setOpcionMultiselect("");
     }
 
+    const handleLimpiarOpciones = (e) => {
+        e.preventDefault()
+        setNuevaPregunta({
+            ...nuevaPregunta,
+            lista_opciones: []
+        })
+    }
+
     //Ver como mostrarlo mejor
     const mostrarOpcionesAgregadas = () => {
         return <div>
@@ -301,13 +309,16 @@ const CrearFormulario = () => {
                     </Collapse>
                     <Collapse in={nuevaPregunta.tipo == "multiselect"} >
                         <div>
-                            <Row>
-                                <Col className="pt-3">
+                            <Row className="">
+                                <Col className="pt-3" md={6}>
                                     <FormLabel>Opciones</FormLabel>
                                     <FormControl id="nueva-opcion" value={opcionMultiselect} onChange={handleInputOpcionMultiselect}/>
                                 </Col>
-                                <Col className="d-flex align-items-end">
+                                <Col className="d-flex align-items-end" md={2}>
                                     <button className="btn-primario" onClick={handleAgregarOpcion}>Agregar Opcion</button>
+                                </Col>
+                                <Col className="d-flex align-items-end" md={2}>
+                                    <button className="btn btn-danger" onClick={handleLimpiarOpciones}>Limpiar Opciones</button>
                                 </Col>
                             </Row>
                             <Collapse in={validacionNombreOpcionMultiselectVacia}>
@@ -333,11 +344,6 @@ const CrearFormulario = () => {
                         <button className="btn-primario" >Agregar campo</button>
                     </div>
                 </Form>
-                <div className="pt-4">
-                        <button className="btn-primario" onClick={(e)=>console.log(respuestaData)} >Mostrar log Respuestas</button>
-                        <button className="btn-primario" onClick={(e)=>console.log(formulario)} >Mostrar log </button>
-                        <button className="btn-primario" onClick={(e)=>console.log(nuevaPregunta)} >Mostrar Pregunta </button>
-                </div>
                 <hr/>
                 <h2>Vista previa de formulario</h2>
                 <div>
