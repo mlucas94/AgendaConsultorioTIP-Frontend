@@ -1,6 +1,7 @@
 import { Alert, Col, Collapse, Form, FormCheck, FormControl, FormLabel, FormSelect, Row } from "react-bootstrap"
 import { guardarFormulario, guardarRespuestas } from "./Api"
 import { useEffect, useState } from "react"
+import { useNavigate } from 'react-router-dom'
 import Select from 'react-select'
 import "./css/Botones.css"
 import Swal from "sweetalert2"
@@ -24,6 +25,7 @@ const CrearFormulario = () => {
         construirFormulario();
     },[formulario])
 
+    const navigate = useNavigate()
     
     const handleInputTitulo = (e) => {
         setValidacionTitulo(false)
@@ -205,7 +207,8 @@ const CrearFormulario = () => {
         }
         guardarFormulario(formulario)
         .then((response) => {
-            Swal.fire({title: "Se guardo"})
+            Swal.fire({title: "Se guardó el nuevo formulario"})
+            navigate('/formulario_listado')
         })
         .catch((error) => {
             Swal.fire({title:error.message})
@@ -274,12 +277,12 @@ const CrearFormulario = () => {
 
     return (
         <div className="p-3 container">
-            <h2>Creacion de formulario</h2>
+            <h2>Creación de formulario</h2>
             <hr/>
             <div className="">
                 <Row>
                     <Col md={2}>
-                        <h2>Titulo:</h2>
+                        <h2>Título:</h2>
                     </Col>
                     <Col md={4} className="align-items-end">
                         <FormControl id="nuevo-formulario-titulo" onChange={handleInputTitulo} value={formulario.titulo} />
@@ -291,7 +294,7 @@ const CrearFormulario = () => {
                 <Collapse in={validacionTitulo}>
                     <div className="pt-3">
                         <Alert variant="danger">
-                            El formulario requiere un titulo
+                            El formulario requiere un título
                         </Alert>
                     </div>
                 </Collapse>
