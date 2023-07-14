@@ -117,7 +117,7 @@ const LandingProfesional = (props) => {
                                     }
                                     {/* <td align='center'>{turno.tipo}</td> */}
                                     <td align='center'>{turno.paciente.nombre}</td>
-                                    <td align='center'>{turno.horarioInicio.substr(11, 5)}</td>
+                                    <td align='center'>{turno.horarioInicio}</td>
                                     <td align='center'>
                                     <Link to={{pathname: `/turno/${turno.id}`}} type="button" className="btn-primario" style={{ textDecoration: 'none' }}> Ver </Link>
                                     </td>

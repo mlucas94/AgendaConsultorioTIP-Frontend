@@ -1,6 +1,7 @@
 import { Alert, Col, Collapse, Form, FormCheck, FormControl, FormLabel, FormSelect, Row } from "react-bootstrap"
 import { guardarFormulario, guardarRespuestas } from "./Api"
 import { useEffect, useState } from "react"
+import { useNavigate } from 'react-router-dom'
 import Select from 'react-select'
 import "./css/Botones.css"
 import Swal from "sweetalert2"
@@ -24,6 +25,7 @@ const CrearFormulario = () => {
         construirFormulario();
     },[formulario])
 
+    const navigate = useNavigate()
     
     const handleInputTitulo = (e) => {
         setValidacionTitulo(false)
@@ -205,7 +207,8 @@ const CrearFormulario = () => {
         }
         guardarFormulario(formulario)
         .then((response) => {
-            Swal.fire({title: "Se guardo"})
+            Swal.fire({title: "Se guardó el nuevo formulario"})
+            navigate('/formulario_listado')
         })
         .catch((error) => {
             Swal.fire({title:error.message})
@@ -238,25 +241,48 @@ const CrearFormulario = () => {
         setOpcionMultiselect("");
     }
 
+    const handleLimpiarOpciones = (e) => {
+        e.preventDefault()
+        setNuevaPregunta({
+            ...nuevaPregunta,
+            lista_opciones: []
+        })
+    }
+
     //Ver como mostrarlo mejor
     const mostrarOpcionesAgregadas = () => {
         return <div>
             <h5>Opciones Agregadas:</h5>
             {nuevaPregunta.lista_opciones.map((opcion) => {
-                return <Col key={opcion+"-opcion"}>{opcion}</Col>
+                return <Row className="pt-2 align-items-center">
+                    <Col md={1}><button className="btn btn-danger btn-sm" onClick={(e) => handleQuitar(e, opcion)}> Quitar </button></Col>
+                    <Col key={opcion+"-opcion"}><b>{opcion}</b></Col>
+                </Row>
             }
                 )}
         </div>
     }
 
+    const handleQuitar = (e, paraBorrar) => {
+        e.preventDefault()
+        let listaSinOpcion = nuevaPregunta.lista_opciones;
+        listaSinOpcion = listaSinOpcion.filter((opcion) => {
+            return opcion !== paraBorrar;
+        })
+        setNuevaPregunta({
+            ...nuevaPregunta,
+            lista_opciones : listaSinOpcion
+        })
+    }
+
     return (
         <div className="p-3 container">
-            <h2>Creacion de formulario</h2>
+            <h2>Creación de formulario</h2>
             <hr/>
             <div className="">
                 <Row>
                     <Col md={2}>
-                        <h2>Titulo:</h2>
+                        <h2>Título:</h2>
                     </Col>
                     <Col md={4} className="align-items-end">
                         <FormControl id="nuevo-formulario-titulo" onChange={handleInputTitulo} value={formulario.titulo} />
@@ -268,7 +294,7 @@ const CrearFormulario = () => {
                 <Collapse in={validacionTitulo}>
                     <div className="pt-3">
                         <Alert variant="danger">
-                            El formulario requiere un titulo
+                            El formulario requiere un título
                         </Alert>
                     </div>
                 </Collapse>
@@ -301,13 +327,16 @@ const CrearFormulario = () => {
                     </Collapse>
                     <Collapse in={nuevaPregunta.tipo == "multiselect"} >
                         <div>
-                            <Row>
-                                <Col className="pt-3">
+                            <Row className="">
+                                <Col className="pt-3" md={6}>
                                     <FormLabel>Opciones</FormLabel>
                                     <FormControl id="nueva-opcion" value={opcionMultiselect} onChange={handleInputOpcionMultiselect}/>
                                 </Col>
-                                <Col className="d-flex align-items-end">
+                                <Col className="d-flex align-items-end" md={2}>
                                     <button className="btn-primario" onClick={handleAgregarOpcion}>Agregar Opcion</button>
+                                </Col>
+                                <Col className="d-flex align-items-end" md={2}>
+                                    <button className="btn btn-danger" onClick={handleLimpiarOpciones}>Limpiar Opciones</button>
                                 </Col>
                             </Row>
                             <Collapse in={validacionNombreOpcionMultiselectVacia}>
@@ -333,11 +362,6 @@ const CrearFormulario = () => {
                         <button className="btn-primario" >Agregar campo</button>
                     </div>
                 </Form>
-                <div className="pt-4">
-                        <button className="btn-primario" onClick={(e)=>console.log(respuestaData)} >Mostrar log Respuestas</button>
-                        <button className="btn-primario" onClick={(e)=>console.log(formulario)} >Mostrar log </button>
-                        <button className="btn-primario" onClick={(e)=>console.log(nuevaPregunta)} >Mostrar Pregunta </button>
-                </div>
                 <hr/>
                 <h2>Vista previa de formulario</h2>
                 <div>

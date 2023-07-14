@@ -132,7 +132,7 @@ const AgendarPaciente = () => {
     return (
         <div className=' container p-3 vh-50'>
             <h3>{"Formulario de ingreso de paciente"}</h3>
-            <p>A continuacion ingrese los datos solicitados</p>
+            <p>A continuación ingrese los datos solicitados</p>
             <Form onSubmit={handleAgendar}>
                 <div>
                     <h5>Datos del paciente</h5>

@@ -118,7 +118,7 @@ import { mostrarAlertaCarga, cerrarAlertaCarga } from './FuncionesGenerales.js';
                     error => {
                         cerrarAlertaCarga();
                         Swal.fire({
-                            title: "No se guardo el turno",
+                            title: "No se guardó el turno",
                             text: "Seleccione un paciente y horario validos",
                             icon: 'error',
                             confirmButtonText: 'Aceptar'
